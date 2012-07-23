@@ -34,8 +34,8 @@ module PrivatePlease
         end
       end
       # make the call :
-      orig_method.bind(self).call(*args, &blk)
       set_trace_func(LineChangeTracker::MY_TRACE_FUN)
+      orig_method.bind(self).call(*args, &blk)
     end
   end
 

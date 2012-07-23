@@ -5,7 +5,7 @@ describe 'calling marked methods' do
   module Calling
     class Simple
       def public_m ;  private_m()   end
-      def private_m; 'foo'          end
+      def private_m; 'SUCCESS'      end
       private_please  :private_m
     end
   end
@@ -33,7 +33,11 @@ describe 'calling marked methods' do
   context 'from OUTSIDE the class' do
 #--------------
 
-    before { Calling::Simple.new.private_m }
+    before { @result = Calling::Simple.new.private_m }
+
+    it 'goes thru (as the method is still public)' do
+      @result.should == 'SUCCESS'
+    end
 
     it('records the call to the p+p method in PrivatePlease.inside_called_candidates') do
       PrivatePlease.inside_called_candidates[ 'Calling::Simple'].to_a.should == []
