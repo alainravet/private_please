@@ -16,8 +16,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.before(:each) do
-    PrivatePlease::Configuration.reset
-    PrivatePlease::Candidates.reset
+    PrivatePlease.reset_before_new_test
   end
 end
 

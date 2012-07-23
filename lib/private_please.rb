@@ -28,31 +28,36 @@ module PrivatePlease
   end
 
 #--------------
-# recorder
+# partners :
 #--------------
-  def recorder
-    PrivatePlease::Recorder.instance
+  def recorder ; Recorder     .instance end
+  def storage  ; Candidates   .instance end
+  def config   ; Configuration.instance end
+
+  def self.reset_before_new_test
+    Recorder      .reset_before_new_test
+    Candidates    .reset_before_new_test
+    Configuration .reset_before_new_test
   end
+
 
 #--------------
 # candidates
 #--------------
-  def candidates                ; Candidates.candidates               end
-  def inside_called_candidates  ; recorder.inside_called_candidates   end
-  def outside_called_candidates ; recorder.outside_called_candidates  end
+
+
+  def candidates                ; storage.candidates                 end
+  def inside_called_candidates  ; storage.inside_called_candidates   end
+  def outside_called_candidates ; storage.outside_called_candidates  end
 
 #--------------
 # report
 #--------------
   def report
-    Report.build(recorder)
+    Report.build(storage)
   end
 
 private
-
-  def config
-    Configuration.instance
-  end
 
   def mark_method(name)
     self_class = self.class

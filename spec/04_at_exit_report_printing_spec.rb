@@ -36,7 +36,7 @@ describe PrivatePlease, 'reporting the calls on candidates' do
           should =~ [:private_m1c, :private_m]
     end
 
-    specify '#never_called_candidates is the list of methods that were never called' do
+    xspecify '#never_called_candidates is the list of methods that were never called' do
       the_report.never_called_candidates['Reporting::Simple'].
           should == [:ignored]
     end

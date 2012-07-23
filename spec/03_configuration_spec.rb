@@ -19,7 +19,7 @@ describe PrivatePlease, 'configuring PrivatePlease' do
 #--------------
 
   it 'is disabled by default' do
-    PrivatePlease::Configuration.reset
+    PrivatePlease::Configuration.reset_before_new_test
     PrivatePlease.should_not be_active
   end
 

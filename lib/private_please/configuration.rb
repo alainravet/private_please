@@ -4,7 +4,8 @@ module PrivatePlease
       @@__instance ||= new
     end
 
-    def self.reset
+    # only used by tests  #TODO : refactor to remove .instance and .reset
+    def self.reset_before_new_test
       @@__instance = nil
     end
 

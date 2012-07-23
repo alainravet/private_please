@@ -2,30 +2,32 @@ module PrivatePlease
   class Recorder
 
     def self.instance
-      @@__instance ||= new
+      @@__instance ||= new(Candidates.instance)
     end
 
-    def candidates                ; PrivatePlease.candidates              end
-    def inside_called_candidates  ; Candidates.inside_called_candidates   end
-    def outside_called_candidates ; Candidates.outside_called_candidates  end
+    # only used by tests  #TODO : refactor to remove .instance and .reset
+    def self.reset_before_new_test
+      @@__instance = nil
+    end
+
+    def initialize(storage)
+      @storage = storage
+    end
+
 
     def record_candidate(self_class, name)
-      #TODO move to Candidates.add_candidate + use a Set instead of an Array
-      candidates[self_class.to_s] += Array(name)
+      @storage.record_candidate(self_class, name)
+      # do more. ex: logging, ..
     end
 
     def record_outside_call(self_class, name)
-      #TODO move to Candidates.add_outside_call + use a Set instead of an Array
-      unless outside_called_candidates[self_class.to_s].include?(name)
-        outside_called_candidates[self_class.to_s] += Array(name)
-      end
+      @storage.record_outside_call(self_class, name)
+      # do more. ex: logging, ..
     end
 
     def record_inside_call(self_class, name)
-      #TODO move to Candidates.add_inside_call + use a Set instead of an Array
-      unless inside_called_candidates[self_class.to_s].include?(name)
-        inside_called_candidates[self_class.to_s] += Array(name)
-      end
+      @storage.record_inside_call(self_class, name)
+      # do more. ex: logging, ..
     end
 
   end
