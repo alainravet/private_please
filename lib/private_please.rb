@@ -17,19 +17,26 @@ module PrivatePlease
     name = method_name
     orig_method = instance_method(name)
     define_method(name) do |*args, &blk|
-      set_trace_func(nil)
-      call_initiator = LineChangeTracker.prev_self
-      if outside_call = call_initiator.class != self.class
-        puts 'i - OUTSIDE CALL (calling this private method is normally forbidden)'
-      else
-        puts 'i - INSIDE CALL'
+      set_trace_func(nil) #don't track activity while here
+      self_class = self.class
+      #TODO use a Set instead of an Array
+      unless PrivatePlease.inside_called_candidates[self_class.to_s].include?(name)
+        PrivatePlease.inside_called_candidates[self_class.to_s] += Array(name)
       end
-# make the call
+
+      call_initiator = LineChangeTracker.prev_self
+      is_outside_call = call_initiator.class != self_class
+      if is_outside_call
+        puts 'i - OUTSIDE CALL (calling this private method is normally forbidden)'
+      end
+      # make the call :
       orig_method.bind(self).call(*args, &blk)
       set_trace_func(LineChangeTracker::MY_TRACE_FUN)
     end
   end
-  def candidates        ; Candidates.candidates         end
+
+  def candidates                ; Candidates.candidates                 end
+  def inside_called_candidates  ; Candidates.inside_called_candidates   end
 
 end
 

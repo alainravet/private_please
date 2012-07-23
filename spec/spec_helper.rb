@@ -15,7 +15,7 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 
-  config.after(:each) do
+  config.before(:each) do
     PrivatePlease::Candidates.reset_candidates
   end
 end
