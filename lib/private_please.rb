@@ -71,7 +71,6 @@ private
     end
   end
 
-
 end
 
 Module.send :include, PrivatePlease

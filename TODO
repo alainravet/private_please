@@ -1,0 +1,22 @@
+
+DSL
+	- global method marking :
+
+		ex:
+
+			private_please
+		    def foo ..
+		    def bar ..
+			public
+
+		is the same as :
+			...
+	    def foo ..
+	    def bar ..
+			private_please :foo, :bar
+
+Report :
+	- display list of methods that were never called
+
+Doc
+	- write README

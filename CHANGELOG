@@ -1,0 +1,5 @@
+v0.0.2
+	- only display the report if PrivatePlease.active?
+
+v0.0.1
+	- first functional version
