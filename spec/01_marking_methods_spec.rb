@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'marking methods' do
+describe PrivatePlease, 'marking methods' do
 
   it('records the candidates and associate them to the owning class') do
     module Marking

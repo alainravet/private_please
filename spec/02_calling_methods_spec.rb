@@ -1,6 +1,9 @@
 require 'spec_helper'
 
-describe 'calling marked methods' do
+describe PrivatePlease, 'calling marked methods' do
+  before() do
+    PrivatePlease.activate(true)
+  end
 
   module Calling
     class Simple

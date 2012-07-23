@@ -1,12 +1,12 @@
 module PrivatePlease
   class Candidates
 
-    def self.reset_candidates
+    def self.reset
       @@candidates                = Hash.new{ [] }
       @@inside_called_candidates  = Hash.new{ [] }
       @@outside_called_candidates = Hash.new{ [] }
     end
-    reset_candidates
+    reset
 
     def self.candidates               ; @@candidates                end
     def self.inside_called_candidates ; @@inside_called_candidates  end
