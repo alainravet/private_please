@@ -16,7 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = PrivatePlease::VERSION
 
   gem.add_development_dependency 'rake' # to run 'All specs' in Rubymine
-  gem.add_development_dependency 'todo_next'
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'guard-rspec'
 end
