@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe PrivatePlease, 'marking methods' do
 
+  let(:storage) { PrivatePlease.storage }
+
   it('records the candidates and associate them to the owning class') do
     module Marking
       class Simple1
@@ -11,7 +13,7 @@ describe PrivatePlease, 'marking methods' do
         private_please  :bar, :buz
       end
     end
-    PrivatePlease.candidates['Marking::Simple1'].should == [:bar, :buz]
+    storage.candidates['Marking::Simple1'].should == [:bar, :buz]
   end
 
   it('does not record invalid candidates (method not found in the class)') do
@@ -22,7 +24,7 @@ describe PrivatePlease, 'marking methods' do
         private_please  :invalid_method
       end
     end
-    PrivatePlease.candidates['Marking::Simple2'].should == [:foo]
+    storage.candidates['Marking::Simple2'].should == [:foo]
   end
 
 end
