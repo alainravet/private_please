@@ -1,25 +1,46 @@
 require 'spec_helper'
 
-describe 'calling marked methods' do
+describe PrivatePlease, 'reporting the calls on candidates' do
 
-  module Report
+  module Reporting
     class Simple
-      def public_m ;  private_m()     end
-      def private_m;  'SUCCESS'       end
+      def public_m    ;  private_m1a()    end
+      def private_m1a ;    private_m1b    end
+      def private_m1b ;      private_m1c  end
+
+      def private_m   ;  private_m1c      end
+      def private_m1c ;  'SUCCESS'        end
+
       def ignored  ;  'never called'  end
-      private_please  :private_m, :ignored
+      private_please  :private_m1a, :private_m1b, :private_m1c, :private_m, :ignored
     end
   end
 
+  before() { PrivatePlease.activate(true) }
   before do
-    Calling::Simple.new.public_m
-    Calling::Simple.new.private_m
-    @report = PrivatePlease.report
+    Reporting::Simple.new.public_m
+    Reporting::Simple.new.private_m
+    Reporting::Simple.new.private_m1c
   end
 
-  it('lists the candidates that were only called from the inside')
-  it('lists the candidates that were called from the inside')
-  it('lists the candidates that were never called')
+  describe 'the activity report' do
+    let(:the_report) { PrivatePlease.report }
+
+    specify '#good_candidates is the list of methods that CAN be made private' do
+      the_report.good_candidates['Reporting::Simple'].
+          should =~ [:private_m1a, :private_m1b]
+    end
+
+    specify '#bad_candidates is the list of methods that CANNOT be made private' do
+      the_report.bad_candidates['Reporting::Simple'].
+          should =~ [:private_m1c, :private_m]
+    end
+
+    specify '#never_called_candidates is the list of methods that were never called' do
+      the_report.never_called_candidates['Reporting::Simple'].
+          should == [:ignored]
+    end
+  end
 
   specify 'at_exit prints the report in the STDOUT'
 
