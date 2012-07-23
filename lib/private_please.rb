@@ -14,6 +14,15 @@ module PrivatePlease
     end
   end
 
+#--------------
+# candidates
+#--------------
+  def candidates                ; Candidates.candidates                 end
+  def inside_called_candidates  ; Candidates.inside_called_candidates   end
+  def outside_called_candidates ; Candidates.outside_called_candidates  end
+
+private
+
   def mark_method(name)
     orig_method = instance_method(name)
     define_method(name) do |*args, &blk|
@@ -33,10 +42,6 @@ module PrivatePlease
       orig_method.bind(self).call(*args, &blk)
     end
   end
-
-  def candidates                ; Candidates.candidates                 end
-  def inside_called_candidates  ; Candidates.inside_called_candidates   end
-  def outside_called_candidates ; Candidates.outside_called_candidates  end
 
 end
 
