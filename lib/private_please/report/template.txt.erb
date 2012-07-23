@@ -1,0 +1,15 @@
+PrivatePlease report :
+====================================================================================
+Good candidates :
+====================================================================================
+<% good_candidates.keys.each do |klass|%>
+ in <%= klass %> :
+    <%= good_candidates[klass].join(', ')%>
+<% end %>
+
+====================================================================================
+Bad  candidates :
+<% bad_candidates.keys.each do |klass| %>
+ in <%= klass %> :
+    <%= bad_candidates[klass].join(', ')%>
+<% end %>

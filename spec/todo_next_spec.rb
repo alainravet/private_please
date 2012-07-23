@@ -3,26 +3,50 @@ require 'rspec'
 require 'todo_next'
 
 todo_next(<<TEXT)
-A Foobar
-	  √ is white by default
-	    ex: puts Foobar.new.colour  # => 'white'
-	  * can be resized
-	    example:
-	      foobar.resize!(+10, -2)
-	  - can be reset
-	  truthiness()
-	    is always true
-	    is never false
-	  (add more tests)
-  TEXT
+* marking 1 method
+  example :
+    def foo
+      ..
+    end
+    private_please :foo
+
+  * adds the method to $private_please_candidates
+
+Marking 2 methods in 1 call
+  example :
+    ..
+    private_please :foo, :bar
+
+  * adds the 2 method to $private_please_candidates
+
+Global usage
+  example :
+    ..
+    private_please
+      def foo .. end
+      def bar .. end
+
+  * adds the 2 method to $private_please_candidates
+
+An outside call to a candidate marked method
+  - goes through as is the method waspublic
+  - $private_please_called_candidates  << the candidate
+  - $private_please_INVALID_candidates << the candidate
+
+An inside call to a candidate marked method
+  - goes through
+  - $private_please_called_candidates << the candidate
+
+Configuration
+  - 'private_please' is inactive by default
+  'private_please' can be activate
+    - via ENV['private_please']=true
+    - PrivatePlease.activate(true)
+
+at_exit
+  - prints a report about the candidates in STDOUT
+
 TEXT
 
 # √ == passed   => same as a comment line
 # * == current  => leading char - '*' - is kept
-# example blocks (ex:, example:) are ignored, like comments.
-
-#describe "<what you're testing>" do
-#  specify 'this should happen' do
-#    .. some code
-#  end
-#end

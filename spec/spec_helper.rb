@@ -14,4 +14,10 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
+
+  config.before(:each) do
+    PrivatePlease.reset_before_new_test
+  end
 end
+
+require File.dirname(__FILE__) + '/../lib/private_please'
