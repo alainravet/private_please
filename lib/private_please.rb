@@ -85,3 +85,8 @@ private
 end
 
 Module.send :include, PrivatePlease
+
+at_exit {
+  puts '-'*888
+  puts PrivatePlease.report.to_s
+}

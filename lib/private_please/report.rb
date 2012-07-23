@@ -11,6 +11,16 @@ module  PrivatePlease
       @storage = storage
     end
 
+    TEMPLATE_PATH     = File.dirname(__FILE__) + '/report/template.txt.erb'
+
+    def to_s
+      erb = ERB.new(File.read(TEMPLATE_PATH))
+
+      good_candidates = good_candidates() # for ERB/binding
+      bad_candidates  = bad_candidates()  # for ERB/binding
+      erb.result(binding)
+    end
+
     # @return [Hash]
     def never_called_candidates
       @storage.candidates.tap do |all|
