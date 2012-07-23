@@ -1,5 +1,6 @@
 require 'private_please/version'
 require 'private_please/candidates'
+require 'private_please/recorder'
 require 'private_please/line_change_tracker'
 
 module PrivatePlease
@@ -23,15 +24,9 @@ module PrivatePlease
       is_outside_call = call_initiator.class != self_class
 
       if is_outside_call
-        #TODO use a Set instead of an Array
-        unless PrivatePlease.outside_called_candidates[self_class.to_s].include?(name)
-          PrivatePlease.outside_called_candidates[self_class.to_s] += Array(name)
-        end
+        PrivatePlease::Recorder.instance.record_outside_call(self_class, name)
       else
-        #TODO use a Set instead of an Array
-        unless PrivatePlease.inside_called_candidates[self_class.to_s].include?(name)
-          PrivatePlease.inside_called_candidates[self_class.to_s] += Array(name)
-        end
+        PrivatePlease::Recorder.instance.record_inside_call(self_class, name)
       end
       # make the call :
       set_trace_func(LineChangeTracker::MY_TRACE_FUN)
