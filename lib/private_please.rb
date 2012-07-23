@@ -10,7 +10,7 @@ module PrivatePlease
   def private_please(*args)
     klass = self
     args.reject!{|m| !klass.instance_methods.include?(m.to_s)}
-    candidates[klass.to_s] += args
+    storage.candidates[klass.to_s] += args
     args.each do |m|
       mark_method(m)
     end
@@ -39,16 +39,6 @@ module PrivatePlease
     Candidates    .reset_before_new_test
     Configuration .reset_before_new_test
   end
-
-
-#--------------
-# candidates
-#--------------
-
-
-  def candidates                ; storage.candidates                 end
-  def inside_called_candidates  ; storage.inside_called_candidates   end
-  def outside_called_candidates ; storage.outside_called_candidates  end
 
 #--------------
 # report
@@ -81,12 +71,13 @@ private
     end
   end
 
-
 end
 
 Module.send :include, PrivatePlease
 
 at_exit {
-  puts '-'*888
-  puts PrivatePlease.report.to_s
+  if PrivatePlease.active?
+    puts '-'*888
+    puts PrivatePlease.report.to_s
+  end
 }

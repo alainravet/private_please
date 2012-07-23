@@ -22,6 +22,7 @@ describe PrivatePlease, 'configuring PrivatePlease' do
     PrivatePlease::Configuration.reset_before_new_test
     PrivatePlease.should_not be_active
   end
+  let(:storage) { PrivatePlease.storage }
 
   context 'when disabled' do
 
@@ -31,8 +32,8 @@ describe PrivatePlease, 'configuring PrivatePlease' do
     it('is not active') { PrivatePlease.should_not be_active }
 
     it 'does NOT record the calls to candidates' do
-      PrivatePlease.inside_called_candidates[ 'Config::Simple'].to_a.should == []
-      PrivatePlease.outside_called_candidates['Config::Simple'].to_a.should == []
+      storage.inside_called_candidates[ 'Config::Simple'].to_a.should == []
+      storage.outside_called_candidates['Config::Simple'].to_a.should == []
     end
   end
 
@@ -44,8 +45,8 @@ describe PrivatePlease, 'configuring PrivatePlease' do
     it('is active') { PrivatePlease.should be_active }
 
     it 'DOES record the calls to candidates' do
-      PrivatePlease.inside_called_candidates[ 'Config::Simple'].to_a.should == [:private_m]
-      PrivatePlease.outside_called_candidates['Config::Simple'].to_a.should == [:private_m]
+      storage.inside_called_candidates[ 'Config::Simple'].to_a.should == [:private_m]
+      storage.outside_called_candidates['Config::Simple'].to_a.should == [:private_m]
     end
   end
 end
