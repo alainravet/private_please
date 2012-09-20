@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe PrivatePlease, 'reporting the calls on candidates' do
+describe PrivatePlease, 'Reporting the observation results when the main program exits' do
 
-  module Reporting
+  module ReportingTest
     class Simple
       def public_m    ;  private_m1a()    end
       def private_m1a ;    private_m1b    end
@@ -18,26 +18,26 @@ describe PrivatePlease, 'reporting the calls on candidates' do
 
   before() { PrivatePlease.activate(true) }
   before do
-    Reporting::Simple.new.public_m
-    Reporting::Simple.new.private_m
-    Reporting::Simple.new.private_m1c
+    ReportingTest::Simple.new.public_m
+    ReportingTest::Simple.new.private_m
+    ReportingTest::Simple.new.private_m1c
   end
 
   describe 'the activity report' do
     let(:the_report) { PrivatePlease.report }
 
     specify '#good_candidates is the list of methods that CAN be made private' do
-      the_report.good_candidates['Reporting::Simple'].
+      the_report.good_candidates['ReportingTest::Simple'].
           should =~ [:private_m1a, :private_m1b]
     end
 
     specify '#bad_candidates is the list of methods that CANNOT be made private' do
-      the_report.bad_candidates['Reporting::Simple'].
+      the_report.bad_candidates['ReportingTest::Simple'].
           should =~ [:private_m1c, :private_m]
     end
 
     xspecify '#never_called_candidates is the list of methods that were never called' do
-      the_report.never_called_candidates['Reporting::Simple'].
+      the_report.never_called_candidates['ReportingTest::Simple'].
           should == [:ignored]
     end
   end
