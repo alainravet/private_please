@@ -5,7 +5,7 @@ module PrivatePlease
       @@prev_self = @@curr_self = nil
     end
 
-    MY_TRACE_FUN = proc do |event, file, line, id, binding, klass|
+    MY_TRACE_FUN = lambda do |event, file, line, id, binding, klass|
       return unless 'line'==event
       LineChangeTracker.prev_prev_self = LineChangeTracker.prev_self
       LineChangeTracker.prev_self      = LineChangeTracker.curr_self

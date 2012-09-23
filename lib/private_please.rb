@@ -9,7 +9,7 @@ module PrivatePlease
 
   def private_please(*args)
     klass = self
-    args.reject!{|m| !klass.instance_methods.include?(m.to_s)}
+    args.reject!{|m| !klass.instance_methods.collect(&:to_sym).include?(m.to_sym)}
     storage.candidates[klass.to_s] += args
     args.each do |m|
       mark_method(m)
