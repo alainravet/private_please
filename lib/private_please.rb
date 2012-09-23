@@ -1,7 +1,6 @@
 require 'private_please/version'
 require 'private_please/configuration'
-require 'private_please/candidates'
-require 'private_please/recorder'
+require 'private_please/storage'
 require 'private_please/report'
 require 'private_please/line_change_tracker'
 
@@ -10,6 +9,7 @@ module PrivatePlease
 #--------------
 # config
 #--------------
+
   def self.activate(flag)
     config.activate(flag)
   end
@@ -18,16 +18,29 @@ module PrivatePlease
     !!config.active
   end
 
+  def self.record_outside_call(klass, method_name)
+    storage.record_outside_call(klass, method_name)
+  end
+
+  def self.record_inside_call(klass, method_name)
+    storage.record_inside_call(klass, method_name)
+  end
+
+  def self.record_candidate(klass, method_name)
+    storage.record_candidate(klass, method_name)
+  end
+
 #--------------
 # partners :
 #--------------
-  def self.recorder ; Recorder     .instance end
-  def self.storage  ; Candidates   .instance end
+
+  def self.storage  ; Storage      .instance end
   def self.config   ; Configuration.instance end
 
 #--------------
 # report
 #--------------
+
   def self.report
     Report.build(storage)
   end

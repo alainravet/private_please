@@ -14,7 +14,7 @@ module PrivatePlease
       end
 
       methods_to_observe.each do |method_name|
-        PrivatePlease.recorder.record_candidate(klass, method_name)
+        PrivatePlease.record_candidate(klass, method_name)
 
         orig_method = instance_method(method_name)
 
@@ -23,8 +23,8 @@ module PrivatePlease
                                                                                       #
           if PrivatePlease.active?                                                    #
             LineChangeTracker.outside_call_detected?(self) ?                   #
-                PrivatePlease.recorder.record_outside_call(self.class, method_name) : #
-                PrivatePlease.recorder.record_inside_call( self.class, method_name)   #
+                PrivatePlease.record_outside_call(self.class, method_name) : #
+                PrivatePlease.record_inside_call( self.class, method_name)   #
           end                                                                         #
                                                                                       #
           set_trace_func(LineChangeTracker::MY_TRACE_FUN)                             #

@@ -1,12 +1,12 @@
 module  PrivatePlease
   class Report
 
-    # @param [PrivatePlease::Recorder] recorder
+    # @param [PrivatePlease::Storage] storage
     def self.build(storage)
-      new(storage)
+      Report.new(storage)
     end
 
-    # @param [PrivatePlease::Recorder] recorder
+    # @param [PrivatePlease::Storage] storage
     def initialize(storage)
       @storage = storage
     end
