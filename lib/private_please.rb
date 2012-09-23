@@ -18,7 +18,6 @@ module PrivatePlease
       invalid = !already_defined_instance_method
     end
 
-    PrivatePlease.storage.candidates[klass.to_s] += methods_to_observe
     methods_to_observe.each do |m|
       __instrument_the_observed_method(m)
     end
@@ -52,7 +51,7 @@ module PrivatePlease
 private
 
   def __instrument_the_observed_method(method_name)
-    klass = self.class
+    klass = self
     PrivatePlease.recorder.record_candidate(klass, method_name)
     orig_method = instance_method(method_name)
     define_method(method_name) do |*args, &blk|

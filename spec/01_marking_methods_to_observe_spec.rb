@@ -14,9 +14,7 @@ describe PrivatePlease, 'marking methods to observe with the `private_please` co
       end
     end
     storage.candidates.
-        should == {'MarkingTest::Simple1' =>[:bar, :buz],
-                   'Class'                =>[:bar, :buz]  #TODO : fix this (should not be present)
-    }
+        should == {'MarkingTest::Simple1' =>[:bar, :buz]}
   end
 
 
@@ -29,9 +27,7 @@ describe PrivatePlease, 'marking methods to observe with the `private_please` co
       end
     end
     storage.candidates.
-        should == {'MarkingTest::Simple2' =>[:foo],
-                   'Class'                =>[:foo]  #TODO : fix this (should not be present)
-    }
+        should == {'MarkingTest::Simple2' =>[:foo]}
   end
 
 end
