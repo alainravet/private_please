@@ -1,3 +1,4 @@
+require 'erb'
 module  PrivatePlease
   class Report
 
