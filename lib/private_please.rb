@@ -7,68 +7,72 @@ require 'private_please/line_change_tracker'
 
 module PrivatePlease
 
-  def private_please(*args)
+  def private_please(*methods_to_observe)
     klass = self
-    args.reject!{|m| !klass.instance_methods.collect(&:to_sym).include?(m.to_sym)}
-    storage.candidates[klass.to_s] += args
-    args.each do |m|
-      mark_method(m)
+    methods_to_observe      = methods_to_observe    .collect(&:to_sym)
+    class_instance_methods  = klass.instance_methods.collect(&:to_sym)
+
+    # reject invalid methods names
+    methods_to_observe.reject! do |m|
+      already_defined_instance_method = class_instance_methods.include?(m)
+      invalid = !already_defined_instance_method
+    end
+
+    PrivatePlease.storage.candidates[klass.to_s] += methods_to_observe
+    methods_to_observe.each do |m|
+      __instrument_the_observed_method(m)
     end
   end
 
 #--------------
 # config
 #--------------
-  def activate(flag)
+  def self.activate(flag)
     config.activate(flag)
   end
 
-  def active?
+  def self.active?
     !!config.active
   end
 
 #--------------
 # partners :
 #--------------
-  def recorder ; Recorder     .instance end
-  def storage  ; Candidates   .instance end
-  def config   ; Configuration.instance end
-
-  def self.reset_before_new_test
-    Recorder      .reset_before_new_test
-    Candidates    .reset_before_new_test
-    Configuration .reset_before_new_test
-  end
+  def self.recorder ; Recorder     .instance end
+  def self.storage  ; Candidates   .instance end
+  def self.config   ; Configuration.instance end
 
 #--------------
 # report
 #--------------
-  def report
+  def self.report
     Report.build(storage)
   end
 
 private
 
-  def mark_method(name)
-    self_class = self.class
-    PrivatePlease.recorder.record_candidate(self_class, name)
-    orig_method = instance_method(name)
-    define_method(name) do |*args, &blk|
+  def __instrument_the_observed_method(method_name)
+    klass = self.class
+    PrivatePlease.recorder.record_candidate(klass, method_name)
+    orig_method = instance_method(method_name)
+    define_method(method_name) do |*args, &blk|
       set_trace_func(nil) #don't track activity while here
 
-      self_class = self.class
       if PrivatePlease.active?
-        call_initiator = LineChangeTracker.prev_self
-        is_outside_call = call_initiator.class != self_class
-        is_outside_call ?
-          PrivatePlease.recorder.record_outside_call(self_class, name) :
-          PrivatePlease.recorder.record_inside_call( self_class, name)
+        PrivatePlease.outside_call_detected?(self) ?
+          PrivatePlease.recorder.record_outside_call(self.class, method_name) :
+          PrivatePlease.recorder.record_inside_call( self.class, method_name)
       end
 
       # make the call :
       set_trace_func(LineChangeTracker::MY_TRACE_FUN)
       orig_method.bind(self).call(*args, &blk)
     end
+  end
+
+  def self.outside_call_detected?(zelf)
+    call_initiator = LineChangeTracker.prev_self
+    call_initiator.class != zelf.class
   end
 
 end

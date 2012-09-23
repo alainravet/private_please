@@ -4,6 +4,15 @@
 # loaded once.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+module PrivatePlease
+  def self.reset_before_new_test
+    Recorder      .reset_before_new_test
+    Candidates    .reset_before_new_test
+    Configuration .reset_before_new_test
+  end
+end
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true
