@@ -1,5 +1,5 @@
 module PrivatePlease
-  class Candidates
+  class Storage
     def self.instance
       @@__instance ||= new
     end

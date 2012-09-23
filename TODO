@@ -4,7 +4,7 @@ DSL
 
 		ex:
 
-			private_please
+			private_please :all
 		    def foo ..
 		    def bar ..
 			public
@@ -16,7 +16,10 @@ DSL
 			private_please :foo, :bar
 
 Report :
+    - option : show file and line number of good candidate definition
+    - option : show code snippet around the good candidate
 	- display list of methods that were never called
+	- display candidates that are already private
 
 Doc
 	- write README

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe PrivatePlease, 'configuring PrivatePlease' do
-  module Config
+describe PrivatePlease, 'configuration defaults and effects' do
+  module ConfigTest
     class Simple
       def public_m ;  private_m()   end
       def private_m; 'SUCCESS'      end
@@ -10,7 +10,7 @@ describe PrivatePlease, 'configuring PrivatePlease' do
   end
 
   def do_the_calls
-    Config::Simple.new.tap do |o|
+    ConfigTest::Simple.new.tap do |o|
       o.public_m      # -> inside call
       o.private_m     # -> outside call
     end
@@ -32,8 +32,8 @@ describe PrivatePlease, 'configuring PrivatePlease' do
     it('is not active') { PrivatePlease.should_not be_active }
 
     it 'does NOT record the calls to candidates' do
-      storage.inside_called_candidates[ 'Config::Simple'].to_a.should == []
-      storage.outside_called_candidates['Config::Simple'].to_a.should == []
+      storage.inside_called_candidates[ 'ConfigTest::Simple'].to_a.should == []
+      storage.outside_called_candidates['ConfigTest::Simple'].to_a.should == []
     end
   end
 
@@ -45,8 +45,8 @@ describe PrivatePlease, 'configuring PrivatePlease' do
     it('is active') { PrivatePlease.should be_active }
 
     it 'DOES record the calls to candidates' do
-      storage.inside_called_candidates[ 'Config::Simple'].to_a.should == [:private_m]
-      storage.outside_called_candidates['Config::Simple'].to_a.should == [:private_m]
+      storage.inside_called_candidates[ 'ConfigTest::Simple'].to_a.should == [:private_m]
+      storage.outside_called_candidates['ConfigTest::Simple'].to_a.should == [:private_m]
     end
   end
 end
