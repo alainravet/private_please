@@ -1,5 +1,6 @@
 next version
     - works with Ruby 1.9 too
+    - private_please without parameters observes all the methods defined afterwards
 
 v0.0.2
 	- only display the report if PrivatePlease.active?

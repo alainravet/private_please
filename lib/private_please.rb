@@ -3,6 +3,8 @@ require 'private_please/configuration'
 require 'private_please/storage'
 require 'private_please/report'
 require 'private_please/line_change_tracker'
+require 'private_please/extension'
+require 'private_please/automatic'
 
 module PrivatePlease
 
@@ -30,6 +32,11 @@ module PrivatePlease
     storage.record_candidate(klass, method_name)
   end
 
+  def self.already_instrumented?(klass, method_name)
+    storage.include?(klass, method_name)
+  end
+
+
 #--------------
 # partners :
 #--------------
@@ -48,7 +55,6 @@ module PrivatePlease
 end
 
 
-require 'private_please/extension'
 Module.send :include, PrivatePlease::Extension
 
 at_exit {

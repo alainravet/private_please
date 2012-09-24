@@ -3,23 +3,32 @@ module PrivatePlease
   module Extension
 
     def private_please(*methods_to_observe)
+      parameterless_call = methods_to_observe.empty?
       klass = self
-      methods_to_observe      = methods_to_observe    .collect(&:to_sym)
 
-      # reject invalid methods names
-      class_instance_methods  = klass.instance_methods.collect(&:to_sym)
-      methods_to_observe.reject! do |m|
-        already_defined_instance_method = class_instance_methods.include?(m)
-        invalid = !already_defined_instance_method
-      end
+      if parameterless_call
+        klass.send :include, PrivatePlease::Automatic
 
-      methods_to_observe.each do |method_name|
-        __instrument_method_for_pp_observation(klass, method_name) # end
+      else
+        class_instance_methods  = klass.instance_methods.collect(&:to_sym)
+        methods_to_observe      = methods_to_observe    .collect(&:to_sym)
+        # reject invalid methods names
+        methods_to_observe.reject! do |m|
+          already_defined_instance_method = class_instance_methods.include?(m)
+          invalid = !already_defined_instance_method
+        end
+
+        methods_to_observe.each do |method_name|
+          __instrument_method_for_pp_observation(klass, method_name) # end
+        end
       end
     end
 
 
-    def __instrument_method_for_pp_observation(klass, method_name)
+    def __instrument_method_for_pp_observation(klass, method_name, check_for_dupe=false)
+      if check_for_dupe
+        return if PrivatePlease.already_instrumented?(klass, method_name)
+      end
       PrivatePlease.record_candidate(klass, method_name)
 
       orig_method = instance_method(method_name)

@@ -19,6 +19,10 @@ module PrivatePlease
       candidates[self_class.to_s] += Array(name)
     end
 
+    def include?(self_class, name)
+      (candidates[self_class.to_s] || []).include?(name)
+    end
+
     def record_outside_call(self_class, name)
       #TODO use a Set instead of an Array
       unless outside_called_candidates[self_class.to_s].include?(name)
