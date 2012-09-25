@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe PrivatePlease, 'marking methods to observe' do
 
+  before { PrivatePlease.activate(true) }
+
   let(:storage) { PrivatePlease.storage }
 
 # ----------------

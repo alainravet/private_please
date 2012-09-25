@@ -1,15 +1,17 @@
 require 'spec_helper'
 
 describe PrivatePlease, 'CallingTest observed methods and separating the outside/inside calls' do
-  before() do
-    PrivatePlease.activate(true)
-  end
+
+  before { PrivatePlease.activate(true) }
+
   let(:storage) { PrivatePlease.storage }
 
-  class CallingTest::Simple
-    def public_m ;  private_m()   end
-    def private_m; 'SUCCESS'      end  # << observed method
-    private_please  :private_m
+  before do
+    class CallingTest::Simple
+      def public_m ;  private_m()   end
+      def private_m; 'SUCCESS'      end  # << observed method
+      private_please  :private_m
+    end
   end
 
 #--------------

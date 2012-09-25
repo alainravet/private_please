@@ -14,7 +14,8 @@ module PrivatePlease
       @active
     end
 
-    def activate(flag)
+    def activate(flag=true)
+      Object.send :include, PrivatePlease::Extension
       @active = flag
     end
   end

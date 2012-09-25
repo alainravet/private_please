@@ -9,11 +9,15 @@ require 'private_please/automatic'
 
 module PrivatePlease
 
+  def self.install
+    Object.send :include, PrivatePlease::Extension
+  end
+
 #--------------
 # config
 #--------------
 
-  def self.activate(flag)
+  def self.activate(flag=true)
     config.activate(flag)
   end
 
@@ -55,8 +59,6 @@ module PrivatePlease
 
 end
 
-
-Module.send :include, PrivatePlease::Extension
 
 at_exit {
   if PrivatePlease.active?

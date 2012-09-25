@@ -1,17 +1,22 @@
 require 'spec_helper'
 
 describe PrivatePlease, 'configuration defaults and effects' do
-
-  class ConfigTest::Simple
-    def public_m ;  private_m()   end
-    def private_m; 'SUCCESS'      end
-    private_please  :private_m
+  before() do
+    PrivatePlease.install
   end
 
-  def do_the_calls
-    ConfigTest::Simple.new.tap do |o|
-      o.public_m      # -> inside call
-      o.private_m     # -> outside call
+  before do
+    class ConfigTest::Simple
+      def public_m ;  private_m()   end
+      def private_m; 'SUCCESS'      end
+      private_please  :private_m
+    end
+
+    def do_the_calls
+      ConfigTest::Simple.new.tap do |o|
+        o.public_m      # -> inside call
+        o.private_m     # -> outside call
+      end
     end
   end
 
