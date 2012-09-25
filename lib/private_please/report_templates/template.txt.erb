@@ -1,0 +1,37 @@
+====================================================================================
+=                               PrivatePlease report :                             =
+====================================================================================
+
+* Methods that can be made private :
+------------------------------------------
+
+<% good_candidates.keys.each do |klass|
+     methods = good_candidates[klass]
+     next if methods.nil? or methods.empty?
+%>class <%= klass %>
+<% methods.each do |method| %>  #<%= method %>(..)
+<% end %>
+<% end %>
+
+
+* Methods that must stay public/protected
+------------------------------------------
+
+<% bad_candidates.keys.each do |klass|
+     methods = bad_candidates[klass]
+     next if methods.nil? or methods.empty?
+%>class <%= klass %>
+  <%= bad_candidates[klass].collect{|m| "##{m}(..)"}.join(', ') %>
+<% end %>
+
+
+* Methods that were never called
+------------------------------------------
+
+<% never_called_candidates.keys.each do |klass|
+     methods = never_called_candidates[klass]
+     next if methods.nil? or methods.empty?
+%>class <%= klass %>
+  <%= methods.collect{|m| "##{m}(..)"}.join(', ') %>
+<% end %>
+====================================================================================
