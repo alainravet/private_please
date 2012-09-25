@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 describe PrivatePlease, 'configuration defaults and effects' do
-  module ConfigTest
-    class Simple
-      def public_m ;  private_m()   end
-      def private_m; 'SUCCESS'      end
-      private_please  :private_m
-    end
+
+  class ConfigTest::Simple
+    def public_m ;  private_m()   end
+    def private_m; 'SUCCESS'      end
+    private_please  :private_m
   end
 
   def do_the_calls

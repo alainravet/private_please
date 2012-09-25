@@ -2,18 +2,16 @@ require 'spec_helper'
 
 describe PrivatePlease, 'Reporting the observation results when the main program exits' do
 
-  module ReportingTest
-    class Simple
-      def public_m    ;  private_m1a()    end
-      def private_m1a ;    private_m1b    end
-      def private_m1b ;      private_m1c  end
+  class ReportingTest::Simple
+    def public_m    ;  private_m1a()    end
+    def private_m1a ;    private_m1b    end
+    def private_m1b ;      private_m1c  end
 
-      def private_m   ;  private_m1c      end
-      def private_m1c ;  'SUCCESS'        end
+    def private_m   ;  private_m1c      end
+    def private_m1c ;  'SUCCESS'        end
 
-      def ignored  ;  'never called'  end
-      private_please  :private_m1a, :private_m1b, :private_m1c, :private_m, :ignored
-    end
+    def ignored  ;  'never called'  end
+    private_please  :private_m1a, :private_m1b, :private_m1c, :private_m, :ignored
   end
 
   before() { PrivatePlease.activate(true) }

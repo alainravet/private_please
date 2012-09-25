@@ -12,6 +12,15 @@ module PrivatePlease
   end
 end
 
+module MarkingTest    ; end
+module ReportingTest  ; end
+module CallingTest    ; end
+module ConfigTest     ; end
+
+def assert_observed(expected)
+  storage.candidates.should == expected
+end
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true

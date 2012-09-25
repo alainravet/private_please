@@ -6,12 +6,10 @@ describe PrivatePlease, 'CallingTest observed methods and separating the outside
   end
   let(:storage) { PrivatePlease.storage }
 
-  module CallingTest
-    class Simple
-      def public_m ;  private_m()   end
-      def private_m; 'SUCCESS'      end  # << observed method
-      private_please  :private_m
-    end
+  class CallingTest::Simple
+    def public_m ;  private_m()   end
+    def private_m; 'SUCCESS'      end  # << observed method
+    private_please  :private_m
   end
 
 #--------------
