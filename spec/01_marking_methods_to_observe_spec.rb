@@ -52,12 +52,12 @@ describe PrivatePlease, 'marking methods to observe' do
     end
 
 
-    specify 'with include PrivatePlease::Automatic' do
+    specify 'with include PrivatePlease::AllBelow' do
 
       class MarkingTest::Automatic2
         def foo ; end
         def bar ; end
-        include PrivatePlease::Automatic
+        include PrivatePlease::AllBelow
         def baz ; end
       protected
         def qux ; end

@@ -5,7 +5,7 @@ require 'private_please/report'
 require 'private_please/line_change_tracker'
 require 'private_please/extension'
 require 'private_please/instrumentor'
-require 'private_please/automatic'
+require 'private_please/all_below'
 
 module PrivatePlease
 
