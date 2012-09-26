@@ -1,12 +1,5 @@
 module PrivatePlease
   class Storage
-    def self.instance
-      @@__instance ||= new
-    end
-
-    def self.reset_before_new_test
-      @@__instance = nil
-    end
 
     attr_reader :candidates, :inside_called_candidates, :outside_called_candidates
     def initialize

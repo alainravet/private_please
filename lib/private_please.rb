@@ -22,7 +22,7 @@ module PrivatePlease
   end
 
   def self.active?
-    !!config.active
+    config.active?
   end
 
   def self.record_outside_call(klass, method_name)
@@ -43,11 +43,16 @@ module PrivatePlease
 
 
 #--------------
-# partners :
+# data & config containers :
 #--------------
 
-  def self.storage  ; Storage      .instance end
-  def self.config   ; Configuration.instance end
+  def self.storage  ; @@_storage  ||= Storage      .new end
+  def self.config   ; @@_config   ||= Configuration.new end
+
+  def self.reset_before_new_test
+    @@_storage = nil
+    @@_config  = nil
+  end
 
 #--------------
 # report

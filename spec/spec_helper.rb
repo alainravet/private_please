@@ -7,8 +7,7 @@
 
 module PrivatePlease
   def self.reset_before_new_test
-    Storage       .reset_before_new_test
-    Configuration .reset_before_new_test
+    PrivatePlease .reset_before_new_test
   end
 end
 

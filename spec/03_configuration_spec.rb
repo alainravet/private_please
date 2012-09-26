@@ -23,7 +23,6 @@ describe PrivatePlease, 'configuration defaults and effects' do
 #--------------
 
   it 'is disabled by default' do
-    PrivatePlease::Configuration.reset_before_new_test
     PrivatePlease.should_not be_active
   end
   let(:storage) { PrivatePlease.storage }
