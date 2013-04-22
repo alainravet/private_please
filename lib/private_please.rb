@@ -67,7 +67,6 @@ end
 
 at_exit {
   if PrivatePlease.active?
-    puts '-'*888
     puts PrivatePlease.report.to_s
   end
 }
