@@ -31,6 +31,16 @@ describe PrivatePlease, 'collecting the candidate-methods to observe' do
 
       assert_candidates 'MarkingTest::Simple2' =>[:found]
     end
+
+    it('ignores duplicates') do
+      class MarkingTest::Simple3
+        def found ; 'foo' end
+        private_please  :found             #
+        private_please  :found             # duplicate -> ignore
+      end
+
+      assert_candidates 'MarkingTest::Simple3' =>[:found]
+    end
   end
 
 

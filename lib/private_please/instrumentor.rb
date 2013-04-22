@@ -17,7 +17,7 @@ module PrivatePlease
     end
 
 
-    def self.instrument_method_for_pp_observation(klass, method_name, check_for_dupe=false)
+    def self.instrument_method_for_pp_observation(klass, method_name, check_for_dupe=true)
       if check_for_dupe
         # to avoid instrumenting the method we are dynamically redefining below
         return if PrivatePlease.already_instrumented?(klass, method_name)
