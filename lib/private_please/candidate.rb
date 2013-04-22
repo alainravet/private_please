@@ -21,5 +21,8 @@ module PrivatePlease
       @klass_name = klass.to_s
     end
 
+    def already_instrumented?
+      PrivatePlease.storage.stored?(self)
+    end
   end
 end

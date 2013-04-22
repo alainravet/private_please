@@ -38,10 +38,6 @@ module PrivatePlease
     storage.store(candidate)
   end
 
-  def self.already_instrumented?(candidate)
-    storage.stored?(candidate)
-  end
-
 
 #--------------
 # data & config containers :

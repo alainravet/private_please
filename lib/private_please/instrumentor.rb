@@ -19,20 +19,17 @@ module PrivatePlease
 
 
     def self.instrument_candidate_for_pp_observation(candidate, check_for_dupe)
-      instrument_instance_method_for_pp_observation(candidate, check_for_dupe) # end
+      instrument_instance_method_for_pp_observation(candidate)
     end
 
 
 
-    def self.instrument_instance_method_for_pp_observation(candidate, check_for_dupe=true)
-      klass, method_name =  candidate.klass, candidate.method_name
-      if check_for_dupe
-        # to avoid instrumenting the method we are dynamically redefining below
-        return if PrivatePlease.already_instrumented?(candidate)
-      end
+    def self.instrument_instance_method_for_pp_observation(candidate)
+      return if candidate.already_instrumented?
 
       PrivatePlease.record_candidate(candidate)
 
+      klass, method_name =  candidate.klass, candidate.method_name
       orig_method = klass.instance_method(method_name)
 klass.class_eval <<RUBY
       define_method(method_name) do |*args, &blk|                           # def observed_method_i(..)
