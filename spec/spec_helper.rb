@@ -12,7 +12,7 @@ module PrivatePlease
 end
 
 module MarkingTest    ; end
-module ReportingTest  ; end
+module ActivityTest   ; end
 module CallingTest    ; end
 module ConfigTest     ; end
 
