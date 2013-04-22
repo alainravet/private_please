@@ -10,7 +10,7 @@ module PrivatePlease
         klass.send :include, PrivatePlease::AllBelow
 
       else
-        PrivatePlease::Instrumentor.instrument_methods_for_pp_observation(klass, methods_to_observe)
+        Instrumentor.instrument_instance_methods_for_pp_observation(klass, methods_to_observe)
       end
     end
 

@@ -2,7 +2,7 @@ module PrivatePlease
 
   module Instrumentor
 
-    def self.instrument_methods_for_pp_observation(klass, methods_to_observe)
+    def self.instrument_instance_methods_for_pp_observation(klass, methods_to_observe)
       class_instance_methods = klass.instance_methods.collect(&:to_sym)
       methods_to_observe = methods_to_observe.collect(&:to_sym)
       # reject invalid methods names
@@ -12,12 +12,12 @@ module PrivatePlease
       end
 
       methods_to_observe.each do |method_name|
-        PrivatePlease::Instrumentor.instrument_method_for_pp_observation(klass, method_name) # end
+        PrivatePlease::Instrumentor.instrument_instance_method_for_pp_observation(klass, method_name) # end
       end
     end
 
 
-    def self.instrument_method_for_pp_observation(klass, method_name, check_for_dupe=true)
+    def self.instrument_instance_method_for_pp_observation(klass, method_name, check_for_dupe=true)
       if check_for_dupe
         # to avoid instrumenting the method we are dynamically redefining below
         return if PrivatePlease.already_instrumented?(klass, method_name)
