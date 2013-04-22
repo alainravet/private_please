@@ -17,7 +17,8 @@ module PrivatePlease
     def self.included(base)
       def base.method_added(method_name)
         klass = self
-        Instrumentor.instrument_instance_method_for_pp_observation(klass, method_name, check_for_dupe=true)
+        candidate = Candidate.for_instance_method(klass, method_name)
+        Instrumentor.instrument_candidate_for_pp_observation(candidate, check_for_dupe=true)
       end
     end
 

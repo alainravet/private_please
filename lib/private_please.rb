@@ -1,4 +1,5 @@
 require 'private_please/version'
+require 'private_please/candidate'
 require 'private_please/configuration'
 require 'private_please/storage'
 require 'private_please/report'
@@ -25,20 +26,20 @@ module PrivatePlease
     config.active?
   end
 
-  def self.record_outside_call(klass, method_name)
-    storage.record_outside_call(klass, method_name)
+  def self.record_outside_call(candidate)
+    storage.record_outside_call(candidate)
   end
 
-  def self.record_inside_call(klass, method_name)
-    storage.record_inside_call(klass, method_name)
+  def self.record_inside_call(candidate)
+    storage.record_inside_call(candidate)
   end
 
-  def self.record_candidate(klass, method_name)
-    storage.record_candidate(klass, method_name)
+  def self.record_candidate(candidate)
+    storage.store(candidate)
   end
 
-  def self.already_instrumented?(klass, method_name)
-    storage.include?(klass, method_name)
+  def self.already_instrumented?(candidate)
+    storage.stored?(candidate)
   end
 
 

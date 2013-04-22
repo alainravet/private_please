@@ -8,25 +8,25 @@ module PrivatePlease
       @outside_called_candidates = Hash.new{ [] }
     end
 
-    def record_candidate(self_class, name)
-      candidates[self_class.to_s] += Array(name)
+    def store(candidate)
+      candidates[candidate.klass_name] += Array(candidate.method_name)
     end
 
-    def include?(self_class, name)
-      (candidates[self_class.to_s] || []).include?(name)
+    def stored?(candidate)
+      (candidates[candidate.klass_name] || []).include?(candidate.method_name)
     end
 
-    def record_outside_call(self_class, name)
+    def record_outside_call(candidate)
       #TODO use a Set instead of an Array
-      unless outside_called_candidates[self_class.to_s].include?(name)
-        outside_called_candidates[self_class.to_s] += Array(name)
+      unless outside_called_candidates[candidate.klass_name].include?(candidate.method_name)
+        outside_called_candidates[candidate.klass_name] += Array(candidate.method_name)
       end
     end
 
-    def record_inside_call(self_class, name)
+    def record_inside_call(candidate)
       #TODO use a Set instead of an Array
-      unless inside_called_candidates[self_class.to_s].include?(name)
-        inside_called_candidates[self_class.to_s] += Array(name)
+      unless inside_called_candidates[candidate.klass_name].include?(candidate.method_name)
+        inside_called_candidates[candidate.klass_name] += Array(candidate.method_name)
       end
     end
 

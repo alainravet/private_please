@@ -12,18 +12,26 @@ module PrivatePlease
       end
 
       methods_to_observe.each do |method_name|
-        PrivatePlease::Instrumentor.instrument_instance_method_for_pp_observation(klass, method_name) # end
+        candidate = Candidate.for_instance_method(klass, method_name)
+        instrument_candidate_for_pp_observation(candidate, true) # end
       end
     end
 
 
-    def self.instrument_instance_method_for_pp_observation(klass, method_name, check_for_dupe=true)
+    def self.instrument_candidate_for_pp_observation(candidate, check_for_dupe)
+      instrument_instance_method_for_pp_observation(candidate, check_for_dupe) # end
+    end
+
+
+
+    def self.instrument_instance_method_for_pp_observation(candidate, check_for_dupe=true)
+      klass, method_name =  candidate.klass, candidate.method_name
       if check_for_dupe
         # to avoid instrumenting the method we are dynamically redefining below
-        return if PrivatePlease.already_instrumented?(klass, method_name)
+        return if PrivatePlease.already_instrumented?(candidate)
       end
 
-      PrivatePlease.record_candidate(klass, method_name)
+      PrivatePlease.record_candidate(candidate)
 
       orig_method = klass.instance_method(method_name)
 klass.class_eval <<RUBY
@@ -31,9 +39,10 @@ klass.class_eval <<RUBY
         set_trace_func(nil) #don't track activity while here                #
                                                                             #
         if PrivatePlease.active?                                            #
+          candidate = PrivatePlease::Candidate.for_instance_method(self.class, method_name)
           LineChangeTracker.outside_call_detected?(self) ?                  #
-              PrivatePlease.record_outside_call(self.class, method_name) :  #
-              PrivatePlease.record_inside_call(self.class, method_name)     #
+              PrivatePlease.record_outside_call(candidate) :                #
+              PrivatePlease.record_inside_call( candidate)                  #
         end                                                                 #
                                                                             #
         set_trace_func(LineChangeTracker::MY_TRACE_FUN)                     #
@@ -42,6 +51,7 @@ klass.class_eval <<RUBY
       end                                                                   # end
 RUBY
     end
+    private_class_method :instrument_instance_method_for_pp_observation
 
   end
 
