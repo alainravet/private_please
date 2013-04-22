@@ -1,55 +1,65 @@
 require 'spec_helper'
 
-describe PrivatePlease, 'configuration defaults and effects' do
-  before() do
-    PrivatePlease.install
+describe PrivatePlease, 'configuration options and defaults' do
+
+  before() { PrivatePlease.install }
+
+#--------------
+
+  it('is inactive by default') { PrivatePlease.should_not be_active }
+
+  it('is activated with #activate()') do
+    PrivatePlease.activate         ; PrivatePlease.should     be_active
+    PrivatePlease.activate(false)  ; PrivatePlease.should_not be_active
   end
 
+#--------------
+
   before do
-    class ConfigTest::Simple
-      def public_m ;  private_m()   end
-      def private_m; 'SUCCESS'      end
-      private_please  :private_m
+    module ConfigTest
+      class Simple
+        def call_the_candidate_from_inside
+          candidate_3()
+        end
+        #private_please    #FIXME :  MAJOR BUG (to reproduce : uncomment and rerun tests )
+        def candidate_3; 'SUCCESS'      end
+        def candidate_2; 'SUCCESS'      end
+        private_please :candidate_3, :candidate_2
+      end
+      class AnotherClass
+        def call_the_candidate_from_outside
+          ConfigTest::Simple.new.candidate_2
+        end
+      end
     end
 
     def do_the_calls
-      ConfigTest::Simple.new.tap do |o|
-        o.public_m      # -> inside call
-        o.private_m     # -> outside call
-      end
+      ConfigTest::Simple      .new.call_the_candidate_from_inside   # -> inside  call
+      ConfigTest::AnotherClass.new.call_the_candidate_from_outside  # -> outside call
     end
   end
 
 #--------------
 
-  it 'is disabled by default' do
-    PrivatePlease.should_not be_active
-  end
-  let(:storage) { PrivatePlease.storage }
-
-  context 'when disabled' do
+  context 'when inactive' do
 
     before { PrivatePlease.activate(false) }
-    before { do_the_calls }
-
-    it('is not active') { PrivatePlease.should_not be_active }
 
     it 'does NOT record the calls to candidates' do
-      storage.inside_called_candidates[ 'ConfigTest::Simple'].to_a.should == []
-      storage.outside_called_candidates['ConfigTest::Simple'].to_a.should == []
+      do_the_calls
+      assert_calls_detected :inside  => {}, :outside => {}
     end
   end
 
-  context 'when enabled' do
+  context 'when active' do
 
     before { PrivatePlease.activate(true) }
     before { do_the_calls }
 
-    it('is active') { PrivatePlease.should be_active }
-
     it 'DOES record the calls to candidates' do
-      storage.inside_called_candidates[ 'ConfigTest::Simple'].to_a.should == [:private_m]
-      storage.outside_called_candidates['ConfigTest::Simple'].to_a.should == [:private_m]
+      do_the_calls
+      assert_calls_detected :inside  => {'ConfigTest::Simple' =>[:candidate_3]},
+                            :outside => {'ConfigTest::Simple' =>[:candidate_2]}
     end
   end
 end

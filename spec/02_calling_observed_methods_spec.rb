@@ -1,16 +1,23 @@
 require 'spec_helper'
 
-describe PrivatePlease, 'CallingTest observed methods and separating the outside/inside calls' do
+describe PrivatePlease, 'calling observed methods and separating the outside/inside calls' do
 
   before { PrivatePlease.activate(true) }
 
-  let(:storage) { PrivatePlease.storage }
-
   before do
-    class CallingTest::Simple
-      def public_m ;  private_m()   end
-      def private_m; 'SUCCESS'      end  # << observed method
-      private_please  :private_m
+    module CallingTest
+      class Simple
+        def call_the_candidate_from_inside
+          candidate_3
+        end
+        def candidate_3; 'SUCCESS' end  # << observed method
+        private_please  :candidate_3
+      end
+      class AnotherClass
+        def call_the_candidate_from_outside
+          CallingTest::Simple.new.candidate_3
+        end
+      end
     end
   end
 
@@ -18,17 +25,17 @@ describe PrivatePlease, 'CallingTest observed methods and separating the outside
   context 'from INSIDE the class' do
 #--------------
 
-    before { CallingTest::Simple.new.public_m }
-
-    it('records the call to the observed method in PrivatePlease.inside_called_candidates') do
-      storage.inside_called_candidates .should == {'CallingTest::Simple' => [:private_m]}
-      storage.outside_called_candidates.should == {}
+    it('records the call to the observed method as an inside call') do
+      CallingTest::Simple.new.call_the_candidate_from_inside
+      assert_calls_detected :inside  => {'CallingTest::Simple' => [:candidate_3]},
+                            :outside => {}
     end
 
     it('records multiple calls only once') do
-      2.times{ CallingTest::Simple.new.public_m }
-      storage.inside_called_candidates .should == {'CallingTest::Simple' => [:private_m]}
-      storage.outside_called_candidates.should == {}
+      CallingTest::Simple.new.call_the_candidate_from_inside
+      CallingTest::Simple.new.call_the_candidate_from_inside
+      assert_calls_detected :inside  => {'CallingTest::Simple' => [:candidate_3]},
+                            :outside => {}
     end
   end
 
@@ -37,21 +44,21 @@ describe PrivatePlease, 'CallingTest observed methods and separating the outside
   context 'from OUTSIDE the class' do
 #--------------
 
-    before { @result = CallingTest::Simple.new.private_m }
+    before { @result = CallingTest::AnotherClass.new.call_the_candidate_from_outside }
 
     it 'goes thru (as the method is still public)' do
       @result.should == 'SUCCESS'
     end
 
-    it('records the call to the observed method in PrivatePlease.outside_called_candidates') do
-      storage.inside_called_candidates .should == {}
-      storage.outside_called_candidates.should == {'CallingTest::Simple' => [:private_m]}
+    it('records the call to the observed method as an outside call') do
+      assert_calls_detected :inside  => {},
+                            :outside => {'CallingTest::Simple' => [:candidate_3]}
     end
 
     it('records multiple calls only once') do
-      2.times{ CallingTest::Simple.new.private_m }
-      storage.inside_called_candidates .should == {}
-      storage.outside_called_candidates.should == {'CallingTest::Simple' => [:private_m]}
+      2.times{ CallingTest::Simple.new.candidate_3 }
+      assert_calls_detected :inside  => {},
+                            :outside => {'CallingTest::Simple' => [:candidate_3]}
     end
   end
 

@@ -16,8 +16,14 @@ module ReportingTest  ; end
 module CallingTest    ; end
 module ConfigTest     ; end
 
-def assert_observed(expected)
-  storage.candidates.should == expected
+def assert_candidates(expected)
+  PrivatePlease.storage.candidates.should == expected
+end
+
+def assert_calls_detected(expected)
+  { :inside   => PrivatePlease.storage.inside_called_candidates,
+    :outside  => PrivatePlease.storage.outside_called_candidates
+  }.should == expected
 end
 
 RSpec.configure do |config|
