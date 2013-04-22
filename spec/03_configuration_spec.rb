@@ -16,15 +16,15 @@ describe PrivatePlease, 'configuration options and defaults' do
 #--------------
 
   before do
+unless defined?(ConfigTest::Simple)
     module ConfigTest
       class Simple
         def call_the_candidate_from_inside
           candidate_3()
         end
-        #private_please    #FIXME :  MAJOR BUG (to reproduce : uncomment and rerun tests )
+      private_please
         def candidate_3; 'SUCCESS'      end
         def candidate_2; 'SUCCESS'      end
-        private_please :candidate_3, :candidate_2
       end
       class AnotherClass
         def call_the_candidate_from_outside
@@ -32,7 +32,7 @@ describe PrivatePlease, 'configuration options and defaults' do
         end
       end
     end
-
+end
     def do_the_calls
       ConfigTest::Simple      .new.call_the_candidate_from_inside   # -> inside  call
       ConfigTest::AnotherClass.new.call_the_candidate_from_outside  # -> outside call
