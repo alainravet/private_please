@@ -18,6 +18,10 @@ module PrivatePlease
       candidates_plus[:instance_methods]
     end
 
+    def class_methods_candidates
+      candidates_plus[:class_methods]
+    end
+
     def stored?(candidate)
       cat_key = method_kind(candidate)
       store_siblings = candidates_plus[cat_key][candidate.klass_name]

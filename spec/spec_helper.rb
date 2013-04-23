@@ -18,7 +18,13 @@ module ConfigTest     ; end
 
 def assert_instance_methods_candidates(expected)
   cs = PrivatePlease.storage.instance_methods_candidates
-  cs.each_pair { |k, v| cs[k] = v.to_a.sort_by(&:to_s) }  # TODO : quick fix - extend to cover class methods too
+  cs.each_pair { |k, v| cs[k] = v.to_a.sort_by(&:to_s) }
+  cs.should == expected
+end
+
+def assert_class_methods_candidates(expected)
+  cs = PrivatePlease.storage.class_methods_candidates
+  cs.each_pair { |k, v| cs[k] = v.to_a.sort_by(&:to_s) }
   cs.should == expected
 end
 

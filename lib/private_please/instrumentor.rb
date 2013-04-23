@@ -13,23 +13,46 @@ module PrivatePlease
 
       methods_to_observe.each do |method_name|
         candidate = Candidate.for_instance_method(klass, method_name)
-        instrument_candidate_for_pp_observation(candidate, true) # end
+        instrument_candidate_for_pp_observation(candidate) # end
       end
     end
 
 
-    def self.instrument_candidate_for_pp_observation(candidate, check_for_dupe)
-      instrument_instance_method_for_pp_observation(candidate)
+    def self.instrument_candidate_for_pp_observation(candidate)
+      return if candidate.already_instrumented?
+      PrivatePlease.record_candidate(candidate)
+
+      klass, method_name = candidate.klass, candidate.method_name
+      candidate.instance_method? ?
+        instrument_instance_method_with_pp_observation(klass, method_name) :
+        instrument_class_method_with_pp_observation(   klass, method_name)
     end
 
 
 
-    def self.instrument_instance_method_for_pp_observation(candidate)
-      return if candidate.already_instrumented?
+    def self.instrument_class_method_with_pp_observation(klass, method_name)
+      orig_method = klass.class_method(method_name)
+klass.class_eval <<RUBY
+      define_singleton_method(method_name) do |*args, &blk|                 # def self.observed_method_i(..)
+        set_trace_func(nil) #don't track activity while here                #
+                                                                            #
+        if PrivatePlease.active?                                            #
+          candidate = PrivatePlease::Candidate.for_class_method(self.class, method_name)
+          LineChangeTracker.outside_call_detected?(self) ?                  #
+              PrivatePlease.record_outside_call(candidate) :                #
+              PrivatePlease.record_inside_call( candidate)                  #
+        end                                                                 #
+                                                                            #
+        set_trace_func(LineChangeTracker::MY_TRACE_FUN)                     #
+        # make the call :                                                   #
+        orig_method.bind(self).call(*args, &blk)                            #   <call original method>
+      end                                                                   # end
+RUBY
+    end
+    private_class_method :instrument_class_method_with_pp_observation
 
-      PrivatePlease.record_candidate(candidate)
 
-      klass, method_name =  candidate.klass, candidate.method_name
+    def self.instrument_instance_method_with_pp_observation(klass, method_name)
       orig_method = klass.instance_method(method_name)
 klass.class_eval <<RUBY
       define_method(method_name) do |*args, &blk|                           # def observed_method_i(..)
@@ -48,7 +71,7 @@ klass.class_eval <<RUBY
       end                                                                   # end
 RUBY
     end
-    private_class_method :instrument_instance_method_for_pp_observation
+    private_class_method :instrument_instance_method_with_pp_observation
 
   end
 
