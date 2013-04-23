@@ -48,15 +48,15 @@ end
         :ignored          => the_report.never_called_candidates
     }.should == {
         :good_candidates  => {
-            'ActivityTest::Simple'   =>  [:good_candidate_4, :good_candidate_5, :good_candidate_7]
+            'ActivityTest::Simple'   =>  mnames_for([:good_candidate_4, :good_candidate_5, :good_candidate_7])
         },
         :bad_candidates   => {
-            'ActivityTest::Simple'   =>  [:bad_candidate_3, :bad_candidate_6],
-            'ActivityTest::Simple2'  =>  [:bad_candidate_too]
+            'ActivityTest::Simple'   =>  mnames_for([:bad_candidate_3, :bad_candidate_6]),
+            'ActivityTest::Simple2'  =>  mnames_for([:bad_candidate_too])
         },
         :ignored          => {
-            'ActivityTest::Simple'   =>  Set.new([:ignored_8]),    #TODO : uniformize (it currently mixes Sets & Arrays)
-            'ActivityTest::Simple2'  =>  Set.new([:ignored_2])
+            'ActivityTest::Simple'   =>  mnames_for([:ignored_8]),    #TODO : uniformize (it currently mixes Sets & Arrays)
+            'ActivityTest::Simple2'  =>  mnames_for([:ignored_2])
         }
     }
   end

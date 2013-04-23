@@ -23,7 +23,7 @@ module  PrivatePlease
         #TODO : optimize
         candidates_db.instance_methods[klass_name] -= (calls_log.external_calls[klass_name] + calls_log.internal_calls[klass_name])
       end
-      candidates_db.instance_methods
+      candidates_db.instance_methods.reject{|v|v.empty?}
     end
 
     # @return [Hash]
@@ -33,7 +33,7 @@ module  PrivatePlease
         #TODO : optimize
         calls_log.internal_calls[klass_name] -= calls_log.external_calls[klass_name]
       end
-      calls_log.internal_calls
+      calls_log.internal_calls.reject{|v|v.empty?}
     end
 
     # @return [Hash]

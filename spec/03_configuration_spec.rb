@@ -58,8 +58,8 @@ end
 
     it 'DOES record the calls to candidates' do
       do_the_calls
-      assert_calls_detected :inside  => {'ConfigTest::Simple' =>[:candidate_3]},
-                            :outside => {'ConfigTest::Simple' =>[:candidate_2]}
+      assert_calls_detected :inside  => {'ConfigTest::Simple' => mnames_for([:candidate_3])},
+                            :outside => {'ConfigTest::Simple' => mnames_for([:candidate_2])}
     end
   end
 end

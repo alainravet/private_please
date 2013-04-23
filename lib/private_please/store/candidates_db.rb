@@ -26,7 +26,7 @@ module PrivatePlease
       def store_candidate(candidate)
         cat_key = method_kind(candidate)
         mn_bucket = self[cat_key]
-        mn_bucket[candidate.klass_name] ||= Set.new
+        mn_bucket[candidate.klass_name] ||= MethodsNames.new
         mn_bucket[candidate.klass_name].add?  candidate.method_name
       end
 

@@ -27,14 +27,14 @@ describe PrivatePlease, 'calling observed methods and separating the outside/ins
 
     it('records the call to the observed method as an inside call') do
       CallingTest::Simple.new.call_the_candidate_from_inside
-      assert_calls_detected :inside  => {'CallingTest::Simple' => [:candidate_3]},
+      assert_calls_detected :inside  => {'CallingTest::Simple' => mnames_for([:candidate_3])},
                             :outside => {}
     end
 
     it('records multiple calls only once') do
       CallingTest::Simple.new.call_the_candidate_from_inside
       CallingTest::Simple.new.call_the_candidate_from_inside
-      assert_calls_detected :inside  => {'CallingTest::Simple' => [:candidate_3]},
+      assert_calls_detected :inside  => {'CallingTest::Simple' => mnames_for([:candidate_3])},
                             :outside => {}
     end
   end
@@ -52,13 +52,13 @@ describe PrivatePlease, 'calling observed methods and separating the outside/ins
 
     it('records the call to the observed method as an outside call') do
       assert_calls_detected :inside  => {},
-                            :outside => {'CallingTest::Simple' => [:candidate_3]}
+                            :outside => {'CallingTest::Simple' => mnames_for([:candidate_3])}
     end
 
     it('records multiple calls only once') do
       2.times{ CallingTest::Simple.new.candidate_3 }
       assert_calls_detected :inside  => {},
-                            :outside => {'CallingTest::Simple' => [:candidate_3]}
+                            :outside => {'CallingTest::Simple' => mnames_for([:candidate_3])}
     end
   end
 

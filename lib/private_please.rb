@@ -1,3 +1,4 @@
+require 'private_please/methods_names'
 require 'private_please/version'
 require 'private_please/ruby_versions_compatibility'
 require 'private_please/candidate'

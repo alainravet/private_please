@@ -24,7 +24,7 @@ describe PrivatePlease::Store::CandidatesDB do
     candidates_db.store_candidate(object_to_s)
 
     candidates_db.stored_candidate?(object_to_s).should be_true
-    candidates_db.instance_methods.should == {'Object' => Set.new('to_s')}
+    candidates_db.instance_methods.should == {'Object' => PrivatePlease::MethodsNames.new('to_s')}
     candidates_db.class_methods   .should be_empty
   end
 
@@ -33,7 +33,7 @@ describe PrivatePlease::Store::CandidatesDB do
 
     candidates_db.stored_candidate?(object_new).should be_true
     candidates_db.instance_methods.should be_empty
-    candidates_db.class_methods   .should == {'Object' => Set.new('new')}
+    candidates_db.class_methods   .should == {'Object' => mnames_for('new')}
   end
 
   example 'storing the 2nd instance method candidate stores it so that it can be retrieved' do
@@ -41,7 +41,7 @@ describe PrivatePlease::Store::CandidatesDB do
     candidates_db.store_candidate(object_hash)
 
     candidates_db.stored_candidate?(object_hash).should be_true
-    candidates_db.instance_methods.should == {'Object' => Set.new(%w(hash to_s))}
+    candidates_db.instance_methods.should == {'Object' => PrivatePlease::MethodsNames.new(%w(hash to_s))}
     candidates_db.class_methods   .should be_empty
   end
 
@@ -49,7 +49,7 @@ describe PrivatePlease::Store::CandidatesDB do
     st.candidates_db.store_candidate(object_to_s)
     st.candidates_db.store_candidate(object_to_s) # duplication : ignore it
 
-    candidates_db.instance_methods.should == {'Object' => Set.new(%w(to_s))}
+    candidates_db.instance_methods.should == {'Object' => PrivatePlease::MethodsNames.new(%w(to_s))}
     candidates_db.class_methods   .should be_empty
   end
 
