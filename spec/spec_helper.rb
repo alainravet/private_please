@@ -16,8 +16,10 @@ module ActivityTest   ; end
 module CallingTest    ; end
 module ConfigTest     ; end
 
-def assert_candidates(expected)
-  PrivatePlease.storage.candidates.should == expected
+def assert_instance_methods_candidates(expected)
+  cs = PrivatePlease.storage.instance_methods_candidates
+  cs.each_pair { |k, v| cs[k] = v.to_a.sort_by(&:to_s) }  # TODO : quick fix - extend to cover class methods too
+  cs.should == expected
 end
 
 def assert_calls_detected(expected)

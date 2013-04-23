@@ -21,7 +21,7 @@ module  PrivatePlease
 
     # @return [Hash]
     def never_called_candidates
-      @storage.candidates.tap do |all|
+      @storage.instance_methods_candidates.tap do |all|
         all.keys.each do |klass|
           all[klass] = all[klass] - @storage.outside_called_candidates[klass] - @storage.inside_called_candidates[klass]
         end

@@ -35,7 +35,7 @@ module PrivatePlease
   end
 
   def self.record_candidate(candidate)
-    storage.store(candidate)
+    storage.store_candidate(candidate)
   end
 
 

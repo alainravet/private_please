@@ -14,6 +14,10 @@ module PrivatePlease
       new(klass, method_name, true)
     end
 
+    def self.for_class_method(klass, method_name)
+      new(klass, method_name, false)
+    end
+
   #-----
 
     def initialize(klass, method_name, is_instance_method)

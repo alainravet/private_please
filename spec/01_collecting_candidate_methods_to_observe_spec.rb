@@ -18,7 +18,7 @@ describe PrivatePlease, 'collecting the candidate-methods to observe' do
         private_please  :bar, 'buz'    # <<-- what we test
       end
 
-      assert_candidates 'MarkingTest::Simple1' =>[:bar, :buz]
+      assert_instance_methods_candidates 'MarkingTest::Simple1' =>[:bar, :buz]
     end
 
 
@@ -29,7 +29,7 @@ describe PrivatePlease, 'collecting the candidate-methods to observe' do
         private_please  :not_found_method  # <<-- not found => INvalid
       end
 
-      assert_candidates 'MarkingTest::Simple2' =>[:found]
+      assert_instance_methods_candidates 'MarkingTest::Simple2' =>[:found]
     end
 
     it('ignores duplicates') do
@@ -39,7 +39,7 @@ describe PrivatePlease, 'collecting the candidate-methods to observe' do
         private_please  :found             # duplicate -> ignore
       end
 
-      assert_candidates 'MarkingTest::Simple3' =>[:found]
+      assert_instance_methods_candidates 'MarkingTest::Simple3' =>[:found]
     end
   end
 
@@ -57,7 +57,7 @@ describe PrivatePlease, 'collecting the candidate-methods to observe' do
       public                #    *
         def qux ; end       #    *
       end
-      assert_candidates 'MarkingTest::Automatic1' =>[:baz, :qux]
+      assert_instance_methods_candidates 'MarkingTest::Automatic1' =>[:baz, :qux]
     end
   end
 
@@ -77,7 +77,7 @@ describe PrivatePlease, 'collecting the candidate-methods to observe' do
         def qux ; end                          #    *
       end
 
-      assert_candidates 'MarkingTest::Automatic2' =>[:baz, :qux]
+      assert_instance_methods_candidates 'MarkingTest::Automatic2' =>[:baz, :qux]
     end
 
   end

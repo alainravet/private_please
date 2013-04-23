@@ -1,19 +1,27 @@
 module PrivatePlease
   class Storage
 
-    attr_reader :candidates, :inside_called_candidates, :outside_called_candidates
+    attr_reader :candidates_plus, :inside_called_candidates, :outside_called_candidates
     def initialize
-      @candidates                = Hash.new{ [] }
+      @candidates_plus           = {:instance_methods => {}, :class_methods => {}}
       @inside_called_candidates  = Hash.new{ [] }
       @outside_called_candidates = Hash.new{ [] }
     end
 
-    def store(candidate)
-      candidates[candidate.klass_name] += Array(candidate.method_name)
+    def store_candidate(candidate)
+      cat_key = method_kind(candidate)
+      candidates_plus[cat_key][candidate.klass_name] ||= Set.new
+      candidates_plus[cat_key][candidate.klass_name].add?  candidate.method_name
+    end
+
+    def instance_methods_candidates
+      candidates_plus[:instance_methods]
     end
 
     def stored?(candidate)
-      (candidates[candidate.klass_name] || []).include?(candidate.method_name)
+      cat_key = method_kind(candidate)
+      store_siblings = candidates_plus[cat_key][candidate.klass_name]
+      store_siblings && store_siblings.include?(candidate.method_name)
     end
 
     def record_outside_call(candidate)
@@ -28,6 +36,14 @@ module PrivatePlease
       unless inside_called_candidates[candidate.klass_name].include?(candidate.method_name)
         inside_called_candidates[candidate.klass_name] += Array(candidate.method_name)
       end
+    end
+
+  private
+
+    def method_kind(candidate)
+      candidate.instance_method? ?
+          :instance_methods :
+          :class_methods
     end
 
   end

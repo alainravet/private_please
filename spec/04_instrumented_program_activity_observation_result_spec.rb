@@ -55,8 +55,8 @@ end
             'ActivityTest::Simple2'  =>  [:bad_candidate_too]
         },
         :ignored          => {
-            'ActivityTest::Simple'   =>  [:ignored_8],
-            'ActivityTest::Simple2'  =>  [:ignored_2]
+            'ActivityTest::Simple'   =>  Set.new([:ignored_8]),    #TODO : uniformize (it currently mixes Sets & Arrays)
+            'ActivityTest::Simple2'  =>  Set.new([:ignored_2])
         }
     }
   end
