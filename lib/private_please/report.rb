@@ -21,25 +21,25 @@ module  PrivatePlease
 
     # @return [Hash]
     def never_called_candidates
-      @storage.instance_methods_candidates.tap do |all|
-        all.keys.each do |klass|
-          all[klass] = all[klass] - @storage.outside_called_candidates[klass] - @storage.inside_called_candidates[klass]
-        end
+      @storage.instance_methods_candidates.keys.each do |klass|
+        #TODO : optimize
+        @storage.instance_methods_candidates[klass] -= (@storage.external_calls[klass] + @storage.internal_calls[klass])
       end
+      @storage.instance_methods_candidates
     end
 
     # @return [Hash]
     def good_candidates
-      @storage.inside_called_candidates.tap do |all|
-        all.keys.each do |klass|
-           all[klass] = all[klass] - @storage.outside_called_candidates[klass]
-        end
+      @storage.internal_calls.keys.each do |klass_name|
+        #TODO : optimize
+        @storage.internal_calls[klass_name] -= @storage.external_calls[klass_name]
       end
+      @storage.internal_calls
     end
 
     # @return [Hash]
     def bad_candidates
-      @storage.outside_called_candidates
+      @storage.external_calls
     end
   end
 end

@@ -29,8 +29,8 @@ def assert_class_methods_candidates(expected)
 end
 
 def assert_calls_detected(expected)
-  { :inside   => PrivatePlease.storage.inside_called_candidates,
-    :outside  => PrivatePlease.storage.outside_called_candidates
+  { :inside   => PrivatePlease.storage.internal_calls,
+    :outside  => PrivatePlease.storage.external_calls
   }.should == expected
 end
 

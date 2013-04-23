@@ -13,29 +13,29 @@ describe PrivatePlease::Storage do
 
   context 'when empty' do
     it 'has no *candidates' do
-      st.candidates_plus           .should == {:instance_methods=>{}, :class_methods=>{}}
-      st.inside_called_candidates  .should == {}
-      st.outside_called_candidates .should == {}
+      st.candidates_by_kind   .should == {:instance_methods=>{}, :class_methods=>{}}
+      st.internal_calls       .should be_empty
+      st.external_calls       .should be_empty
     end
   end
 
   example 'storing the 1st instance method candidate stores it so that it can be retrieved' do
     st.store_candidate(object_to_s)
-    st.candidates_plus.should == {:instance_methods => {'Object' => Set.new('to_s')}, :class_methods=>{}}
-    st.stored?(object_to_s).should be_true
+    st.candidates_by_kind.should == {:instance_methods => {'Object' => Set.new('to_s')}, :class_methods=>{}}
+    st.stored_candidate?(object_to_s).should be_true
   end
 
   example 'storing the 1st class method candidate stores it so that it can be retrieved' do
     st.store_candidate(object_new)
-    st.stored?(object_new).should be_true
-    st.candidates_plus.should == {:instance_methods => {}, :class_methods => {'Object' => Set.new('new')} }
+    st.stored_candidate?(object_new).should be_true
+    st.candidates_by_kind.should == {:instance_methods => {}, :class_methods => {'Object' => Set.new('new')} }
   end
 
   example 'storing the 2nd instance method candidate stores it so that it can be retrieved' do
     st.store_candidate(object_to_s)
     st.store_candidate(object_hash)
-    st.stored?(object_hash)    .should be_true
-    st.candidates_plus.should == {:instance_methods => {'Object' => Set.new(%w(hash to_s))}, :class_methods=>{}}
+    st.stored_candidate?(object_hash)    .should be_true
+    st.candidates_by_kind.should == {:instance_methods => {'Object' => Set.new(%w(hash to_s))}, :class_methods=>{}}
   end
 
 
@@ -43,7 +43,7 @@ describe PrivatePlease::Storage do
     object_to_s = PrivatePlease::Candidate.for_instance_method(Object, 'to_s')
     st.store_candidate(object_to_s)
     st.store_candidate(object_to_s)   # duplication : ignore it
-    st.candidates_plus.should == {:instance_methods => {'Object' => Set.new(%w(to_s))}, :class_methods=>{}}
+    st.candidates_by_kind.should == {:instance_methods => {'Object' => Set.new(%w(to_s))}, :class_methods=>{}}
   end
 
 end

@@ -26,7 +26,7 @@ module PrivatePlease
     end
 
     def already_instrumented?
-      PrivatePlease.storage.stored?(self)
+      PrivatePlease.storage.stored_candidate?(self)
     end
   end
 end
