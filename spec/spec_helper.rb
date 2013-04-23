@@ -17,20 +17,21 @@ module CallingTest    ; end
 module ConfigTest     ; end
 
 def assert_instance_methods_candidates(expected)
-  cs = PrivatePlease.storage.instance_methods_candidates
+  cs = PrivatePlease.storage.candidates_db.instance_methods
   cs.each_pair { |k, v| cs[k] = v.to_a.sort_by(&:to_s) }
   cs.should == expected
 end
 
 def assert_class_methods_candidates(expected)
-  cs = PrivatePlease.storage.class_methods_candidates
+  cs = PrivatePlease.storage.candidates_db.class_methods
   cs.each_pair { |k, v| cs[k] = v.to_a.sort_by(&:to_s) }
   cs.should == expected
 end
 
 def assert_calls_detected(expected)
-  { :inside   => PrivatePlease.storage.internal_calls,
-    :outside  => PrivatePlease.storage.external_calls
+  calls_db = PrivatePlease.storage.calls_log
+  { :inside   => calls_db.internal_calls,
+    :outside  => calls_db.external_calls
   }.should == expected
 end
 

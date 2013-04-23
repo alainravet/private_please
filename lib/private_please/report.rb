@@ -2,17 +2,14 @@ require 'erb'
 module  PrivatePlease
   class Report
 
-    # @param [PrivatePlease::Storage] storage
-    def self.build(storage)
-      Report.new(storage)
-    end
-
-    # @param [PrivatePlease::Storage] storage
-    def initialize(storage)
-      @storage = storage
-    end
-
     TEMPLATE_PATH     = File.dirname(__FILE__) + '/report_templates/template.txt.erb'
+
+    attr_reader :candidates_db, :calls_log
+
+    def initialize(candidates_db, calls_log)
+      @candidates_db = candidates_db
+      @calls_log     = calls_log
+    end
 
     def to_s
       erb = ERB.new(File.read(TEMPLATE_PATH))
@@ -21,25 +18,28 @@ module  PrivatePlease
 
     # @return [Hash]
     def never_called_candidates
-      @storage.instance_methods_candidates.keys.each do |klass|
+      #FIXME : we *destroy* the #instance_methods_candidates, because this method is called only once, in at_exit. IMPROVE
+      candidates_db.instance_methods.classes_names.each do |klass_name|
         #TODO : optimize
-        @storage.instance_methods_candidates[klass] -= (@storage.external_calls[klass] + @storage.internal_calls[klass])
+        candidates_db.instance_methods[klass_name] -= (calls_log.external_calls[klass_name] + calls_log.internal_calls[klass_name])
       end
-      @storage.instance_methods_candidates
+      candidates_db.instance_methods
     end
 
     # @return [Hash]
     def good_candidates
-      @storage.internal_calls.keys.each do |klass_name|
+      #FIXME : we *destroy* the #internal_calls, because this method is called only once, in at_exit. IMPROVE
+      calls_log.internal_calls.keys.each do |klass_name|
         #TODO : optimize
-        @storage.internal_calls[klass_name] -= @storage.external_calls[klass_name]
+        calls_log.internal_calls[klass_name] -= calls_log.external_calls[klass_name]
       end
-      @storage.internal_calls
+      calls_log.internal_calls
     end
 
     # @return [Hash]
     def bad_candidates
-      @storage.external_calls
+      calls_log.external_calls
     end
+
   end
 end

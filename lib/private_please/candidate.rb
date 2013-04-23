@@ -1,3 +1,5 @@
+# Holds the details of 1 method that was marked via `private_please`.
+
 module PrivatePlease
   class Candidate
 
@@ -26,7 +28,13 @@ module PrivatePlease
     end
 
     def already_instrumented?
-      PrivatePlease.storage.stored_candidate?(self)
+      candidates_db.stored_candidate?(self)
+    end
+
+  private
+
+    def candidates_db
+      PrivatePlease.storage.candidates_db
     end
   end
 end

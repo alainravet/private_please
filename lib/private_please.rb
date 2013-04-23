@@ -2,7 +2,7 @@ require 'private_please/version'
 require 'private_please/ruby_versions_compatibility'
 require 'private_please/candidate'
 require 'private_please/configuration'
-require 'private_please/storage'
+require 'private_please/store'
 require 'private_please/report'
 require 'private_please/line_change_tracker'
 require 'private_please/extension'
@@ -28,15 +28,15 @@ module PrivatePlease
   end
 
   def self.record_outside_call(candidate)
-    storage.record_outside_call(candidate)
+    calls_log.record_outside_call(candidate)
   end
 
   def self.record_inside_call(candidate)
-    storage.record_inside_call(candidate)
+    calls_log.record_inside_call(candidate)
   end
 
   def self.record_candidate(candidate)
-    storage.store_candidate(candidate)
+    candidates_db.store_candidate(candidate)
   end
 
 
@@ -44,7 +44,7 @@ module PrivatePlease
 # data & config containers :
 #--------------
 
-  def self.storage  ; @@_storage  ||= Storage      .new end
+  def self.storage  ; @@_storage  ||= Store        .new end
   def self.config   ; @@_config   ||= Configuration.new end
 
   def self.reset_before_new_test
@@ -57,9 +57,13 @@ module PrivatePlease
 #--------------
 
   def self.report
-    Report.build(storage)
+    Report.new(candidates_db, calls_log)
   end
 
+private
+
+  def self.calls_log ;     storage.calls_log     end
+  def self.candidates_db ; storage.candidates_db end
 end
 
 
