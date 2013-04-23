@@ -30,8 +30,10 @@ end
 
 def assert_calls_detected(expected)
   calls_db = PrivatePlease.storage.calls_log
-  { :inside   => calls_db.internal_calls,
-    :outside  => calls_db.external_calls
+  { :inside    => calls_db.internal_calls,
+    :inside_c  => calls_db.class_internal_calls,
+    :outside   => calls_db.external_calls,
+    :outside_c => calls_db.class_external_calls
   }.should == expected
 end
 

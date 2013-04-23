@@ -47,7 +47,7 @@ end
 
     it 'does NOT record the calls to candidates' do
       do_the_calls
-      assert_calls_detected :inside  => {}, :outside => {}
+      assert_calls_detected :inside  => {}, :outside => {},:inside_c  => {}, :outside_c=> {}
     end
   end
 
@@ -58,8 +58,10 @@ end
 
     it 'DOES record the calls to candidates' do
       do_the_calls
-      assert_calls_detected :inside  => {'ConfigTest::Simple' => mnames_for([:candidate_3])},
-                            :outside => {'ConfigTest::Simple' => mnames_for([:candidate_2])}
+      assert_calls_detected :inside     => {'ConfigTest::Simple' => mnames_for([:candidate_3])},
+                            :outside    => {'ConfigTest::Simple' => mnames_for([:candidate_2])},
+                            :inside_c   => {},
+                            :outside_c  => {}
     end
   end
 end

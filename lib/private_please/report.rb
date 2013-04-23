@@ -41,5 +41,9 @@ module  PrivatePlease
       calls_log.external_calls
     end
 
+    def bad_candidates_c
+      calls_log.class_external_calls
+    end
+
   end
 end

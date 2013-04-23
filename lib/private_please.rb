@@ -28,12 +28,10 @@ module PrivatePlease
     config.active?
   end
 
-  def self.record_outside_call(candidate)
-    calls_log.record_outside_call(candidate)
-  end
-
-  def self.record_inside_call(candidate)
-    calls_log.record_inside_call(candidate)
+  def self.log_method_call(candidate, outside_call)
+    outside_call ?
+      calls_log.record_outside_call(candidate) :
+      calls_log.record_inside_call(candidate)
   end
 
   def self.record_candidate(candidate)

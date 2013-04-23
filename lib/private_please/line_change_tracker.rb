@@ -13,12 +13,23 @@ module PrivatePlease
       #puts "my : #{event} in #{file}/#{line} id:#{id} klass:#{klass} - self = #{(eval'self', binding).inspect}"
     end
 
-    def self.outside_call_detected?(zelf)
-      call_initiator = LineChangeTracker.prev_self
-      call_initiator.class != zelf.class
+    def self.outside_instance_method_call_detected?(zelf)
+      caller_class != zelf.class
     end
 
+    def self.outside_class_method_call_detected?(zelf_class)
+      caller_class != zelf_class
+    end
+
+  private
+
+    def self.caller_class
+      call_initiator = LineChangeTracker.prev_self
+      (caller_is_class_method = call_initiator.is_a?(Class)) ?
+          call_initiator :
+          call_initiator.class
+    end
   end
 end
 
-set_trace_func(PrivatePlease::LineChangeTracker::MY_TRACE_FUN)
+set_trace_func(PrivatePlease::LineChangeTracker::MY_TRACE_FUN) #
