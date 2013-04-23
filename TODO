@@ -1,4 +1,12 @@
 
+install only in classes (? and modules)
+  def self.install
+    Object.send :include, PrivatePlease::Extension
+    ^^^^^^
+    TOO WIDE
+  end
+
+
 DSL
     - observe class methods too
 
