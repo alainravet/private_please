@@ -11,10 +11,6 @@ module PrivatePlease
   end
 end
 
-module MarkingTest    ; end
-module ActivityTest   ; end
-module CallingTest    ; end
-module ConfigTest     ; end
 
 def assert_instance_methods_candidates(expected)
   cs = PrivatePlease.storage.candidates_db.instance_methods
@@ -35,6 +31,13 @@ def assert_calls_detected(expected)
     :outside   => calls_db.external_calls,
     :outside_c => calls_db.class_external_calls
   }.should == expected
+end
+
+NO_CALLS_OBSERVED = {}
+
+def assert_no_calls_detected
+  assert_calls_detected :inside   => NO_CALLS_OBSERVED, :outside   => NO_CALLS_OBSERVED,
+                        :inside_c => NO_CALLS_OBSERVED, :outside_c => NO_CALLS_OBSERVED
 end
 
 def mnames_for(args)

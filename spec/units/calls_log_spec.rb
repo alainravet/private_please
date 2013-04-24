@@ -13,9 +13,4 @@ describe PrivatePlease::Store::CallsLog do
     end
   end
 
-  example 'storing an internal call to an instance method'
-  example 'storing an internal call to an class    method'
-  example 'storing an external call to an instance method'
-  example 'storing an external call to an class    method'
-
 end

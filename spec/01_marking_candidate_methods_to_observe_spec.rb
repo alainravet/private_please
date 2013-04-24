@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe PrivatePlease, 'collecting the candidate-methods to observe' do
+describe PrivatePlease, 'collecting the details of candidate-methods to observe' do
+  module MarkingTest; end
 
   before { PrivatePlease.activate(true) }
 
