@@ -4,7 +4,7 @@
 module PrivatePlease
   module Storage
 
-    class CallsLog
+    class CallsStore
 
       def initialize
         @internal_calls       = MethodsNamesBucket.new
@@ -26,13 +26,13 @@ module PrivatePlease
     # COMMANDS:
     #--------------------------------------------------------------------------
 
-      def record_outside_call(candidate)
+      def store_outside_call(candidate)
         candidate.instance_method? ?
           external_calls[      candidate.klass_name].add(candidate.method_name) :
           class_external_calls[candidate.klass_name].add(candidate.method_name)
       end
 
-      def record_inside_call(candidate)
+      def store_inside_call(candidate)
         candidate.instance_method? ?
           internal_calls[      candidate.klass_name].add(candidate.method_name) :
           class_internal_calls[candidate.klass_name].add(candidate.method_name)

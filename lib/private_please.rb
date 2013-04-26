@@ -27,14 +27,14 @@ module PrivatePlease
     config.active?
   end
 
-  def self.log_method_call(candidate, outside_call)
+  def self.after_method_call(candidate, outside_call)
     outside_call ?
-      calls_log.record_outside_call(candidate) :
-      calls_log.record_inside_call(candidate)
+      calls_store.store_outside_call(candidate) :
+      calls_store.store_inside_call(candidate)
   end
 
-  def self.record_candidate(candidate)
-    candidates_db.store_candidate(candidate)
+  def self.remember_candidate(candidate)
+    candidates_store.store(candidate)
   end
 
 
@@ -55,13 +55,13 @@ module PrivatePlease
 #--------------
 
   def self.report
-    Report::Reporter.new(candidates_db, calls_log)
+    Report::Reporter.new(candidates_store, calls_store)
   end
 
 private
 
-  def self.calls_log ;     storage.calls_log     end
-  def self.candidates_db ; storage.candidates_db end
+  def self.calls_store ;     storage.calls_store     end
+  def self.candidates_store ; storage.candidates_store end
 end
 
 

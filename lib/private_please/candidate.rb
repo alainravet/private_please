@@ -28,14 +28,14 @@ module PrivatePlease
     alias_method :instance_method?, :is_instance_method
 
     def already_instrumented?
-      candidates_db.stored_candidate?(self)
+      candidates_store.stored?(self)
     end
 
   #----------------------------------------------------------------------------
   private
 
-    def candidates_db
-      PrivatePlease.storage.candidates_db
+    def candidates_store
+      PrivatePlease.storage.candidates_store
     end
   end
 end

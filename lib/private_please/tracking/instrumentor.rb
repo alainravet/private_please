@@ -20,7 +20,7 @@ module PrivatePlease ; module Tracking
 
     def self.instrument_candidate_for_pp_observation(candidate)
       return if candidate.already_instrumented?
-      PrivatePlease.record_candidate(candidate)
+      PrivatePlease.remember_candidate(candidate)
 
       klass, method_name = candidate.klass, candidate.method_name
       candidate.instance_method? ?
@@ -39,7 +39,7 @@ klass.class_eval <<RUBY
         zelf_class=self                                                     #
         if PrivatePlease.active?                                            #
           candidate = PrivatePlease::Candidate.for_class_method(zelf_class, method_name)
-          PrivatePlease.log_method_call(candidate, LineChangeTracker.outside_class_method_call_detected?(zelf_class))
+          PrivatePlease.after_method_call(candidate, LineChangeTracker.outside_class_method_call_detected?(zelf_class))
         end                                                                 #
                                                                             #
         set_trace_func(LineChangeTracker::MY_TRACE_FUN)                     #
@@ -59,7 +59,7 @@ klass.class_eval <<RUBY
                                                                             #
         if PrivatePlease.active?                                            #
           candidate = PrivatePlease::Candidate.for_instance_method(self.class, method_name)
-          PrivatePlease.log_method_call(candidate, LineChangeTracker.outside_instance_method_call_detected?(self))                  #
+          PrivatePlease.after_method_call(candidate, LineChangeTracker.outside_instance_method_call_detected?(self))                  #
         end                                                                 #
                                                                             #
         set_trace_func(LineChangeTracker::MY_TRACE_FUN)                     #

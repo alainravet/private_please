@@ -6,7 +6,7 @@
 module PrivatePlease
   module Storage
 
-    class CandidatesDB
+    class CandidatesStore
 
       def initialize
         @instance_methods = MethodsNamesBucket.new
@@ -24,7 +24,7 @@ module PrivatePlease
         instance_methods.empty? && class_methods.empty?
       end
 
-      def stored_candidate?(candidate)
+      def stored?(candidate)
         bucket_for(candidate)[candidate.klass_name].include?(candidate.method_name)
       end
 
@@ -32,7 +32,7 @@ module PrivatePlease
     # COMMANDS:
     #--------------------------------------------------------------------------
 
-      def store_candidate(candidate)
+      def store(candidate)
         bucket_for(candidate)[candidate.klass_name].add? candidate.method_name
       end
 

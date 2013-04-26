@@ -5,7 +5,7 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
 
   before { PrivatePlease.activate(true) }
 
-  let(:candidates_db) { PrivatePlease.storage }
+  let(:candidates_store) { PrivatePlease.storage }
 
 # ----------------
   context 'observing with `private_please(<method names>)`' do

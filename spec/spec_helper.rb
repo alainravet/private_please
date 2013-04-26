@@ -13,19 +13,19 @@ end
 
 
 def assert_instance_methods_candidates(expected)
-  cs = PrivatePlease.storage.candidates_db.instance_methods
+  cs = PrivatePlease.storage.candidates_store.instance_methods
   cs.each_pair { |k, v| cs[k] = v.to_a.sort_by(&:to_s) }
   cs.should == expected
 end
 
 def assert_class_methods_candidates(expected)
-  cs = PrivatePlease.storage.candidates_db.class_methods
+  cs = PrivatePlease.storage.candidates_store.class_methods
   cs.each_pair { |k, v| cs[k] = v.to_a.sort_by(&:to_s) }
   cs.should == expected
 end
 
 def assert_calls_detected(expected)
-  calls_db = PrivatePlease.storage.calls_log
+  calls_db = PrivatePlease.storage.calls_store
   { :inside    => calls_db.internal_calls,
     :inside_c  => calls_db.class_internal_calls,
     :outside   => calls_db.external_calls,
