@@ -5,8 +5,6 @@ module PrivatePlease
   class Store
 
     class CallsLog
-      attr_reader :internal_calls, :external_calls,
-                  :class_internal_calls, :class_external_calls
 
       def initialize
         @internal_calls       = Hash.new{|hash, klass_name| hash[klass_name] = MethodsNames.new}
@@ -14,6 +12,17 @@ module PrivatePlease
         @class_internal_calls = Hash.new{|hash, klass_name| hash[klass_name] = MethodsNames.new}
         @class_external_calls = Hash.new{|hash, klass_name| hash[klass_name] = MethodsNames.new}
       end
+
+    #--------------------------------------------------------------------------
+    # QUERIES:
+    #--------------------------------------------------------------------------
+
+      attr_reader :internal_calls, :external_calls,
+                  :class_internal_calls, :class_external_calls
+
+    #--------------------------------------------------------------------------
+    # COMMANDS:
+    #--------------------------------------------------------------------------
 
       def record_outside_call(candidate)
         candidate.instance_method? ?

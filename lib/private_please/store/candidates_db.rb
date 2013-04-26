@@ -14,20 +14,18 @@ module PrivatePlease
         self[:class_methods   ] = MethodsNamesBucket.new
       end
 
+    #--------------------------------------------------------------------------
+    # QUERIES:
+    #--------------------------------------------------------------------------
+
       # @return [MethodsNamesBucket]
       def instance_methods ; self[:instance_methods] end
+
       # @return [MethodsNamesBucket]
       def class_methods    ; self[:class_methods   ] end
 
       def empty?
         instance_methods.empty? && class_methods.empty?
-      end
-
-      def store_candidate(candidate)
-        cat_key = method_kind(candidate)
-        mn_bucket = self[cat_key]
-        mn_bucket[candidate.klass_name] ||= MethodsNames.new
-        mn_bucket[candidate.klass_name].add?  candidate.method_name
       end
 
       def stored_candidate?(candidate)
@@ -36,6 +34,18 @@ module PrivatePlease
         store_siblings && store_siblings.include?(candidate.method_name)
       end
 
+    #--------------------------------------------------------------------------
+    # COMMANDS:
+    #--------------------------------------------------------------------------
+
+      def store_candidate(candidate)
+        cat_key = method_kind(candidate)
+        mn_bucket = self[cat_key]
+        mn_bucket[candidate.klass_name] ||= MethodsNames.new
+        mn_bucket[candidate.klass_name].add?  candidate.method_name
+      end
+
+    #--------------------------------------------------------------------------
     private
       def method_kind(candidate)
         candidate.instance_method? ?

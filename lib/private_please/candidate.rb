@@ -3,14 +3,10 @@
 module PrivatePlease
   class Candidate
 
-    attr_reader :klass,
-                :klass_name,
-                :method_name,
-                :is_instance_method
-
-    alias_method :instance_method?, :is_instance_method
-
-  #-----
+    def initialize(klass, method_name, is_instance_method)
+      @klass, @method_name, @is_instance_method = klass, method_name, is_instance_method
+      @klass_name = klass.to_s
+    end
 
     def self.for_instance_method(klass, method_name)
       new(klass, method_name, true)
@@ -20,17 +16,22 @@ module PrivatePlease
       new(klass, method_name, false)
     end
 
-  #-----
+  #----------------------------------------------------------------------------
+  # QUERIES:
+  #----------------------------------------------------------------------------
 
-    def initialize(klass, method_name, is_instance_method)
-      @klass, @method_name, @is_instance_method = klass, method_name, is_instance_method
-      @klass_name = klass.to_s
-    end
+    attr_reader :klass,
+                :klass_name,
+                :method_name,
+                :is_instance_method
+
+    alias_method :instance_method?, :is_instance_method
 
     def already_instrumented?
       candidates_db.stored_candidate?(self)
     end
 
+  #----------------------------------------------------------------------------
   private
 
     def candidates_db
