@@ -4,11 +4,17 @@ module  PrivatePlease
 
     TEMPLATE_PATH     = File.dirname(__FILE__) + '/report_templates/template.txt.erb'
 
-    attr_reader :candidates_db, :calls_log
+    attr_reader :candidates_db, :calls_log,
+                :good_candidates, :bad_candidates,
+                :good_candidates_c, :bad_candidates_c,
+                :never_called_candidates, :never_called_candidates_c
+
 
     def initialize(candidates_db, calls_log)
       @candidates_db = candidates_db
       @calls_log     = calls_log
+
+      prepare_report_data
     end
 
     def to_s
@@ -18,32 +24,27 @@ module  PrivatePlease
 
     # @return [Hash]
     def never_called_candidates
-      #FIXME : we *destroy* the #instance_methods_candidates, because this method is called only once, in at_exit. IMPROVE
       candidates_db.instance_methods.classes_names.each do |klass_name|
-        #TODO : optimize
-        candidates_db.instance_methods[klass_name] -= (calls_log.external_calls[klass_name] + calls_log.internal_calls[klass_name])
+        candidates_db.instance_methods[klass_name] -= (bad_candidates[klass_name] + calls_log.internal_calls[klass_name])
       end
       candidates_db.instance_methods.reject{|_, v|v.empty?}
     end
 
     # @return [Hash]
     def good_candidates
-      #FIXME : we *destroy* the #internal_calls, because this method is called only once, in at_exit. IMPROVE
-      calls_log.internal_calls.keys.each do |klass_name|
-        #TODO : optimize
-        calls_log.internal_calls[klass_name] -= calls_log.external_calls[klass_name]
-      end
-      calls_log.internal_calls.reject{|_, v|v.empty?}
+      @good_candidates ||= begin
+        calls_log.internal_calls.keys.each do |klass_name|
+          #TODO : optimize
+          calls_log.internal_calls[klass_name] -= @bad_candidates[klass_name]
+        end
+        calls_log.internal_calls.reject{|_, v|v.empty?}
+      end.clone
     end
 
-    # @return [Hash]
-    def bad_candidates
-      calls_log.external_calls
+  private
+    def prepare_report_data
+      @bad_candidates   = calls_log.external_calls
+      @bad_candidates_c = calls_log.class_external_calls
     end
-
-    def bad_candidates_c
-      calls_log.class_external_calls
-    end
-
   end
 end
