@@ -1,8 +1,8 @@
 require 'erb'
-module  PrivatePlease
-  class Report
+module  PrivatePlease ; module Report
+  class Reporter
 
-    TEMPLATE_PATH     = File.dirname(__FILE__) + '/report_templates/template.txt.erb'
+    TEMPLATE_PATH     = File.dirname(__FILE__) + '/report/templates/simple.txt.erb'
 
     attr_reader :candidates_db, :calls_log,
                 :good_candidates, :bad_candidates,
@@ -47,4 +47,4 @@ module  PrivatePlease
       @bad_candidates_c = calls_log.class_external_calls
     end
   end
-end
+end end

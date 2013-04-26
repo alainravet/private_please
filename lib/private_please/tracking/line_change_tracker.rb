@@ -1,4 +1,5 @@
-module PrivatePlease
+module PrivatePlease ; module Tracking
+
   class LineChangeTracker
     class << self
       attr_accessor :prev_prev_self, :prev_self, :curr_self
@@ -30,6 +31,6 @@ module PrivatePlease
           call_initiator.class
     end
   end
-end
+end end
 
-set_trace_func(PrivatePlease::LineChangeTracker::MY_TRACE_FUN) #
+set_trace_func(PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN) #

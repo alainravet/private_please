@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 
-describe PrivatePlease::Store::CandidatesDB do
+describe PrivatePlease::Storage::CandidatesDB do
 
-  let(:st)  { PrivatePlease::Store.new }
+  let(:st)  { PrivatePlease::Storage::Store.new }
   let(:candidates_db)  { st.candidates_db }
 
   # instance methods
@@ -24,7 +24,7 @@ describe PrivatePlease::Store::CandidatesDB do
     candidates_db.store_candidate(object_to_s)
 
     candidates_db.stored_candidate?(object_to_s).should be_true
-    candidates_db.instance_methods.should == {'Object' => PrivatePlease::MethodsNames.new('to_s')}
+    candidates_db.instance_methods.should == {'Object' => mnames_for('to_s')}
     candidates_db.class_methods   .should be_empty
   end
 
@@ -41,7 +41,7 @@ describe PrivatePlease::Store::CandidatesDB do
     candidates_db.store_candidate(object_hash)
 
     candidates_db.stored_candidate?(object_hash).should be_true
-    candidates_db.instance_methods.should == {'Object' => PrivatePlease::MethodsNames.new(%w(hash to_s))}
+    candidates_db.instance_methods.should == {'Object' => mnames_for(%w(hash to_s))}
     candidates_db.class_methods   .should be_empty
   end
 
@@ -49,7 +49,7 @@ describe PrivatePlease::Store::CandidatesDB do
     st.candidates_db.store_candidate(object_to_s)
     st.candidates_db.store_candidate(object_to_s) # duplication : ignore it
 
-    candidates_db.instance_methods.should == {'Object' => PrivatePlease::MethodsNames.new(%w(to_s))}
+    candidates_db.instance_methods.should == {'Object' => mnames_for(%w(to_s))}
     candidates_db.class_methods   .should be_empty
   end
 

@@ -41,7 +41,7 @@ def assert_no_calls_detected
 end
 
 def mnames_for(args)
-  PrivatePlease::MethodsNames.new(Array(args))
+  PrivatePlease::Storage::MethodsNames.new(Array(args))
 end
 
 RSpec.configure do |config|

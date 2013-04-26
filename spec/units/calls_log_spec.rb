@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 
-describe PrivatePlease::Store::CallsLog do
+describe PrivatePlease::Storage::CallsLog do
 
-  let(:st)  { PrivatePlease::Store.new }
+  let(:st)  { PrivatePlease::Storage::Store.new }
   let(:calls_log     )  { st.calls_log      }
 
   context 'when fresh' do

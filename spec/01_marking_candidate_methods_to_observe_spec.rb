@@ -90,7 +90,7 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
 
 
 # ----------------
-  context 'observing with `include PrivatePlease::AllBelow`' do
+  context 'observing with `include PrivatePlease::Tracking::AllBelow`' do
 # ----------------
 
     example 'all the methods defined subsequently are stored as candidates' do
@@ -98,7 +98,7 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
       class MarkingTest::Automatic2
         def foo ; end
         def bar ; end
-        include PrivatePlease::AllBelow # ---> # <start observing>
+        include PrivatePlease::Tracking::AllBelow # ---> # <start observing>
         def baz ; end                          #    YES
         def self.class_m1; end                 #    YES
       protected                                #

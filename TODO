@@ -1,7 +1,7 @@
 
 install only in classes (? and modules)
   def self.install
-    Object.send :include, PrivatePlease::Extension
+    Object.send :include, PrivatePlease::Tracking::Extension
     ^^^^^^
     TOO WIDE
   end

@@ -8,7 +8,7 @@
 #   +-------------+---------------------------------------+
 
 module PrivatePlease
-  class Store
+  module Storage
 
     class MethodsNamesBucket < Hash
 
@@ -16,7 +16,7 @@ module PrivatePlease
 
       def initialize
         super{|hash, class_name|
-          hash[class_name] = MethodsNames.new
+          hash[class_name] = PrivatePlease::Storage::MethodsNames.new
         }
       end
 

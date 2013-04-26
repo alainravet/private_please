@@ -7,7 +7,7 @@ module PrivatePlease
     end
 
     def activate(flag=true)
-      Object.send :include, PrivatePlease::Extension
+      Object.send :include, PrivatePlease::Tracking::Extension
       @active = !!flag
     end
 

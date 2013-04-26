@@ -1,4 +1,4 @@
-module PrivatePlease
+module PrivatePlease ; module Tracking
 
   module Instrumentor
 
@@ -72,4 +72,4 @@ RUBY
 
   end
 
-end
+end end

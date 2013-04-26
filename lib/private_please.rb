@@ -1,19 +1,18 @@
-require 'private_please/methods_names'
 require 'private_please/version'
 require 'private_please/ruby_versions_compatibility'
 require 'private_please/candidate'
 require 'private_please/configuration'
-require 'private_please/store'
-require 'private_please/report'
-require 'private_please/line_change_tracker'
-require 'private_please/extension'
-require 'private_please/instrumentor'
-require 'private_please/all_below'
+require 'private_please/storage/store'
+require 'private_please/report/reporter'
+require 'private_please/tracking/line_change_tracker'
+require 'private_please/tracking/extension'
+require 'private_please/tracking/instrumentor'
+require 'private_please/tracking/all_below'
 
 module PrivatePlease
 
   def self.install
-    Object.send :include, PrivatePlease::Extension
+    Object.send :include, PrivatePlease::Tracking::Extension
   end
 
 #--------------
@@ -43,8 +42,8 @@ module PrivatePlease
 # data & config containers :
 #--------------
 
-  def self.storage  ; @@_storage  ||= Store        .new end
-  def self.config   ; @@_config   ||= Configuration.new end
+  def self.storage  ; @@_storage  ||= Storage::Store.new end
+  def self.config   ; @@_config   ||= Configuration .new end
 
   def self.reset_before_new_test
     @@_storage = nil
@@ -56,7 +55,7 @@ module PrivatePlease
 #--------------
 
   def self.report
-    Report.new(candidates_db, calls_log)
+    Report::Reporter.new(candidates_db, calls_log)
   end
 
 private

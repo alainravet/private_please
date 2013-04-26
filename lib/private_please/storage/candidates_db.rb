@@ -3,10 +3,8 @@
 # Those methods were marked via `private_please` in the code.
 # Instance methods and class methods are kept separate.
 
-require File.dirname(__FILE__) + '/methods_names_bucket'
-
 module PrivatePlease
-  class Store
+  module Storage
 
     class CandidatesDB
 

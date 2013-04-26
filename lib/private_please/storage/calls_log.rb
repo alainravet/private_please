@@ -2,7 +2,7 @@
 # (only for the methods marked with `private_please`)
 
 module PrivatePlease
-  class Store
+  module Storage
 
     class CallsLog
 

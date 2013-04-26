@@ -1,4 +1,4 @@
-module PrivatePlease
+module PrivatePlease ; module Tracking
 
   module Extension
 
@@ -7,7 +7,7 @@ module PrivatePlease
       klass = self
 
       if parameterless_call
-        klass.send :include, PrivatePlease::AllBelow
+        klass.send :include, PrivatePlease::Tracking::AllBelow
 
       else
         Instrumentor.instrument_instance_methods_for_pp_observation(klass, methods_to_observe)
@@ -16,4 +16,4 @@ module PrivatePlease
 
   end
 
-end
+end end
