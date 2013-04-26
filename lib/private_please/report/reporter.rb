@@ -25,7 +25,10 @@ module  PrivatePlease ; module Report
     # @return [Hash]
     def never_called_candidates
       candidates_store.instance_methods.classes_names.each do |klass_name|
-        candidates_store.instance_methods[klass_name] -= (bad_candidates[klass_name] + calls_store.internal_calls[klass_name])
+        candidates_store.instance_methods.set_methods_names(
+            klass_name,
+            candidates_store.instance_methods.get_methods_names(klass_name) - (bad_candidates.get_methods_names(klass_name) + calls_store.internal_calls.get_methods_names(klass_name))
+        )
       end
       candidates_store.instance_methods.reject{|_, v|v.empty?}
     end
@@ -33,9 +36,10 @@ module  PrivatePlease ; module Report
     # @return [Hash]
     def good_candidates
       @good_candidates ||= begin
-        calls_store.internal_calls.keys.each do |klass_name|
-          #TODO : optimize
-          calls_store.internal_calls[klass_name] -= @bad_candidates[klass_name]
+        calls_store.internal_calls.classes_names.each do |klass_name|
+          calls_store.internal_calls.set_methods_names(klass_name,
+                                                       calls_store.internal_calls.get_methods_names(klass_name) - @bad_candidates.get_methods_names(klass_name)
+          )
         end
         calls_store.internal_calls.reject{|_, v|v.empty?}
       end.clone

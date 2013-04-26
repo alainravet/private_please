@@ -25,7 +25,7 @@ module PrivatePlease
       end
 
       def stored?(candidate)
-        bucket_for(candidate)[candidate.klass_name].include?(candidate.method_name)
+        bucket_for(candidate).get_methods_names(candidate.klass_name).include?(candidate.method_name)
       end
 
     #--------------------------------------------------------------------------
@@ -33,7 +33,7 @@ module PrivatePlease
     #--------------------------------------------------------------------------
 
       def store(candidate)
-        bucket_for(candidate)[candidate.klass_name].add? candidate.method_name
+        bucket_for(candidate).add_method_name(candidate.klass_name, candidate.method_name)
       end
 
     #--------------------------------------------------------------------------

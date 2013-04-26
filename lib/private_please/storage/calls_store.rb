@@ -27,15 +27,13 @@ module PrivatePlease
     #--------------------------------------------------------------------------
 
       def store_outside_call(candidate)
-        candidate.instance_method? ?
-          external_calls[      candidate.klass_name].add(candidate.method_name) :
-          class_external_calls[candidate.klass_name].add(candidate.method_name)
+        bucket = candidate.instance_method? ? external_calls : class_external_calls
+        bucket.add_method_name(candidate.klass_name, candidate.method_name)
       end
 
       def store_inside_call(candidate)
-        candidate.instance_method? ?
-          internal_calls[      candidate.klass_name].add(candidate.method_name) :
-          class_internal_calls[candidate.klass_name].add(candidate.method_name)
+        bucket = candidate.instance_method? ? internal_calls : class_internal_calls
+        bucket.add_method_name(candidate.klass_name, candidate.method_name)
       end
     end
 
