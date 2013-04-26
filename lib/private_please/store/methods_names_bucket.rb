@@ -14,6 +14,12 @@ module PrivatePlease
 
       alias_method :classes_names, :keys
 
+      def initialize
+        super{|hash, class_name|
+          hash[class_name] = MethodsNames.new
+        }
+      end
+
     end
 
   end

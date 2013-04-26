@@ -7,18 +7,20 @@ module PrivatePlease
     class CallsLog
 
       def initialize
-        @internal_calls       = Hash.new{|hash, klass_name| hash[klass_name] = MethodsNames.new}
-        @external_calls       = Hash.new{|hash, klass_name| hash[klass_name] = MethodsNames.new}
-        @class_internal_calls = Hash.new{|hash, klass_name| hash[klass_name] = MethodsNames.new}
-        @class_external_calls = Hash.new{|hash, klass_name| hash[klass_name] = MethodsNames.new}
+        @internal_calls       = MethodsNamesBucket.new
+        @external_calls       = MethodsNamesBucket.new
+        @class_internal_calls = MethodsNamesBucket.new
+        @class_external_calls = MethodsNamesBucket.new
       end
 
     #--------------------------------------------------------------------------
     # QUERIES:
     #--------------------------------------------------------------------------
 
-      attr_reader :internal_calls, :external_calls,
-                  :class_internal_calls, :class_external_calls
+      attr_reader :internal_calls,
+                  :external_calls,
+                  :class_internal_calls,
+                  :class_external_calls
 
     #--------------------------------------------------------------------------
     # COMMANDS:
