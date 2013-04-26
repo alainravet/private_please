@@ -3,8 +3,7 @@ require 'spec_helper'
 
 describe PrivatePlease::Storage::CandidatesStore do
 
-  let(:st)  { PrivatePlease::Storage::Store.new }
-  let(:candidates_store)  { st.candidates_store }
+  let(:candidates_store)  { PrivatePlease::Storage::CandidatesStore.new }
 
   # instance methods
   let(:object_to_s)  {PrivatePlease::Candidate.for_instance_method(Object, 'to_s' )}
@@ -46,8 +45,8 @@ describe PrivatePlease::Storage::CandidatesStore do
   end
 
   example 'storing avoids duplication' do
-    st.candidates_store.store(object_to_s)
-    st.candidates_store.store(object_to_s) # duplication : ignore it
+    candidates_store.store(object_to_s)
+    candidates_store.store(object_to_s) # duplication : ignore it
 
     candidates_store.instance_methods.should == {'Object' => mnames_for(%w(to_s))}
     candidates_store.class_methods   .should be_empty

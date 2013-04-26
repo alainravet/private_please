@@ -2,7 +2,10 @@ require 'private_please/version'
 require 'private_please/ruby_versions_compatibility'
 require 'private_please/candidate'
 require 'private_please/configuration'
-require 'private_please/storage/store'
+require 'private_please/storage/calls_store'
+require 'private_please/storage/candidates_store'
+require 'private_please/storage/methods_names'
+require 'private_please/storage/methods_names_bucket'
 require 'private_please/report/reporter'
 require 'private_please/tracking/line_change_tracker'
 require 'private_please/tracking/extension'
@@ -42,11 +45,10 @@ module PrivatePlease
 # data & config containers :
 #--------------
 
-  def self.storage  ; @@_storage  ||= Storage::Store.new end
   def self.config   ; @@_config   ||= Configuration .new end
 
   def self.reset_before_new_test
-    @@_storage = nil
+    @@_calls_store = @@_candidates_store = nil
     @@_config  = nil
   end
 
@@ -60,8 +62,13 @@ module PrivatePlease
 
 private
 
-  def self.calls_store ;     storage.calls_store     end
-  def self.candidates_store ; storage.candidates_store end
+  def self.calls_store
+  @@_calls_store ||= Storage::CallsStore.new
+  end
+
+  def self.candidates_store
+    @@_candidates_store ||= Storage::CandidatesStore.new
+  end
 end
 
 

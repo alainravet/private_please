@@ -35,7 +35,7 @@ module PrivatePlease
   private
 
     def candidates_store
-      PrivatePlease.storage.candidates_store
+      PrivatePlease.candidates_store
     end
   end
 end

@@ -3,8 +3,7 @@ require 'spec_helper'
 
 describe PrivatePlease::Storage::CallsStore do
 
-  let(:st)  { PrivatePlease::Storage::Store.new }
-  let(:calls_store     )  { st.calls_store      }
+  let(:calls_store     )  { PrivatePlease::Storage::CallsStore.new }
 
   context 'when fresh' do
     it 'is empty (has no calls)' do
