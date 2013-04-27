@@ -31,7 +31,7 @@ module PrivatePlease ; module Tracking
 
 
     def self.instrument_class_method_with_pp_observation(klass, method_name)
-      orig_method = klass.class_method(method_name)
+      orig_method = klass.singleton_class.instance_method(method_name)
 klass.class_eval <<RUBY
       define_singleton_method(method_name) do |*args, &blk|                 # def self.observed_method_i(..)
         set_trace_func(nil) #don't track activity while here                #
