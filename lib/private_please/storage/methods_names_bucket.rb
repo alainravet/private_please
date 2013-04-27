@@ -19,6 +19,14 @@ module PrivatePlease
         }
       end
 
+      def clone
+        (self.class).new.tap do |klone|
+          classes_names.each do |class_name|
+            klone.set_methods_names(class_name, (self).get_methods_names(class_name))
+          end
+        end
+      end
+
     #--------------------------------------------------------------------------
     # QUERIES:
     #--------------------------------------------------------------------------
@@ -38,6 +46,22 @@ module PrivatePlease
         self.get_methods_names(class_name).add(method_name)
       end
 
+      def remove(other)
+        other.classes_names.each do |cn|
+          next if (methods_to_remove = other.get_methods_names(cn)).empty?
+          next if (methods_before    = self .get_methods_names(cn)).empty?
+          difference = methods_before - methods_to_remove
+          self.set_methods_names(cn, difference)
+        end
+        prune!
+        self
+      end
+
+    private
+
+      def prune!
+        self.reject!{|_, v|v.empty?}
+      end
     end
 
   end

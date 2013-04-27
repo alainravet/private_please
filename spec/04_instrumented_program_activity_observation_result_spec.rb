@@ -33,6 +33,7 @@ describe 'PrivatePlease.report', 'observing an instrumented program activity' do
         def bad_candidate_6;      good_candidate_7  end
         def good_candidate_7;                       end
         def ignored_8  ;          'never called'    end
+        def self.ignored_c9 ;          'never called'    end
         def self.good_candidate_c2;                 end
         def self.bad_candidate_c3;                  end
       end
@@ -41,6 +42,7 @@ describe 'PrivatePlease.report', 'observing an instrumented program activity' do
       private_please
         def bad_candidate_too;                      end
         def ignored_2;            'never called'    end
+        def self.ignored_c3;      'never called'    end
         def self.bad_candidate_c_too;               end
       end
     end unless defined?(ActivityTest::Simple)
@@ -52,16 +54,18 @@ describe 'PrivatePlease.report', 'observing an instrumented program activity' do
     the_report = PrivatePlease.report
     {
         :good_candidates  => the_report.good_candidates,
+        :good_candidates_c => the_report.good_candidates_c,
         :bad_candidates   => the_report.bad_candidates,
         :bad_candidates_c => the_report.bad_candidates_c,
-        :ignored          => the_report.never_called_candidates
+        :ignored          => the_report.never_called_candidates,
+        :ignored_c        => the_report.never_called_candidates_c
     }.should == {
         :good_candidates  => {
             'ActivityTest::Simple'   =>  mnames_for([:good_candidate_4, :good_candidate_5, :good_candidate_7])
         },
-#:good_candidates_c => {
-#    'ActivityTest::Simple'   =>  mnames_for([:good_candidate_c2])
-#},
+        :good_candidates_c => {
+            'ActivityTest::Simple'   =>  mnames_for([:good_candidate_c2])
+        },
         :bad_candidates   => {
             'ActivityTest::Simple'   =>  mnames_for([:bad_candidate_3, :bad_candidate_6]),
             'ActivityTest::Simple2'  =>  mnames_for([:bad_candidate_too])
@@ -71,9 +75,15 @@ describe 'PrivatePlease.report', 'observing an instrumented program activity' do
             'ActivityTest::Simple2'  =>  mnames_for([:bad_candidate_c_too])
         },
         :ignored          => {
-            'ActivityTest::Simple'   =>  mnames_for([:ignored_8]),    #TODO : uniformize (it currently mixes Sets & Arrays)
+            'ActivityTest::Simple'   =>  mnames_for([:ignored_8]),
             'ActivityTest::Simple2'  =>  mnames_for([:ignored_2])
+        },
+        :ignored_c        => {
+            'ActivityTest::Simple'   =>  mnames_for([:ignored_c9]),
+            'ActivityTest::Simple2'  =>  mnames_for([:ignored_c3])
         }
     }
+    puts "\n***report building time : #{the_report.building_time} sec."
   end
+
 end
