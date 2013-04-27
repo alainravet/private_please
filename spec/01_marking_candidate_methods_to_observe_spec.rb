@@ -71,6 +71,24 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
       assert_instance_methods_candidates 'MarkingTest::Automatic1' =>[:baz, :qux]
     end
 
+    example ('already private methods are ignored/not observed') do
+      class MarkingTest::Automatic1c
+      private_please   # --->    # <start observing>
+        def self.baz ; end       #    YES
+      public                     #    *
+        def qux ; end            #    YES
+      private                    #
+        def already_private ; end            #    NO
+        class << self
+        private
+          def class_already_private ; end     #    NO
+        end
+      end
+
+      assert_instance_methods_candidates 'MarkingTest::Automatic1c' =>[:qux]
+      assert_class_methods_candidates    'MarkingTest::Automatic1c' =>[:baz]
+    end
+
 
     example 'class methods are observed too' do
       class MarkingTest::Automatic1b
@@ -79,8 +97,6 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
         def self.baz ; end       #    YES
       public                     #    *
         def self.qux ; end       #    YES
-      #private                    # FIXME : exclude methods that are already private
-      #  def self.already_private ; end #    NO
       end
 
       assert_instance_methods_candidates ({})
@@ -103,8 +119,6 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
         def self.class_m1; end                 #    YES
       protected                                #
         def qux ; end                          #    YES
-      #private                    # FIXME : exclude methods that are already private
-      #  def already_private ; end              #    NO
       end
 
       assert_instance_methods_candidates 'MarkingTest::Automatic2' =>[:baz, :qux]

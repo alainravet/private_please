@@ -11,20 +11,29 @@ module PrivatePlease
   end
 end
 
-
-def assert_instance_methods_candidates(expected)
-  cs = PrivatePlease.candidates_store.instance_methods
-  cs.each_pair do |k, v|
-    cs.set_methods_names(k, v.to_a.sort_by(&:to_s))
+class Hash
+  def to_methods_names_bucket
+    PrivatePlease::Storage::MethodsNamesBucket.new.tap do |bucket|
+      each_pair do |class_name, method_names_as_a|
+        method_names_as_a.each do |method_name|
+          bucket.add_method_name(class_name, method_name)
+        end
+      end
+    end
   end
-  cs.should == expected
 end
 
-def assert_class_methods_candidates(expected)
-  cs = PrivatePlease.candidates_store.class_methods
-  cs.each_pair { |k, v| cs.set_methods_names(k, v.to_a.sort_by(&:to_s)) }
-  cs.should == expected
+def assert_instance_methods_candidates(raw_expected)
+  expected = raw_expected.to_methods_names_bucket if raw_expected.is_a?(Hash)
+  PrivatePlease.candidates_store.instance_methods.should == expected
 end
+
+def assert_class_methods_candidates(raw_expected)
+  expected = raw_expected.to_methods_names_bucket if raw_expected.is_a?(Hash)
+  PrivatePlease.candidates_store.class_methods.should == expected
+end
+
+
 
 def assert_calls_detected(expected)
   calls_db = PrivatePlease.calls_store
