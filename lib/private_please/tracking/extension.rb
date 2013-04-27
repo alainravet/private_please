@@ -7,7 +7,7 @@ module PrivatePlease ; module Tracking
       klass = self
 
       if parameterless_call
-        klass.send :include, PrivatePlease::Tracking::AllBelow
+        klass.send :include, PrivatePlease::Tracking::InstrumentsAllBelow
 
       else
         Instrumentor.instrument_instance_methods_for_pp_observation(klass, methods_to_observe)

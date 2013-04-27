@@ -1,7 +1,7 @@
 # Usage :
 #   class MarkingTest::Automatic2
 #     def foo ; end          <---- but not this one.
-#     include PrivatePlease::Tracking::AllBelow  <-- add this line
+#     include PrivatePlease::Tracking::InstrumentsAllBelow  <-- add this line
 #
 #     def baz ; end          <---- to observe this method
 #   protected
@@ -10,7 +10,7 @@
 
 module PrivatePlease ; module Tracking
 
-  module AllBelow
+  module InstrumentsAllBelow
     include PrivatePlease::Tracking::Extension
 
     def self.included(base)
