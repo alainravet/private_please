@@ -1,5 +1,8 @@
-next version
-    - works with Ruby 1.9 too
+v0.0.3
+    - private_please without parameters observes all the methods defined afterwards
+    - PP is active once you require the gem
+    - modules' instance methods are observable too
+    - big code cleanup (development)
 
 v0.0.2
 	- only display the report if PrivatePlease.active?
