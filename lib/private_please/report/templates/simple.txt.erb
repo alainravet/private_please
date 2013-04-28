@@ -1,34 +1,61 @@
 ====================================================================================
 =                               PrivatePlease report :                             =
 ====================================================================================
+% @candidates_classes_names .sort.each do |class_name|
+%
+%   good_lines =
+%     [good_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
+%      good_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
+%     ].reject(&:empty?)
+%   good_lines.insert(1, '') if good_lines.length == 2
+%   good_lines.flatten!
+%
+%   bad_lines =
+%     [bad_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
+%      bad_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
+%     ].reject(&:empty?)
+%   bad_lines.insert(1, '') if bad_lines.length == 2
+%   bad_lines.flatten!
 
-* Methods that can be made private :
-------------------------------------------
+%   never_called_lines =
+%     [never_called_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
+%      never_called_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
+%     ]
+%   never_called_lines.insert(1, '') if never_called_lines.length == 2
 
-<% good_candidates.keys.sort.each do |klass|
-     methods = good_candidates[klass]
-     next if methods.nil? or methods.empty?
-%>  class <%= klass %>
-<% methods.each do |method| %>    #<%= method %>
-<% end %><% end %>
+%
+**********************************************************
+<%= class_name
+%>
+**********************************************************
+%
+% unless good_lines.empty?
 
-* Methods that must stay public/protected
-------------------------------------------
+    * Good candidates : can be made private :
+    ------------------------------------------
 
-<% bad_candidates.keys.sort.each do |klass|
-     methods = bad_candidates[klass]
-     next if methods.nil? or methods.empty?
-%>  class <%= klass %>
-    <%= bad_candidates[klass].collect{|m| "##{m}"}.join(', ') %>
-<% end %>
+%   good_lines.each do |line|
+        <%= line %>
+%   end
+% end
+% unless bad_lines.empty?
 
-* Methods that were never called
-------------------------------------------
+    * Bad candidates : must stay public/protected
+    ------------------------------------------
 
-<% never_called_candidates.keys.sort.each do |klass|
-     methods = never_called_candidates[klass]
-     next if methods.nil? or methods.empty?
-%>  class <%= klass %>
-    <%= methods.collect{|m| "##{m}"}.join(', ') %>
-<% end %>
+%   bad_lines.each do |line|
+        <%= line %>
+%   end
+% end
+%
+% unless never_called_lines.empty?
+
+    * Methods that were never called
+    ------------------------------------------
+%   never_called_lines.each do |line|
+        <%= line %>
+%   end
+% end
+
+% end
 ====================================================================================

@@ -2,7 +2,7 @@ require 'erb'
 module  PrivatePlease ; module Report
   class Reporter
 
-    TEMPLATE_PATH     = File.dirname(__FILE__) + '/report/templates/simple.txt.erb'
+    TEMPLATE_PATH     = File.expand_path(File.dirname(__FILE__) + '/templates/simple.txt.erb')
 
     attr_reader :candidates_store, :calls_store,
                 :good_candidates, :bad_candidates,
@@ -19,7 +19,7 @@ module  PrivatePlease ; module Report
     end
 
     def to_s
-      erb = ERB.new(File.read(TEMPLATE_PATH))
+      erb = ERB.new(File.read(TEMPLATE_PATH), 0,  "%<>")
       erb.result(binding)
     end
 
@@ -41,6 +41,12 @@ module  PrivatePlease ; module Report
           remove(@good_candidates_c).
           remove(@bad_candidates_c )
       @building_time = Time.now - start_time
+
+      @candidates_classes_names      = (candidates_store.instance_methods.classes_names +
+                                        candidates_store.class_methods   .classes_names ).uniq.sort
+      @good_candidates_classes_names = (@good_candidates_c.classes_names + @good_candidates.classes_names).uniq.sort
+      @bad_candidates_classes_names  = (@bad_candidates_c .classes_names + @bad_candidates .classes_names).uniq.sort
+      @never_called_candidates_classes_names = (@never_called_candidates_c .classes_names + @never_called_candidates.classes_names).uniq.sort
     end
   end
 end end
