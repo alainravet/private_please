@@ -33,12 +33,27 @@ module CallsSample
   end
 
 #-----------------------------------------------------------------------------------------------------------------------
- class Simple
+  module Extra               ; private_please end  # <<=== Pre-instrument.
+  module Extra::ClassMethods ; private_please end  # <<=== Pre-instrument.
+
+  module Extra
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
+    def an_instance_method ; end
+    module ClassMethods
+      def a_class_method_via_module_Extra ; end
+    end
+  end
+
+
+  class Simple
     def self.not_a_candidate_c1;
       class_m_2
     end
 
   private_please
+    include Extra
     def instance_m_1;   end
     def instance_m_2;   end
 
