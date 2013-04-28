@@ -37,10 +37,8 @@ klass.class_eval <<RUBY
         set_trace_func(nil) #don't track activity while here                #
                                                                             #
         zelf_class=self                                                     #
-        if PrivatePlease.active?                                            #
-          candidate = PrivatePlease::Candidate.for_class_method(zelf_class, method_name)
-          PrivatePlease.after_method_call(candidate, LineChangeTracker.outside_class_method_call_detected?(zelf_class))
-        end                                                                 #
+        candidate = PrivatePlease::Candidate.for_class_method(zelf_class, method_name)
+        PrivatePlease.after_method_call(candidate, LineChangeTracker.outside_class_method_call_detected?(zelf_class))
                                                                             #
         set_trace_func(LineChangeTracker::MY_TRACE_FUN)                     #
         # make the call :                                                   #
@@ -57,10 +55,8 @@ klass.class_eval <<RUBY
       define_method(method_name) do |*args, &blk|                           # def observed_method_i(..)
         set_trace_func(nil) #don't track activity while here                #
                                                                             #
-        if PrivatePlease.active?                                            #
-          candidate = PrivatePlease::Candidate.for_instance_method(self.class, method_name)
-          PrivatePlease.after_method_call(candidate, LineChangeTracker.outside_instance_method_call_detected?(self))                  #
-        end                                                                 #
+        candidate = PrivatePlease::Candidate.for_instance_method(self.class, method_name)
+        PrivatePlease.after_method_call(candidate, LineChangeTracker.outside_instance_method_call_detected?(self))                  #
                                                                             #
         set_trace_func(LineChangeTracker::MY_TRACE_FUN)                     #
         # make the call :                                                   #

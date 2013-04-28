@@ -3,8 +3,6 @@ require 'spec_helper'
 describe PrivatePlease, 'collecting the details of candidate-methods to observe' do
   module MarkingTest; end
 
-  before { PrivatePlease.activate(true) }
-
   let(:candidates_store) { PrivatePlease.storage }
 
 # ----------------

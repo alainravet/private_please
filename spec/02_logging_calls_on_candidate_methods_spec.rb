@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe PrivatePlease, 'calling observed methods and logging calls in 2 categories : internal or external' do
 
-  before { PrivatePlease.activate(true) }
-
   before do
 #-----------------------------------------------------------------------------------------------------------------------
     require File.dirname(__FILE__) + '/fixtures/sample_class_with_all_calls_combinations'

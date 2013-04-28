@@ -15,8 +15,6 @@ describe 'PrivatePlease.report', 'observing an instrumented program activity' do
     ActivityTest::Simple2    .bad_candidate_c_too
   end
 
-  before() { PrivatePlease.activate(true) }
-
   before do
 
     module ActivityTest

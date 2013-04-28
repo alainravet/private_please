@@ -1,7 +1,6 @@
 require 'private_please/version'
 require 'private_please/ruby_backports'
 require 'private_please/candidate'
-require 'private_please/configuration'
 require 'private_please/storage/calls_store'
 require 'private_please/storage/candidates_store'
 require 'private_please/storage/methods_names'
@@ -22,14 +21,6 @@ module PrivatePlease
 # config
 #--------------
 
-  def self.activate(flag=true)
-    config.activate(flag)
-  end
-
-  def self.active?
-    config.active?
-  end
-
   def self.after_method_call(candidate, outside_call)
     outside_call ?
       calls_store.store_outside_call(candidate) :
@@ -45,11 +36,8 @@ module PrivatePlease
 # data & config containers :
 #--------------
 
-  def self.config   ; @@_config   ||= Configuration .new end
-
   def self.reset_before_new_test
     @@_calls_store = @@_candidates_store = nil
-    @@_config  = nil
   end
 
 #--------------
@@ -72,8 +60,7 @@ private
 end
 
 
+PrivatePlease.install
 at_exit {
-  if PrivatePlease.active?
-    puts PrivatePlease.report.to_s
-  end
+  puts PrivatePlease.report.to_s
 }
