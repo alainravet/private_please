@@ -14,7 +14,7 @@ require 'private_please/tracking/instruments_all_below'
 module PrivatePlease
 
   def self.install
-    Object.send :include, PrivatePlease::Tracking::Extension
+    Module.send :include, PrivatePlease::Tracking::Extension
   end
 
 #--------------
