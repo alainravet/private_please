@@ -1,19 +1,14 @@
 
+install only in classes (? and modules)
+  def self.install
+    Object.send :include, PrivatePlease::Tracking::Extension
+    ^^^^^^
+    TOO WIDE
+  end
+
+
 DSL
-	- global method marking :
-
-		ex:
-
-			private_please :all
-		    def foo ..
-		    def bar ..
-			public
-
-		is the same as :
-			...
-	    def foo ..
-	    def bar ..
-			private_please :foo, :bar
+    - observe class methods too
 
 Report :
     - option : show file and line number of good candidate definition

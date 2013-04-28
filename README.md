@@ -1,6 +1,6 @@
 # PrivatePlease
 
-TODO: Write a gem description
+limitation : Ruby 1.8.7
 
 ## Installation
 
@@ -8,17 +8,61 @@ Add this line to your application's Gemfile:
 
     gem 'private_please'
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install private_please
-
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+
+require 'private_please'        # step 1
+
+class CouldBeMorePrivate
+  def to_s                      # not observed -> won't appear in the report.
+    # ...
+  end
+
+  private_please # << ~~~~~~~~~~~~~~ # step 2 : start observing ~~~~~~~~~~~~~~~~~~*
+
+  def do_the_thing                  # is called by class' users => must stay public (case #1)
+    part_1
+    part_2
+  end
+  def part_1 ; end                  # only called by #do_the_thing => should be private (case #2)
+  def part_2 ; end                  # only called by #do_the_thing => should be private (case #2)
+
+  def part_3 ; end                  # is never used -> will be detected. (case #3)
+end
+
+c = CouldBeMorePrivate.new  
+c.do_the_thing				    # step 3 : execute the code, so PP can observe and deduce.
+```
+A report is automatically printed in the console when the program exits.
+For the code above, the report would be :
+
+    ====================================================================================
+    =                               PrivatePlease report :                             =
+    ====================================================================================
+
+    **********************************************************
+    CouldBeMorePrivate
+    **********************************************************
+
+        * Good candidates : can be made private :
+        ------------------------------------------
+
+            #part_1
+            #part_2
+
+        * Bad candidates : must stay public/protected
+        ------------------------------------------
+
+            #do_the_thing
+
+        * Methods that were never called
+        ------------------------------------------
+
+            #part_3
+
+    ====================================================================================
+
 
 ## Contributing
 

@@ -18,4 +18,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake' # to run 'All specs' in Rubymine
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'guard-rspec'
+  gem.add_development_dependency 'rb-fsevent'
 end

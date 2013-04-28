@@ -1,0 +1,61 @@
+====================================================================================
+=                               PrivatePlease report :                             =
+====================================================================================
+% @candidates_classes_names .sort.each do |class_name|
+%
+%   good_lines =
+%     [good_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
+%      good_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
+%     ].reject(&:empty?)
+%   good_lines.insert(1, '') if good_lines.length == 2
+%   good_lines.flatten!
+%
+%   bad_lines =
+%     [bad_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
+%      bad_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
+%     ].reject(&:empty?)
+%   bad_lines.insert(1, '') if bad_lines.length == 2
+%   bad_lines.flatten!
+
+%   never_called_lines =
+%     [never_called_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
+%      never_called_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
+%     ]
+%   never_called_lines.insert(1, '') if never_called_lines.length == 2
+
+%
+**********************************************************
+<%= class_name
+%>
+**********************************************************
+%
+% unless good_lines.empty?
+
+    * Good candidates : can be made private :
+    ------------------------------------------
+
+%   good_lines.each do |line|
+        <%= line %>
+%   end
+% end
+% unless bad_lines.empty?
+
+    * Bad candidates : must stay public/protected
+    ------------------------------------------
+
+%   bad_lines.each do |line|
+        <%= line %>
+%   end
+% end
+%
+% unless never_called_lines.empty?
+
+    * Methods that were never called
+    ------------------------------------------
+%   never_called_lines.each do |line|
+        <%= line %>
+%   end
+% end
+
+% end
+====================================================================================
