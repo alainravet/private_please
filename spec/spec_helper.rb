@@ -32,7 +32,7 @@ def assert_class_methods_candidates(raw_expected)
   expected = raw_expected.to_methods_names_bucket if raw_expected.is_a?(Hash)
   PrivatePlease.candidates_store.class_methods.should == expected
 end
-
+alias :assert_singleton_methods_candidates :assert_class_methods_candidates
 
 
 def assert_calls_detected(expected)

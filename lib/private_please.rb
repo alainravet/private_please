@@ -10,6 +10,7 @@ require 'private_please/tracking/line_change_tracker'
 require 'private_please/tracking/extension'
 require 'private_please/tracking/instrumentor'
 require 'private_please/tracking/instruments_all_below'
+require 'private_please/tracking/automatic_mode_instrumentation'
 
 module PrivatePlease
 
