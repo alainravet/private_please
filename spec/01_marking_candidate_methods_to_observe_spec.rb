@@ -6,55 +6,7 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
   let(:candidates_store) { PrivatePlease.storage }
 
 # ----------------
-  context 'observing with `private_please(<method names>)`' do
-# ----------------
-
-    it('stores the instance methods names in the candidates list, indexed by their owning class') do
-      class MarkingTest::Simple1
-        def foo ; 'foo' end
-        def bar ; 'bar' end
-        def buz ; 'bar' end
-        private_please  :bar, 'buz'    # <<-- what we test
-      end
-
-      assert_instance_methods_candidates 'MarkingTest::Simple1' =>[:bar, :buz]
-    end
-
-
-    it('does not work with class methods') do
-      class MarkingTest::Simple1b
-        def self.found ; 'I am a class method' end
-        private_please  :found    # <<-- class method => not observed
-      end
-
-      assert_instance_methods_candidates ({})
-      assert_class_methods_candidates    ({})
-    end
-
-    it('ignores invalid candidates (method not found in the class)') do
-      class MarkingTest::Simple2
-        def found ; 'foo' end
-        private_please  :found             # <<-- valid
-        private_please  :not_found_method  # <<-- not found => INvalid
-      end
-
-      assert_instance_methods_candidates 'MarkingTest::Simple2' =>[:found]
-    end
-
-    it('ignores duplicates') do
-      class MarkingTest::Simple3
-        def found ; 'foo' end
-        private_please  :found             #
-        private_please  :found             # duplicate -> ignore
-      end
-
-      assert_instance_methods_candidates 'MarkingTest::Simple3' =>[:found]
-    end
-  end
-
-
-# ----------------
-  context 'observing with `private_please()`' do
+  context 'observing with `private_please`' do
 # ----------------
 
     example 'all the instance methods defined after `private_please` are stored as candidates' do

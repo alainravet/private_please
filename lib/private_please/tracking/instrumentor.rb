@@ -1,21 +1,7 @@
 module PrivatePlease ; module Tracking
+
   module Instrumentor
   class << self
-
-    def instrument_instance_methods_for_pp_observation(klass, methods_to_observe)
-      class_instance_methods = klass.instance_methods.collect(&:to_sym)
-      methods_to_observe = methods_to_observe.collect(&:to_sym)
-      # reject invalid methods names
-      methods_to_observe.reject! do |m|
-        already_defined_instance_method = class_instance_methods.include?(m)
-        invalid = !already_defined_instance_method
-      end
-
-      methods_to_observe.each do |method_name|
-        candidate = Candidate.for_instance_method(klass, method_name)
-        instrument_candidate_for_pp_observation(candidate) # end
-      end
-    end
 
     def add_call_tracking_code_to(candidate)
       return if candidate.already_instrumented?
