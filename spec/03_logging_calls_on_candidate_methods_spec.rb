@@ -8,9 +8,6 @@ describe PrivatePlease, 'calling observed methods and logging calls in 2 categor
 #-----------------------------------------------------------------------------------------------------------------------
   end
 
-
-  NO_CALLS_OBSERVED = {}
-
   example ('pure internal calls are categorized correctly') do
     CallsSample::Simple.new.make_internal_calls
     assert_calls_detected :inside     => {'CallsSample::Simple' => mnames_for([:instance_m_1, :instance_m_2])},
