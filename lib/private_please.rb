@@ -26,6 +26,6 @@ end
 
 PrivatePlease.install
 at_exit {
-  report = PrivatePlease::Reporter::SimpleText.new(candidates_store, calls_store)
+  report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
   $stdout.puts report.text
 }
