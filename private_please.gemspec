@@ -1,5 +1,11 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/private_please/version', __FILE__)
+if RUBY_VERSION == '1.8.7'
+  # avoid double-require of version.rb - see http://bit.ly/18lspBV 
+  $:.unshift File.expand_path("../lib", __FILE__)
+  require "private_please/version"
+else
+  require File.expand_path('../lib/private_please/version', __FILE__)
+end
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Alain Ravet"]
