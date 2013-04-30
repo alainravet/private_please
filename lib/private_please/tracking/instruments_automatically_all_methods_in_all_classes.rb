@@ -7,7 +7,7 @@ class Class
     return if is_private_class_method
   
     candidate = PrivatePlease::Candidate.for_class_method(klass = self, method_name)
-    PrivatePlease::Tracking::Instrumentor.instrument_candidate_for_pp_observation(candidate)
+    PrivatePlease::Tracking::Instrumentor.add_call_tracking_code_to(candidate)
   end
 
   def method_added(method_name)
@@ -17,7 +17,7 @@ class Class
     return if is_private_instance_method
   
     candidate = PrivatePlease::Candidate.for_instance_method(klass = self, method_name)
-    PrivatePlease::Tracking::Instrumentor.instrument_candidate_for_pp_observation(candidate)
+    PrivatePlease::Tracking::Instrumentor.add_call_tracking_code_to(candidate)
   end
 end
 
@@ -31,7 +31,7 @@ class Module
     return if is_private_class_method
 
     candidate = PrivatePlease::Candidate.for_class_method(klass = self, method_name)
-    PrivatePlease::Tracking::Instrumentor.instrument_candidate_for_pp_observation(candidate)
+    PrivatePlease::Tracking::Instrumentor.add_call_tracking_code_to(candidate)
   end
   #
   def method_added(method_name)
@@ -41,7 +41,7 @@ class Module
     return if is_private_instance_method
 
     candidate = PrivatePlease::Candidate.for_instance_method(klass = self, method_name)
-    PrivatePlease::Tracking::Instrumentor.instrument_candidate_for_pp_observation(candidate)
+    PrivatePlease::Tracking::Instrumentor.add_call_tracking_code_to(candidate)
   end
 end
 

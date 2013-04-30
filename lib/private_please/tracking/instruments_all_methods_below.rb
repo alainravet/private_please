@@ -1,7 +1,7 @@
 # Usage :
 #   class MarkingTest::Automatic2
 #     def foo ; end          <---- but not this one.
-#     include PrivatePlease::Tracking::InstrumentsAllBelow  <-- add this line
+#     include PrivatePlease::Tracking::InstrumentsAllMethodsBelow  <-- add this line
 #
 #     def baz ; end          <---- to observe this method
 #   protected
@@ -10,7 +10,7 @@
 
 module PrivatePlease ; module Tracking
 
-  module InstrumentsAllBelow
+  module InstrumentsAllMethodsBelow
     include PrivatePlease::Tracking::Extension
 
     def self.included(base)
@@ -23,7 +23,7 @@ module PrivatePlease ; module Tracking
         return if is_private_class_method
 
         candidate = Candidate.for_class_method(klass = self, method_name)
-        Tracking::Instrumentor.instrument_candidate_for_pp_observation(candidate)
+        Instrumentor.add_call_tracking_code_to(candidate)
       end
 
 
@@ -32,7 +32,7 @@ module PrivatePlease ; module Tracking
         return if is_private_instance_method
 
         candidate = Candidate.for_instance_method(klass = self, method_name)
-        Tracking::Instrumentor.instrument_candidate_for_pp_observation(candidate)
+        Instrumentor.add_call_tracking_code_to(candidate)
       end
     end
 

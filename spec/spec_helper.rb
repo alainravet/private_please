@@ -55,6 +55,12 @@ def mnames_for(args)
   PrivatePlease::Storage::MethodsNames.new(Array(args))
 end
 
+module PrivatePlease
+  def self.reset_before_new_test
+    @@_calls_store = @@_candidates_store = nil
+  end
+end
+
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true

@@ -1,24 +1,12 @@
+require File.dirname(__FILE__) + '/base'
 require 'erb'
-module  PrivatePlease ; module Report
-  class Reporter
+module  PrivatePlease ; module Reporter
+
+  class SimpleText < Base
 
     TEMPLATE_PATH     = File.expand_path(File.dirname(__FILE__) + '/templates/simple.txt.erb')
 
-    attr_reader :candidates_store, :calls_store,
-                :good_candidates, :bad_candidates,
-                :good_candidates_c, :bad_candidates_c,
-                :never_called_candidates, :never_called_candidates_c,
-                :building_time
-
-
-    def initialize(candidates_store, calls_store)
-      @candidates_store = candidates_store
-      @calls_store      = calls_store
-
-      prepare_report_data
-    end
-
-    def to_s
+    def text
       erb = ERB.new(File.read(TEMPLATE_PATH), 0,  "%<>")
       erb.result(binding)
     end
@@ -49,4 +37,5 @@ module  PrivatePlease ; module Report
       @never_called_candidates_classes_names = (@never_called_candidates_c .classes_names + @never_called_candidates.classes_names).uniq.sort
     end
   end
+
 end end

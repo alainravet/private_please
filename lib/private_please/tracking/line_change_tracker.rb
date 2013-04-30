@@ -2,8 +2,11 @@ module PrivatePlease ; module Tracking
 
   class LineChangeTracker
     class << self
+
       attr_accessor :prev_prev_self, :prev_self, :curr_self
       @@prev_self = @@curr_self = nil
+
+      alias :call_initiator :prev_self 
     end
 
     MY_TRACE_FUN = lambda do |event, file, line, id, binding, klass|
@@ -14,23 +17,6 @@ module PrivatePlease ; module Tracking
       #puts "my : #{event} in #{file}/#{line} id:#{id} klass:#{klass} - self = #{(eval'self', binding).inspect}"
     end
 
-    def self.outside_instance_method_call_detected?(zelf)
-      caller_class != zelf.class
-    end
-
-    def self.outside_class_method_call_detected?(zelf_class)
-      caller_class != zelf_class
-    end
-
-  private
-
-    def self.caller_class
-      call_initiator = LineChangeTracker.prev_self
-      (caller_is_class_method = call_initiator.is_a?(Class)) ?
-          call_initiator :
-          call_initiator.class
-    end
   end
-end end
 
-set_trace_func(PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN) #
+end end
