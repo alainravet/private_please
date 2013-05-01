@@ -3,7 +3,6 @@ require 'private_please/ruby_backports'
 require 'private_please/candidate'
 require 'private_please/storage'
 require 'private_please/reporter'
-require 'private_please/tracking'
 
 module PrivatePlease
 
@@ -27,6 +26,7 @@ module PrivatePlease
   end
 end
 
+require 'private_please/tracking'
 
 at_exit {
   report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)

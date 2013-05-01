@@ -1,3 +1,4 @@
+require 'private_please/tracking/line_change_tracker'
 module PrivatePlease
   module Tracking
 
@@ -38,8 +39,7 @@ module PrivatePlease
   end 
 end
 
-require File.dirname(__FILE__) + '/tracking/instruments_automatically_all_methods_in_all_classes'
-require File.dirname(__FILE__) + '/tracking/extension'
-require File.dirname(__FILE__) + '/tracking/instrumentor'
-require File.dirname(__FILE__) + '/tracking/instruments_all_methods_below'
-require File.dirname(__FILE__) + '/tracking/line_change_tracker'
+require 'private_please/tracking/instrumentor'
+require 'private_please/tracking/extension'
+require 'private_please/tracking/instruments_all_methods_below'
+require 'private_please/tracking/instruments_automatically_all_methods_in_all_classes'
