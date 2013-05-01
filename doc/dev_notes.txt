@@ -16,8 +16,9 @@ How to test on multiple versions of Ruby :
    # install the rbenv-each plugin
    $ rbenv each -v bundle exec ruby -Ilib rspec
 
+
 How to run the latest PP code on a custom Ruby code sample :
 ======================================================
  
     $ cd <project root>
-    $ ruby -Ilib a/local/path/to/a/sample.rb
+    $ bundle exec ruby -Ilib doc/fixtures/sample.rb
