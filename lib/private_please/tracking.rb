@@ -22,7 +22,9 @@ module PrivatePlease
 
       def caller_class
         call_initiator = LineChangeTracker.call_initiator
-        raise "**$$ ERROR : nil == LineChangeTracker.call_initiator" if call_initiator.nil?
+        if call_initiator.nil?
+          #TODO : investigate why and how this happens
+        end
         (caller_is_class_method = call_initiator.is_a?(Class)) ?
             call_initiator :
             call_initiator.class
