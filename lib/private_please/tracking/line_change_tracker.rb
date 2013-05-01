@@ -6,7 +6,11 @@ module PrivatePlease ; module Tracking
       attr_accessor :prev_prev_self, :prev_self, :curr_self
       @@prev_self = @@curr_self = nil
 
-      alias :call_initiator :prev_self 
+      alias :call_initiator :prev_self
+      
+      def reset
+        prev_prev_self = prev_self = curr_self = nil  
+      end
     end
 
     MY_TRACE_FUN = lambda do |event, file, line, id, binding, klass|

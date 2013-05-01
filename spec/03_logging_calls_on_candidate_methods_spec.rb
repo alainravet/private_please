@@ -4,9 +4,10 @@ describe PrivatePlease, 'calling observed methods and logging calls in 2 categor
 
   before do
 #-----------------------------------------------------------------------------------------------------------------------
-    require File.dirname(__FILE__) + '/fixtures/sample_class_with_all_calls_combinations'
+    load File.dirname(__FILE__) + '/fixtures/sample_class_with_all_calls_combinations.rb'
 #-----------------------------------------------------------------------------------------------------------------------
   end
+  after { Object.send(:remove_const, :CallsSample) }
 
   example ('pure internal calls are categorized correctly') do
     CallsSample::Simple.new.make_internal_calls
