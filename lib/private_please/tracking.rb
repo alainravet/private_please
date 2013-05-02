@@ -41,6 +41,7 @@ module PrivatePlease
   end 
 end
 
+require 'private_please/tracking/utils'
 require 'private_please/tracking/instrumentor'
 require 'private_please/tracking/extension'
 require 'private_please/tracking/instruments_all_methods_below'

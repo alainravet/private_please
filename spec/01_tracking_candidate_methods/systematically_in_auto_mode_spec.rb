@@ -28,14 +28,12 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
     example '.included and #included are 2 methods we track in classes.' do
       class AutFlatClass::Case2
         def foo           ; end     #
-        def included      ; end     # : not a special name in classes
 
         def self.baz      ; end     # 
-        def self.included ; end     # : not a special name in classes
       end
 
-      assert_instance_methods_candidates    'AutFlatClass::Case2' => [:foo, :included]
-      assert_singleton_methods_candidates   'AutFlatClass::Case2' => [:baz, :included]
+      assert_instance_methods_candidates    'AutFlatClass::Case2' => [:foo]
+      assert_singleton_methods_candidates   'AutFlatClass::Case2' => [:baz]
     end
 
 
@@ -64,10 +62,6 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
       assert_instance_methods_candidates    ({})
       assert_singleton_methods_candidates   ({})
     end
-
-    example 'base <Class> methods and private methods are not tracked'
-    # TIV : OBJECT_UNTRACKED_METHODS = Hash[*(Object.private_methods+Object.methods).map{|mn| [mn,false]}.flatten]
-    #       OBJECT_UNTRACKED_METHODS.keys = list of base methods to not track.
   end
 
 # ----------------
@@ -124,9 +118,6 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
       assert_singleton_methods_candidates   ({})
     end
 
-    example 'base <Module> methods and private methods are not tracked'
-    # TIV : OBJECT_UNTRACKED_METHODS = Hash[*(Object.private_methods+Object.methods).map{|mn| [mn,false]}.flatten]
-    #       OBJECT_UNTRACKED_METHODS.keys = list of base methods to not track.
   end
 
 
@@ -157,4 +148,40 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
     end
 
   end
+
+
+# ----------------
+  describe 'overridden methods are not tracked in classes' do
+# ----------------
+    module ImplOverridingTest ; end
+    
+    example 'overridden methods are NOT marked as candidate' do
+      module ImplOverridingTest
+        class Base  
+          def base_t_foo        ; end # is tracked
+          def self.c_base_t_foo ; end # is tracked
+        private
+          def base_priv         ; end # private => not tracked
+        end
+
+        class Overrider < Base
+          def base_priv         ; end   # overriding a private method => not tracked
+          def base_yes          ; end   # new -> tracked
+          def self.c_base_yes   ; end   # new -> tracked
+        
+          def base_t_foo        ; end   # NOT tracked
+          def self.c_base_t_foo ; end   # NOT tracked
+          
+          def to_s              ; end   # NOT tracked
+        end
+      end
+
+      assert_instance_methods_candidates 'ImplOverridingTest::Base'      => [:base_t_foo],
+                                         'ImplOverridingTest::Overrider' => [:base_yes]
+      assert_class_methods_candidates    'ImplOverridingTest::Base'      => [:c_base_t_foo],
+                                         'ImplOverridingTest::Overrider' => [:c_base_yes]
+    end
+  end
+
+
 end

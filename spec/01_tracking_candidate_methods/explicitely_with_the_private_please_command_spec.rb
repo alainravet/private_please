@@ -31,11 +31,10 @@ describe PrivatePlease, 'collecting the details of selected candidate-methods to
         def self.baz ; end       #    YES
       public                     #    *
         def self.qux ; end       #    YES
-        def self.included ; end  #    * special name, but valid candidate (in classes).
       end
 
       assert_instance_methods_candidates ({})
-      assert_class_methods_candidates    'MarkingTest::Automatic1b' =>[:baz, :qux, :included]
+      assert_class_methods_candidates    'MarkingTest::Automatic1b' =>[:baz, :qux]
     end
 
     example ('already private methods are ignored/not observed') do
@@ -77,6 +76,43 @@ describe PrivatePlease, 'collecting the details of selected candidate-methods to
     end
   end
 
+# ----------------
+  describe 'overridden methods are not tracked' do
+# ----------------
+    module ExplOverridingTest ; end
+    
+    example 'overridden methods are NOT marked as candidate' do
+      module ExplOverridingTest::UserClasses
+        class Base                    #  
+          def base_foo        ; end   #
+          def self.c_base_foo ; end   #
+        private_please                # <start tracking>
+          def base_t_bar        ; end # is tracked
+          def self.c_base_t_bar ; end # is tracked
+        private
+          def base_priv         ; end # private => not tracked
+        end
 
+        class Overrider < Base
+        private_please                  # <start tracking>
+          def base_priv         ; end   # overriding a private method => not tracked
+          def base_yes          ; end   # new -> tracked
+          def self.c_base_yes   ; end   # new -> tracked
+        
+          def base_foo          ; end   # NOT tracked
+          def base_t_bar        ; end   # NOT tracked
+          def self.c_base_foo   ; end   # NOT tracked
+          def self.c_base_t_bar ; end   # NOT tracked
+          
+          def to_s              ; end   # NOT tracked
+        end
+      end
+
+      assert_instance_methods_candidates 'ExplOverridingTest::UserClasses::Base'      => [:base_t_bar],
+                                         'ExplOverridingTest::UserClasses::Overrider' => [:base_yes]
+      assert_class_methods_candidates    'ExplOverridingTest::UserClasses::Base'      => [:c_base_t_bar],
+                                         'ExplOverridingTest::UserClasses::Overrider' => [:c_base_yes]
+    end
+  end
 
 end
