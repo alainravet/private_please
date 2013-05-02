@@ -30,8 +30,10 @@ end
 require 'private_please/tracking'
 
 at_exit {
-  report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
-  $stdout.puts report.text
+  unless $private_please_tests_are_running
+    report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
+    $stdout.puts report.text 
+  end
 }
 
 PrivatePlease.install

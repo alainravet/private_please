@@ -81,9 +81,6 @@ describe 'PrivatePlease.reporter', 'observing an instrumented program activity' 
             'ActivityTest::Simple2'  =>  mnames_for([:ignored_c3])
         }
     }
-    puts the_report.to_s
-    puts "\n***reporter building time : #{the_report.building_time} sec."
-
   end
 
 end

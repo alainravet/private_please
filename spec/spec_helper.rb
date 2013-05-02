@@ -72,3 +72,5 @@ RSpec.configure do |config|
 end
 
 require File.dirname(__FILE__) + '/../lib/private_please'
+
+$private_please_tests_are_running = true
