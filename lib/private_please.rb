@@ -5,6 +5,10 @@ require 'private_please/storage'
 require 'private_please/report'
 require 'private_please/reporter'
 
+at_exit do
+  PrivatePlease.at_exit
+end
+
 module PrivatePlease
 
   def self.install
@@ -25,16 +29,16 @@ module PrivatePlease
     Tracking::LineChangeTracker.reset
     set_trace_func nil
   end
+
+  def self.at_exit
+    report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
+    unless $private_please_tests_are_running
+      $stdout.puts report.text 
+    end
+  end
 end
 
 require 'private_please/tracking'
-
-at_exit {
-  unless $private_please_tests_are_running
-    report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
-    $stdout.puts report.text 
-  end
-}
 
 PrivatePlease.install
 if $automatic_private_please_tracking
