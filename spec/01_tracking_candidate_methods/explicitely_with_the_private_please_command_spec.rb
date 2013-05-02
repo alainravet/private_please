@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PrivatePlease, 'collecting the details of candidate-methods to observe' do
+describe PrivatePlease, 'collecting the details of selected candidate-methods to observe' do
   module MarkingTest; end
 
   let(:candidates_store) { PrivatePlease.storage }
@@ -58,8 +58,6 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
 
 
     example 'method coming from an included module are observed too' do
-#TODO : find a better way to instrument modules
-#TODO : find a way to instrument modules automatically (? possible)
 
       module Extra002               ; private_please end  # <<=== Pre-instrument.
       module Extra002::ClassMethods ; private_please end  # <<=== Pre-instrument.
@@ -80,26 +78,5 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
   end
 
 
-# ----------------
-  context 'observing with `include PrivatePlease::Tracking::InstrumentsAllMethodsBelow`' do
-# ----------------
-
-    example 'all the methods defined subsequently are stored as candidates' do
-
-      class MarkingTest::Automatic2
-        def foo ; end
-        def bar ; end
-        include PrivatePlease::Tracking::InstrumentsAllMethodsBelow # ---> # <start observing>
-        def baz ; end                          #    YES
-        def self.class_m1; end                 #    YES
-      protected                                #
-        def qux ; end                          #    YES
-      end
-
-      assert_instance_methods_candidates 'MarkingTest::Automatic2' =>[:baz, :qux]
-      assert_class_methods_candidates    'MarkingTest::Automatic2' =>[:class_m1]
-    end
-
-  end
 
 end
