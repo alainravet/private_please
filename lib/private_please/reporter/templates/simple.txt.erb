@@ -3,59 +3,73 @@
 ====================================================================================
 % @candidates_classes_names .sort.each do |class_name|
 %
-%   good_lines =
-%     [good_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
-%      good_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
-%     ].reject(&:empty?)
-%   good_lines.insert(1, '') if good_lines.length == 2
-%   good_lines.flatten!
+%   show_good_candidates_section    = true
+%   show_bad_candidates_section     = show_bad_candidates_section?
+%   show_never_candidates_section   = show_never_called_candidates_section?
 %
-%   bad_lines =
-%     [bad_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
-%      bad_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
-%     ].reject(&:empty?)
-%   bad_lines.insert(1, '') if bad_lines.length == 2
-%   bad_lines.flatten!
-
-%   never_called_lines =
-%     [never_called_candidates_c.get_methods_names(class_name).collect{|n|".#{n}"},
-%      never_called_candidates  .get_methods_names(class_name).collect{|n|"##{n}"}
-%     ]
-%   never_called_lines.insert(1, '') if never_called_lines.length == 2
-
+%   if show_good_candidates_section
+%     good_candidates_table = table_for( 
+%                             names_from(class_name, good_candidates  , prefix = "#"), 
+%                             names_from(class_name, good_candidates_c, prefix = "."))
+%   end
+%   if show_bad_candidates_section
+%     bad_candidates_table = table_for( 
+%                             names_from(class_name, bad_candidates  , prefix = "#"), 
+%                             names_from(class_name, bad_candidates_c, prefix = "."))  
+%   end
+%   if show_never_candidates_section
+%     never_called_candidates_table = table_for( 
+%                             names_from(class_name, never_called_candidates  , prefix = "#"), 
+%                             names_from(class_name, never_called_candidates_c, prefix = "."))
+%   end
 %
-**********************************************************
+% # Always hide empty tables :  
+% ###########################  
+%   show_good_candidates_section    &&= !good_candidates_table.empty? 
+%   show_bad_candidates_section     &&= !bad_candidates_table.empty? 
+%   show_never_candidates_section   &&= !never_called_candidates_table.empty? 
+%
+
 <%= class_name
 %>
-**********************************************************
 %
-% unless good_lines.empty?
+% if show_good_candidates_section
+%   t = good_candidates_table
 
     * Good candidates : can be made private :
     ------------------------------------------
-
-%   good_lines.each do |line|
-        <%= line %>
-%   end
-% end
-% unless bad_lines.empty?
-
-    * Bad candidates : must stay public/protected
-    ------------------------------------------
-
-%   bad_lines.each do |line|
-        <%= line %>
+%   cell_width = 3 + [38, t.longest_value_length].max
+%   t.rows.each do |inst_m, class_m|
+      <%= inst_m && inst_m.ljust(cell_width) %><%= class_m && class_m.ljust(cell_width) %>
 %   end
 % end
 %
-% unless never_called_lines.empty?
+% if show_bad_candidates_section
+%   t = bad_candidates_table
 
-    * Methods that were never called
-    ------------------------------------------
-%   never_called_lines.each do |line|
-        <%= line %>
+    * Bad candidates : must stay public/protected:
+    . . . . . . . . . . . . . . . . . . . . . 
+%  cell_width = 3 + [38, t.longest_value_length].max
+%   t.rows.each do |inst_m, class_m|
+      <%= inst_m && inst_m.ljust(cell_width) %><%= class_m && class_m.ljust(cell_width) %>
 %   end
 % end
+%
+% if show_never_candidates_section
+%   t = never_called_candidates_table
 
+    * Methods that were never called :
+    . . . . . . . . . . . . . . . . . . . . . 
+%  cell_width = 3 + [38, t.longest_value_length].max
+%   t.rows.each do |inst_m, class_m|
+      <%= inst_m && inst_m.ljust(cell_width) %><%= class_m && class_m.ljust(cell_width) %>
+%   end
 % end
+% 
+% end
+
 ====================================================================================
+% if ENV['PP_OPTIONS']
+Default display overriden :
+ $PP_OPTIONS = <%= ENV['PP_OPTIONS'].inspect %>
+% end

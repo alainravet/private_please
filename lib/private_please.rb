@@ -2,6 +2,7 @@ require 'private_please/version'
 require 'private_please/ruby_backports'
 require 'private_please/candidate'
 require 'private_please/storage'
+require 'private_please/report'
 require 'private_please/reporter'
 
 module PrivatePlease

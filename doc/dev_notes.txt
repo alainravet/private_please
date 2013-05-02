@@ -21,4 +21,12 @@ How to run the latest PP code on a custom Ruby code sample :
 ======================================================
  
     $ cd <project root>
-    $ bundle exec ruby -Ilib doc/fixtures/sample.rb
+    $ bundle exec ruby -Ilib doc/fixtures/complex.rb
+    
+How to display more than the list of methods that can be made private ?
+======================================================
+
+    $ export PP_OPTIONS="--show-bad-candidates --show-never-called"
+    $ bundle exec ruby -Ilib doc/fixtures/complex.rb
+or
+    $ PP_OPTIONS="--show-bad-candidates --show-never-called"  bundle exec ruby -Ilib doc/fixtures/complex.rb

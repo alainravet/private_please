@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/base'
 require 'erb'
+require File.dirname(__FILE__) + '/helpers/text_table_helpers'
 module  PrivatePlease ; module Reporter
 
   class SimpleText < Base
@@ -17,17 +18,20 @@ module  PrivatePlease ; module Reporter
       start_time = Time.now
       @bad_candidates   = calls_store.external_calls      .clone
       @bad_candidates_c = calls_store.class_external_calls.clone
-      # TODO : optimize
+      # TODO : optimize (with Hamster?)
       @good_candidates  = calls_store.internal_calls      .clone.remove(@bad_candidates)
       @good_candidates_c= calls_store.class_internal_calls.clone.remove(@bad_candidates_c)
 
       @never_called_candidates = candidates_store.instance_methods.clone.
           remove(@good_candidates).
           remove(@bad_candidates )
-
+      
       @never_called_candidates_c = candidates_store.class_methods.clone.
           remove(@good_candidates_c).
           remove(@bad_candidates_c )
+      [
+          @bad_candidates, @bad_candidates_c, @good_candidates, @good_candidates_c, @never_called_candidates, @never_called_candidates_c
+      ].each {|arr| arr.reject!{|k, v| v.empty?}}
       @building_time = Time.now - start_time
 
       @candidates_classes_names      = (candidates_store.instance_methods.classes_names +
