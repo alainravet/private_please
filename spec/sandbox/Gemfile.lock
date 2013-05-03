@@ -1,0 +1,14 @@
+PATH
+  remote: ../..
+  specs:
+    private_please (0.0.4rc)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  private_please!
