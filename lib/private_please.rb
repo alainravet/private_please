@@ -13,7 +13,13 @@ module PrivatePlease
 
   def self.install
     Module.send :include, PrivatePlease::Tracking::Extension
+    PrivatePlease.pp_automatic_mode_enable
+    set_trace_func PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN
   end
+
+  def self.pp_automatic_mode_enabled? ; !!$pp_automatic_mode_enabled          end
+  def self.pp_automatic_mode_enable   ;   $pp_automatic_mode_enabled =  true  end
+  def self.pp_automatic_mode_disable  ;   $pp_automatic_mode_enabled = false  end
 
   # TODO : replace class methods by PP instance + instance methods
   def self.calls_store
@@ -41,6 +47,3 @@ end
 require 'private_please/tracking'
 
 PrivatePlease.install
-if $automatic_private_please_tracking
-  set_trace_func PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN
-end

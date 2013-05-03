@@ -68,9 +68,11 @@ RSpec.configure do |config|
 
   config.before(:each) do
     PrivatePlease.reset
+    PrivatePlease.pp_automatic_mode_disable
   end
 end
 
 require File.dirname(__FILE__) + '/../lib/private_please'
+PrivatePlease.pp_automatic_mode_disable
 
 $private_please_tests_are_running = true

@@ -1,13 +1,3 @@
-# Usage :
-#   class MarkingTest::Automatic2
-#     def foo ; end          <---- but not this one.
-#     include PrivatePlease::Tracking::InstrumentsAllMethodsBelow  <-- add this line
-#
-#     def baz ; end          <---- to observe this method
-#   protected
-#     def self.qux ; end     <---- and this one too
-#   end
-
 module PrivatePlease ; module Tracking
 
   module InstrumentsAllMethodsBelow
