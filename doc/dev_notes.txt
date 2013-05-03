@@ -1,0 +1,32 @@
+Q: Where is the TODO list :
+A: https://github.com/alainravet/private_please/issues?state=open
+
+How to run the tests :
+========================
+
+    $ cd <project root>
+    $ bundle exec rspec
+  or
+    $ bundle exec guard  # (see https://github.com/alainravet/private_please/issues/10)
+
+
+How to test on multiple versions of Ruby :
+============================================
+   # install rbenv + multiple versions of Ruby
+   # install the rbenv-each plugin
+   $ rbenv each -v bundle exec ruby -Ilib rspec
+
+
+How to run the latest PP code on a custom Ruby code sample :
+======================================================
+ 
+    $ cd <project root>
+    $ bundle exec ruby -Ilib doc/fixtures/complex.rb
+    
+How to display more than the list of methods that can be made private ?
+======================================================
+
+    $ export PP_OPTIONS="--show-bad-candidates --show-never-called"
+    $ bundle exec ruby -Ilib doc/fixtures/complex.rb
+or
+    $ PP_OPTIONS="--show-bad-candidates --show-never-called"  bundle exec ruby -Ilib doc/fixtures/complex.rb

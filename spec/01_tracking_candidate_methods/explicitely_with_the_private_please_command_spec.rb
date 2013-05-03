@@ -1,60 +1,12 @@
 require 'spec_helper'
 
-describe PrivatePlease, 'collecting the details of candidate-methods to observe' do
+describe PrivatePlease, 'collecting the details of selected candidate-methods to observe' do
   module MarkingTest; end
 
   let(:candidates_store) { PrivatePlease.storage }
 
 # ----------------
-  context 'observing with `private_please(<method names>)`' do
-# ----------------
-
-    it('stores the instance methods names in the candidates list, indexed by their owning class') do
-      class MarkingTest::Simple1
-        def foo ; 'foo' end
-        def bar ; 'bar' end
-        def buz ; 'bar' end
-        private_please  :bar, 'buz'    # <<-- what we test
-      end
-
-      assert_instance_methods_candidates 'MarkingTest::Simple1' =>[:bar, :buz]
-    end
-
-
-    it('does not work with class methods') do
-      class MarkingTest::Simple1b
-        def self.found ; 'I am a class method' end
-        private_please  :found    # <<-- class method => not observed
-      end
-
-      assert_instance_methods_candidates ({})
-      assert_class_methods_candidates    ({})
-    end
-
-    it('ignores invalid candidates (method not found in the class)') do
-      class MarkingTest::Simple2
-        def found ; 'foo' end
-        private_please  :found             # <<-- valid
-        private_please  :not_found_method  # <<-- not found => INvalid
-      end
-
-      assert_instance_methods_candidates 'MarkingTest::Simple2' =>[:found]
-    end
-
-    it('ignores duplicates') do
-      class MarkingTest::Simple3
-        def found ; 'foo' end
-        private_please  :found             #
-        private_please  :found             # duplicate -> ignore
-      end
-
-      assert_instance_methods_candidates 'MarkingTest::Simple3' =>[:found]
-    end
-  end
-
-
-# ----------------
-  context 'observing with `private_please()`' do
+  context 'observing with `private_please`' do
 # ----------------
 
     example 'all the instance methods defined after `private_please` are stored as candidates' do
@@ -79,11 +31,10 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
         def self.baz ; end       #    YES
       public                     #    *
         def self.qux ; end       #    YES
-        def self.included ; end  #    * special name, but valid candidate (in classes).
       end
 
       assert_instance_methods_candidates ({})
-      assert_class_methods_candidates    'MarkingTest::Automatic1b' =>[:baz, :qux, :included]
+      assert_class_methods_candidates    'MarkingTest::Automatic1b' =>[:baz, :qux]
     end
 
     example ('already private methods are ignored/not observed') do
@@ -106,8 +57,6 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
 
 
     example 'method coming from an included module are observed too' do
-#TODO : find a better way to instrument modules
-#TODO : find a way to instrument modules automatically (? possible)
 
       module Extra002               ; private_please end  # <<=== Pre-instrument.
       module Extra002::ClassMethods ; private_please end  # <<=== Pre-instrument.
@@ -127,27 +76,43 @@ describe PrivatePlease, 'collecting the details of candidate-methods to observe'
     end
   end
 
-
 # ----------------
-  context 'observing with `include PrivatePlease::Tracking::InstrumentsAllBelow`' do
+  describe 'overridden methods are not tracked' do
 # ----------------
+    module ExplOverridingTest ; end
+    
+    example 'overridden methods are NOT marked as candidate' do
+      module ExplOverridingTest::UserClasses
+        class Base                    #  
+          def base_foo        ; end   #
+          def self.c_base_foo ; end   #
+        private_please                # <start tracking>
+          def base_t_bar        ; end # is tracked
+          def self.c_base_t_bar ; end # is tracked
+        private
+          def base_priv         ; end # private => not tracked
+        end
 
-    example 'all the methods defined subsequently are stored as candidates' do
-
-      class MarkingTest::Automatic2
-        def foo ; end
-        def bar ; end
-        include PrivatePlease::Tracking::InstrumentsAllBelow # ---> # <start observing>
-        def baz ; end                          #    YES
-        def self.class_m1; end                 #    YES
-      protected                                #
-        def qux ; end                          #    YES
+        class Overrider < Base
+        private_please                  # <start tracking>
+          def base_priv         ; end   # overriding a private method => not tracked
+          def base_yes          ; end   # new -> tracked
+          def self.c_base_yes   ; end   # new -> tracked
+        
+          def base_foo          ; end   # NOT tracked
+          def base_t_bar        ; end   # NOT tracked
+          def self.c_base_foo   ; end   # NOT tracked
+          def self.c_base_t_bar ; end   # NOT tracked
+          
+          def to_s              ; end   # NOT tracked
+        end
       end
 
-      assert_instance_methods_candidates 'MarkingTest::Automatic2' =>[:baz, :qux]
-      assert_class_methods_candidates    'MarkingTest::Automatic2' =>[:class_m1]
+      assert_instance_methods_candidates 'ExplOverridingTest::UserClasses::Base'      => [:base_t_bar],
+                                         'ExplOverridingTest::UserClasses::Overrider' => [:base_yes]
+      assert_class_methods_candidates    'ExplOverridingTest::UserClasses::Base'      => [:c_base_t_bar],
+                                         'ExplOverridingTest::UserClasses::Overrider' => [:c_base_yes]
     end
-
   end
 
 end

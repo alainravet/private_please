@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'PrivatePlease.report', 'observing an instrumented program activity' do
+describe 'PrivatePlease.reporter', 'observing an instrumented program activity' do
 
   def run_the_instrumented_program
     ActivityTest::Simple.new.tap do |o|
@@ -49,7 +49,7 @@ describe 'PrivatePlease.report', 'observing an instrumented program activity' do
   # Note: test all in 1 go because testing in bits would fail, and it differs from real usage.
   it 'obtains the right info by observing the program activity' do
     run_the_instrumented_program
-    the_report = PrivatePlease.report
+    the_report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
     {
         :good_candidates  => the_report.good_candidates,
         :good_candidates_c => the_report.good_candidates_c,
@@ -81,9 +81,6 @@ describe 'PrivatePlease.report', 'observing an instrumented program activity' do
             'ActivityTest::Simple2'  =>  mnames_for([:ignored_c3])
         }
     }
-    puts the_report.to_s
-    puts "\n***report building time : #{the_report.building_time} sec."
-
   end
 
 end

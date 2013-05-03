@@ -6,7 +6,8 @@ tested with Ruby (1.8.7, 1.9.3, and 2.0.0) and JRuby(1.8 and 1.9 mode) - see [.t
 [![Build Status](https://travis-ci.org/alainravet/private_please.png?branch=master)](https://travis-ci.org/alainravet/private_please)
 (master)
 [![Build Status](https://travis-ci.org/alainravet/private_please.png?branch=nextversion)](https://travis-ci.org/alainravet/private_please)
-(nextversion)
+(nextversion) -
+[![Code Climate](https://codeclimate.com/github/alainravet/private_please.png)](https://codeclimate.com/github/alainravet/private_please)
 
 ## The problem
 

@@ -28,13 +28,21 @@ module PrivatePlease
     alias_method :instance_method?, :is_instance_method
 
     def already_instrumented?
-      candidates_store.stored?(self)
+      instrumented_candidates_store.stored?(self)
     end
+
+  #----------------------------------------------------------------------------
+  # SUGAR:
+  #----------------------------------------------------------------------------
+
+  def mark_as_instrumented
+    instrumented_candidates_store.store(self)    
+  end
 
   #----------------------------------------------------------------------------
   private
 
-    def candidates_store
+    def instrumented_candidates_store
       PrivatePlease.candidates_store
     end
   end

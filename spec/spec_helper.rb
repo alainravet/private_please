@@ -32,7 +32,7 @@ def assert_class_methods_candidates(raw_expected)
   expected = raw_expected.to_methods_names_bucket if raw_expected.is_a?(Hash)
   PrivatePlease.candidates_store.class_methods.should == expected
 end
-
+alias :assert_singleton_methods_candidates :assert_class_methods_candidates
 
 
 def assert_calls_detected(expected)
@@ -67,8 +67,10 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.before(:each) do
-    PrivatePlease.reset_before_new_test
+    PrivatePlease.reset
   end
 end
 
 require File.dirname(__FILE__) + '/../lib/private_please'
+
+$private_please_tests_are_running = true
