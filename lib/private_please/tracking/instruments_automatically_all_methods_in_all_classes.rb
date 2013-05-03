@@ -2,7 +2,7 @@
 class Class
 
   def singleton_method_added(method_name)
-    return unless $automatic_private_please_tracking
+    return unless PrivatePlease.pp_automatic_mode_enabled?
   
     return if PrivatePlease::Tracking::Utils.private_singleton_method?(self, method_name) \
            || PrivatePlease::Tracking::Utils.singleton_method_defined_by_ancestor?(self, method_name)
@@ -13,7 +13,7 @@ class Class
 
 
   def method_added(method_name)
-    return unless $automatic_private_please_tracking
+    return unless PrivatePlease.pp_automatic_mode_enabled?
 
     return if [:method_added].include?(method_name)
     return if PrivatePlease::Tracking::Utils.private_instance_method?(self, method_name) \
@@ -29,7 +29,7 @@ end
 class Module
   
   def singleton_method_added(method_name)
-    return unless $automatic_private_please_tracking
+    return unless PrivatePlease.pp_automatic_mode_enabled?
 
     return if [:included].include?(method_name) #&& !self.is_a?(Class)
     return if PrivatePlease::Tracking::Utils.private_singleton_method?(self, method_name)
@@ -40,7 +40,7 @@ class Module
 
 
   def method_added(method_name)
-    return unless $automatic_private_please_tracking
+    return unless PrivatePlease.pp_automatic_mode_enabled?
 
     return if [:method_added, :singleton_method_added].include?(method_name)
     return if PrivatePlease::Tracking::Utils.private_instance_method?(self, method_name)

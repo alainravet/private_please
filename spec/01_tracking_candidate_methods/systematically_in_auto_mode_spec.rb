@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe PrivatePlease, 'in $automatic mode, all the methods are tracked for observation by PP' do
 
-  before { $automatic_private_please_tracking = true }
-  after  { $automatic_private_please_tracking = false}
+  before { PrivatePlease.pp_automatic_mode_enable }
+  after  { PrivatePlease.pp_automatic_mode_disable}
 
   let(:candidates_store) { PrivatePlease.storage }
 
