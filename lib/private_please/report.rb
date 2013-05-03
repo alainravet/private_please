@@ -1,5 +1,5 @@
 module PrivatePlease
-  module Reporter
+  module Report
   end
 end
 

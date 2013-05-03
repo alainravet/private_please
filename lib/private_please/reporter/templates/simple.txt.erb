@@ -30,7 +30,7 @@
 %   show_never_candidates_section   &&= !never_called_candidates_table.empty? 
 %
 % nothing_to_show = !(show_good_candidates_section || show_bad_candidates_section || show_never_candidates_section)
-% next if nothing_to_show
+% next if nothing_to_show && !show_empty_classes?
 %
 <%= class_name
 %>

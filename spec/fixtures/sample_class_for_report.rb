@@ -1,3 +1,5 @@
+require 'private_please'
+
 module ReportSample
                                                 ###########################################
   class Simple                                  # Internal calls :                        #
