@@ -6,19 +6,19 @@ module PrivatePlease
 
       def after_instance_method_call(method_name, zelf_class)
         store_call_to_tracked_method(
-          candidate       = PrivatePlease::Candidate.for_instance_method(zelf_class, method_name), 
-          is_outside_call = (caller_class != zelf_class)
-        )
-      end
-    
-      def after_singleton_method_call(method_name, zelf_class)
-        store_call_to_tracked_method(
-          candidate       = PrivatePlease::Candidate.for_class_method(zelf_class, method_name), 
+          candidate       = PrivatePlease::Candidate.for_instance_method(zelf_class, method_name),
           is_outside_call = (caller_class != zelf_class)
         )
       end
 
-    private      
+      def after_singleton_method_call(method_name, zelf_class)
+        store_call_to_tracked_method(
+          candidate       = PrivatePlease::Candidate.for_class_method(zelf_class, method_name),
+          is_outside_call = (caller_class != zelf_class)
+        )
+      end
+
+    private
 
       def caller_class
         call_initiator = LineChangeTracker.call_initiator
@@ -35,10 +35,10 @@ module PrivatePlease
             PrivatePlease.calls_store.store_outside_call(candidate) :
             PrivatePlease.calls_store.store_inside_call( candidate)
       end
-      
+
     end
 
-  end 
+  end
 end
 
 require 'private_please/tracking/utils'

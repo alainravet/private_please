@@ -1,6 +1,6 @@
 module PrivatePlease
   module Reporter
-    
+
   end
 end
 

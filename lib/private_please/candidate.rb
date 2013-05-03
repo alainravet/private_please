@@ -36,7 +36,7 @@ module PrivatePlease
   #----------------------------------------------------------------------------
 
   def mark_as_instrumented
-    instrumented_candidates_store.store(self)    
+    instrumented_candidates_store.store(self)
   end
 
   #----------------------------------------------------------------------------

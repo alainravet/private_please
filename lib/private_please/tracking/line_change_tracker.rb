@@ -7,9 +7,9 @@ module PrivatePlease ; module Tracking
       @@prev_self = @@curr_self = nil
 
       alias :call_initiator :prev_self
-      
+
       def reset
-        prev_prev_self = prev_self = curr_self = nil  
+        prev_prev_self = prev_self = curr_self = nil
       end
     end
 

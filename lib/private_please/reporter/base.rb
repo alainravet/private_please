@@ -21,7 +21,7 @@ module  PrivatePlease ; module Reporter
   private
 
     def prepare_report_data
-      raise "prepare_report_data() ot implemented in the child class" 
+      raise "prepare_report_data() ot implemented in the child class"
     end
   end
 

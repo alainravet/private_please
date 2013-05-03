@@ -3,6 +3,6 @@ begin
   PrivatePlease::Storage
 rescue NameError
   # for  $ bundle exec ruby -Ilib doc/fixtures/empty_class.r
-  require 'private_please'  
+  require 'private_please'
 end
 PrivatePlease.pp_automatic_mode_enable

@@ -26,7 +26,7 @@ module  PrivatePlease ; module Reporter
       @never_called_candidates = candidates_store.instance_methods.clone.
           remove(@good_candidates).
           remove(@bad_candidates )
-      
+
       @never_called_candidates_c = candidates_store.class_methods.clone.
           remove(@good_candidates_c).
           remove(@bad_candidates_c )

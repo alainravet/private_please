@@ -39,7 +39,7 @@ module PrivatePlease
   def self.at_exit
     report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
     unless $private_please_tests_are_running
-      $stdout.puts report.text 
+      $stdout.puts report.text
     end
   end
 end
