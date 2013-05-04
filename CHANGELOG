@@ -1,3 +1,11 @@
+v0.0.4
+    - `private_please :foo, :bar` syntax is removed.
+    - auto-mode via `$ pp_ruby`
+    - improved report format (2 columns, empty sections are hidden, ..)
+    - report can be customized with PP_OPTIONS
+    - tested with 3 Ruby and 2 JRuby versions (Travis CI)
+    - big code cleanup (development)
+
 v0.0.3
     - private_please without parameters observes all the methods defined afterwards
     - PP is active once you require the gem
