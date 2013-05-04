@@ -4,8 +4,8 @@
 % data.candidates_classes_names .sort.each do |class_name|
 %
 %   show_good_candidates_section    = true
-%   show_bad_candidates_section     = show_bad_candidates_section?
-%   show_never_candidates_section   = show_never_called_candidates_section?
+%   show_bad_candidates_section     = options.show_bad_candidates_section?
+%   show_never_candidates_section   = options.show_never_called_candidates_section?
 %
 %   if show_good_candidates_section
 %     good_candidates_table = table_for(
@@ -30,8 +30,9 @@
 %   show_never_candidates_section   &&= !never_called_candidates_table.empty?
 %
 % nothing_to_show = !(show_good_candidates_section || show_bad_candidates_section || show_never_candidates_section)
-% next if nothing_to_show && !show_empty_classes?
+% next if nothing_to_show && !options.show_empty_classes?
 %
+
 <%= class_name
 %>
 %
@@ -71,7 +72,9 @@
 % end
 
 ====================================================================================
-% if ENV['PP_OPTIONS']
-Default display overriden :
- $PP_OPTIONS = <%= ENV['PP_OPTIONS'].inspect %>
+
+    Report options :
+% options_footer_parts.each do |o|
+        <%= (value = o[2]) ? "V" : 'x' %> <%= is_default = o[1] %> <%= display = o[0] %>
 % end
+    (PP_OPTIONS = <%= ENV['PP_OPTIONS'] %>)
