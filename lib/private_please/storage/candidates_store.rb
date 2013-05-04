@@ -28,6 +28,10 @@ module PrivatePlease
         bucket_for(candidate).get_methods_names(candidate.klass_name).include?(candidate.method_name)
       end
 
+      def classes_names
+        (instance_methods.classes_names + class_methods   .classes_names).uniq
+      end
+
     #--------------------------------------------------------------------------
     # COMMANDS:
     #--------------------------------------------------------------------------

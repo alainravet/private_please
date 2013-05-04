@@ -49,14 +49,14 @@ describe 'PrivatePlease.reporter', 'observing an instrumented program activity' 
   # Note: test all in 1 go because testing in bits would fail, and it differs from real usage.
   it 'obtains the right info by observing the program activity' do
     run_the_instrumented_program
-    the_report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
+    the_report_data = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store).data
     {
-        :good_candidates  => the_report.good_candidates,
-        :good_candidates_c => the_report.good_candidates_c,
-        :bad_candidates   => the_report.bad_candidates,
-        :bad_candidates_c => the_report.bad_candidates_c,
-        :ignored          => the_report.never_called_candidates,
-        :ignored_c        => the_report.never_called_candidates_c
+        :good_candidates   => the_report_data.good_candidates,
+        :good_candidates_c => the_report_data.good_candidates_c,
+        :bad_candidates    => the_report_data.bad_candidates,
+        :bad_candidates_c  => the_report_data.bad_candidates_c,
+        :ignored           => the_report_data.never_called_candidates,
+        :ignored_c         => the_report_data.never_called_candidates_c
     }.should == {
         :good_candidates  => {
             'ActivityTest::Simple'   =>  mnames_for([:good_candidate_4, :good_candidate_5, :good_candidate_7])

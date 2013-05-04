@@ -1,7 +1,7 @@
 ====================================================================================
 =                               PrivatePlease report :                             =
 ====================================================================================
-% @candidates_classes_names .sort.each do |class_name|
+% data.candidates_classes_names .sort.each do |class_name|
 %
 %   show_good_candidates_section    = true
 %   show_bad_candidates_section     = show_bad_candidates_section?
@@ -9,18 +9,18 @@
 %
 %   if show_good_candidates_section
 %     good_candidates_table = table_for(
-%                             names_from(class_name, good_candidates  , prefix = "#"),
-%                             names_from(class_name, good_candidates_c, prefix = "."))
+%                             names_from(class_name, data.good_candidates  , prefix = "#"),
+%                             names_from(class_name, data.good_candidates_c, prefix = "."))
 %   end
 %   if show_bad_candidates_section
 %     bad_candidates_table = table_for(
-%                             names_from(class_name, bad_candidates  , prefix = "#"),
-%                             names_from(class_name, bad_candidates_c, prefix = "."))
+%                             names_from(class_name, data.bad_candidates  , prefix = "#"),
+%                             names_from(class_name, data.bad_candidates_c, prefix = "."))
 %   end
 %   if show_never_candidates_section
 %     never_called_candidates_table = table_for(
-%                             names_from(class_name, never_called_candidates  , prefix = "#"),
-%                             names_from(class_name, never_called_candidates_c, prefix = "."))
+%                             names_from(class_name, data.never_called_candidates  , prefix = "#"),
+%                             names_from(class_name, data.never_called_candidates_c, prefix = "."))
 %   end
 %
 % # Always hide empty tables :
