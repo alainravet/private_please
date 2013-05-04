@@ -48,3 +48,24 @@ def assert_no_calls_detected
 end
 
 #----------
+# Reporter::DataCompiler :
+#----------
+
+def run_and_inspect(fixture_file, __file__)
+  PrivatePlease.pp_automatic_mode_enable
+  load File.expand_path(File.dirname(__file__) + "/fixtures/#{fixture_file}")
+  c = PrivatePlease::Reporter::DataCompiler.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
+  data = c.compile_data
+end
+
+def assert_report_data_matches(data, expected_results = $expected_results)
+  ['candidates_classes_names',  data.candidates_classes_names ].should == ['candidates_classes_names',  expected_results[:candidates_classes_names ]]
+  ['good_candidates',           data.good_candidates          ].should == ['good_candidates',           expected_results[:good_candidates          ]]
+  ['bad_candidates',            data.bad_candidates           ].should == ['bad_candidates',            expected_results[:bad_candidates           ]]
+  ['never_called_candidates',   data.never_called_candidates  ].should == ['never_called_candidates',   expected_results[:never_called_candidates  ]]
+  ['good_candidates_c',         data.good_candidates_c        ].should == ['good_candidates_c',         expected_results[:good_candidates_c        ]]
+  ['bad_candidates_c',          data.bad_candidates_c         ].should == ['bad_candidates_c',          expected_results[:bad_candidates_c         ]]
+  ['never_called_candidates_c', data.never_called_candidates_c].should == ['never_called_candidates_c', expected_results[:never_called_candidates_c]]
+end
+
+#----------
