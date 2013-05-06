@@ -1,3 +1,19 @@
+module Kernel
+
+  alias_method :_orig_require, :require
+
+  def require string
+    prev_val = PrivatePlease.pp_automatic_mode_enabled?
+    if PrivatePlease::Tracking::LoadUtils.standard_lib_or_gem?(string)
+      PrivatePlease.pp_automatic_mode_disable
+    end
+
+    send :_orig_require, string
+
+    PrivatePlease.pp_automatic_mode_enable(prev_val)
+  end
+
+end
 
 class Class
 

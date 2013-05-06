@@ -18,6 +18,11 @@ class Hash
   end
 end
 
+
+def assert_classes_names(expected)
+  PrivatePlease.candidates_store.classes_names.should == expected
+end
+
 def assert_instance_methods_candidates(raw_expected)
   expected = raw_expected.to_methods_names_bucket if raw_expected.is_a?(Hash)
   PrivatePlease.candidates_store.instance_methods.should == expected
