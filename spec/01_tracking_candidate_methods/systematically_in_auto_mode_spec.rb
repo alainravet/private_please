@@ -5,8 +5,6 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
   before { PrivatePlease.pp_automatic_mode_enable }
   after  { PrivatePlease.pp_automatic_mode_disable}
 
-  let(:candidates_store) { PrivatePlease.storage }
-
 # ----------------
   context 'in a flat class,' do  # simple class; no module nor inheritance
 # ----------------
@@ -29,7 +27,7 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
       class AutFlatClass::Case2
         def foo           ; end     #
 
-        def self.baz      ; end     # 
+        def self.baz      ; end     #
       end
 
       assert_instance_methods_candidates    'AutFlatClass::Case2' => [:foo]
@@ -84,7 +82,7 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
         def foo           ; end     #
         def included      ; end     # : not a special name in classes
 
-        def self.baz      ; end     # 
+        def self.baz      ; end     #
         def self.included ; end     # : not a special name in classes
       end
 
@@ -125,7 +123,7 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
   context '1 class including 1 module' do
 # ----------------
     module IncludedModule ; end
-    
+
     example 'the tracked module methods are associated to the module, not the class(es) that includes the module' do
       module IncludedModule
         module Module1                    #
@@ -138,10 +136,10 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
           end                             #
         end                               #
         class Case1
-          include Module1                 # NO methods are associated to this class. 
+          include Module1                 # NO methods are associated to this class.
         end
       end
-      
+
       assert_instance_methods_candidates 'IncludedModule::Module1'                  =>[:im_from_module],
                                          'IncludedModule::Module1::ClassMethods'    =>[:cm_from_module]
       assert_singleton_methods_candidates    ({})
@@ -154,10 +152,10 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
   describe 'overridden methods are not tracked in classes' do
 # ----------------
     module ImplOverridingTest ; end
-    
+
     example 'overridden methods are NOT marked as candidate' do
       module ImplOverridingTest
-        class Base  
+        class Base
           def base_t_foo        ; end # is tracked
           def self.c_base_t_foo ; end # is tracked
         private
@@ -168,10 +166,10 @@ describe PrivatePlease, 'in $automatic mode, all the methods are tracked for obs
           def base_priv         ; end   # overriding a private method => not tracked
           def base_yes          ; end   # new -> tracked
           def self.c_base_yes   ; end   # new -> tracked
-        
+
           def base_t_foo        ; end   # NOT tracked
           def self.c_base_t_foo ; end   # NOT tracked
-          
+
           def to_s              ; end   # NOT tracked
         end
       end

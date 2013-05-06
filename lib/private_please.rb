@@ -18,7 +18,9 @@ module PrivatePlease
   end
 
   def self.pp_automatic_mode_enabled? ; !!$pp_automatic_mode_enabled          end
-  def self.pp_automatic_mode_enable   ;   $pp_automatic_mode_enabled =  true  end
+  def self.pp_automatic_mode_enable(value=true)
+    $pp_automatic_mode_enabled =  value
+  end
   def self.pp_automatic_mode_disable  ;   $pp_automatic_mode_enabled = false  end
 
   # TODO : replace class methods by PP instance + instance methods
