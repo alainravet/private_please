@@ -4,6 +4,7 @@ require 'private_please/candidate'
 require 'private_please/storage'
 require 'private_please/report'
 require 'private_please/reporter'
+require 'private_please/options'
 
 at_exit do
   PrivatePlease.at_exit

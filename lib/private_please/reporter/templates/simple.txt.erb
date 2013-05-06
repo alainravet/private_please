@@ -75,6 +75,6 @@
 
     Report options :
 % options_footer_parts.each do |o|
-        <%= (value = o[2]) ? "V" : 'x' %> <%= is_default = o[1] %> <%= display = o[0] %>
+        <%= o.value ? 'V' : 'x' %> <%= o.is_default %> <%= o.label %>
 % end
     (PP_OPTIONS = <%= ENV['PP_OPTIONS'] %>)
