@@ -24,14 +24,17 @@ module PrivatePlease::Tracking
       end
 
       def ruby_executable
-        @@_ruby_executable ||= gem_env.match(/RUBY EXECUTABLE:\s*(.*)/)[1]    # "/Users/ara/.rbenv/versions/1.9.3-p392/bin/ruby"
+        @@_ruby_executable ||= gem_env.match(/RUBY EXECUTABLE:\s*(.*)/)[1]  # => "/Users/ara/.rbenv/versions/jruby-1.7.3/bin/jruby"
       end
 
       def std_lib_home
         @@_std_lib_home ||= begin
-          basedir      = ruby_executable.gsub('bin/ruby', 'lib/ruby')   # "/Users/ara/.rbenv/versions/1.9.3-p392/lib/ruby"
-          std_lib_home =  Dir.glob("#{basedir}/[1-3].[0-9]*").first     # "/Users/ara/.rbenv/versions/1.9.3-p392/lib/ruby/1.9.1"
-        end
+          basedir      = ruby_executable.gsub(/bin\/[j]?ruby/, 'lib/ruby') # => "/Users/ara/.rbenv/versions/jruby-1.7.3/lib/ruby"
+                                                  # jruby has 2+ directories of std. libs under the basedir : 1.8 and 1.9
+          $:.detect {|path|                       # We choose the one that is also in the load path.
+            path =~ /#{basedir}\/[12][^\/]+$/     #
+          }                                                                # => "/Users/ara/.rbenv/versions/jruby-1.7.3/lib/ruby/1.9"
+        end                                                                #                                                     ^^^ == the mode
       end
 
     end
