@@ -4,7 +4,7 @@ module Kernel
 
   def require string
     prev_val = PrivatePlease.pp_automatic_mode_enabled?
-    if PrivatePlease::Tracking::LoadUtils.standard_lib?(string)
+    if PrivatePlease::Tracking::LoadUtils.standard_lib_or_gem?(string)
       PrivatePlease.pp_automatic_mode_disable
     end
 

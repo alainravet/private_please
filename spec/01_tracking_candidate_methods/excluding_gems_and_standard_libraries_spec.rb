@@ -8,7 +8,7 @@ describe "acceptance : standard libs are not tracked" do
   module RequireTest; end
 #-----------------
 
-  example 'www' do
+  example "the csv **standard library** is required but not tracked" do
 
     class RequireTest::Case1
       require 'csv'
@@ -18,6 +18,14 @@ describe "acceptance : standard libs are not tracked" do
     assert_classes_names ['RequireTest::Case1']
   end
 
-  example 'a local lib earlier on the LOADPATH hides/replaces a gem'
-end
+  example "the rspec **gem** is required but not tracked" do
 
+    class RequireTest::Case2
+      require 'rspec/autorun'
+      def foo ; end
+    end
+
+    assert_classes_names ['RequireTest::Case2']
+  end
+
+end
