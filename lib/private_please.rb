@@ -7,7 +7,8 @@ require 'private_please/reporter'
 require 'private_please/options'
 
 at_exit do
-  PrivatePlease.at_exit
+  error_detected = $!
+  PrivatePlease.at_exit unless error_detected
 end
 
 module PrivatePlease
