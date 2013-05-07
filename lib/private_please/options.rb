@@ -3,6 +3,7 @@ module PrivatePlease
   class Options
 
     DEFAULTS = {
+      :show_all?                              => false,
       :show_never_called_candidates_section?  => false,
       :show_bad_candidates_section?           => false,
       :show_empty_classes?                    => false
@@ -26,16 +27,20 @@ module PrivatePlease
       ].none?
     end
 
+    def show_all?
+      (ENV['PP_OPTIONS'] =~ /--show-all/)
+    end
+
     def show_never_called_candidates_section?
-      (ENV['PP_OPTIONS'] =~ /--show-never-called/)   || DEFAULTS[:show_never_called_candidates_section?]
+      show_all? || (ENV['PP_OPTIONS'] =~ /--show-never-called/)   || DEFAULTS[:show_never_called_candidates_section?]
     end
 
     def show_bad_candidates_section?
-      (ENV['PP_OPTIONS'] =~ /--show-bad-candidates/) || DEFAULTS[:show_bad_candidates_section?]
+      show_all? || (ENV['PP_OPTIONS'] =~ /--show-bad-candidates/) || DEFAULTS[:show_bad_candidates_section?]
     end
 
     def show_empty_classes?
-      (ENV['PP_OPTIONS'] =~ /--show-empty-classes/)  || DEFAULTS[:show_empty_classes?]
+      show_all? || (ENV['PP_OPTIONS'] =~ /--show-empty-classes/)  || DEFAULTS[:show_empty_classes?]
     end
 
   end
