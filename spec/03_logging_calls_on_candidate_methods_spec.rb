@@ -33,5 +33,18 @@ describe PrivatePlease, 'calling observed methods and logging calls in 2 categor
                           :outside_c  => {'CallsSample::Simple' => mnames_for([:class_m_1])}
   end
 
+  example('BUG #41') do
+    CallsSample::Fail.new.bad_candidate_1
+    CallsSample::Good.new.bad_candidate_1
+pending "bug #41 is fixed" do
+    assert_calls_detected :inside     => {'CallsSample::Fail' => mnames_for([:bad_candidate_1])},
+                          :outside    => {'CallsSample::Fail' => mnames_for([:bad_candidate_1]),
+                                          'CallsSample::Good' => mnames_for([:bad_candidate_1])
+                          },
+                          :inside_c   => NO_CALLS_OBSERVED,
+                          :outside_c  => NO_CALLS_OBSERVED
+end
+  end
+
 #-----------------------------------------------------------------------------------------------------------------------
 end

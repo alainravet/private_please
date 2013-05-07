@@ -65,5 +65,20 @@ module CallsSample
     def never_called_1;             end
     def self.class_never_called_1;  end
   end
+
+  class Good
+  private_please
+    def initialize        ; end
+    def bad_candidate_1   ; end # MUST NOT be private
+  end
+
+  class Fail
+  private_please
+    def initialize
+      bad_candidate_1   # this call from here triggers the incorrect report
+    end
+    def bad_candidate_1   ; end # MUST NOT be private
+  end
+
 #-----------------------------------------------------------------------------------------------------------------------
 end unless defined?(CallsSample::Simple)

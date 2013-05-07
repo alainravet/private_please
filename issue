@@ -6,6 +6,11 @@ ISSUES = {
     '22' => lambda{ puts `PP_OPTIONS="--show-never-called" ruby -Ilib spec/fixtures/bug_22.rb`   },
     '25' => lambda{ puts `PP_OPTIONS="--show-never-called" ruby -Ilib spec/fixtures/issue_25.rb` },
     '30' => lambda{ puts `PP_OPTIONS="--show-never-called" ruby -Ilib spec/fixtures/bug_30.rb`   },
+    '41' => lambda{
+                    FileUtils.cd('spec/fixtures') do
+                      puts `PP_OPTIONS="--show-all" ruby bug_41.rb`
+                    end
+            },
 }
 
 
