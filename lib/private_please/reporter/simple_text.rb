@@ -6,13 +6,22 @@ module  PrivatePlease ; module Reporter
 
   class SimpleText < Base
 
-    TEMPLATE_PATH     = File.expand_path(File.dirname(__FILE__) + '/templates/simple.txt.erb')
-
     def text
-      erb = ERB.new(File.read(TEMPLATE_PATH), 0,  "%<>")
+      template  = compact_mode? ?
+          "#{TEMPLATE_HOME}/compact.txt.erb" :
+          "#{TEMPLATE_HOME}/simple.txt.erb"
+      erb       = ERB.new(File.read(template), 0,  "%<>")
       erb.result(binding)
     end
 
+  #-----------------------------------------------------------------------------
+  private
+
+    TEMPLATE_HOME     = File.expand_path(File.dirname(__FILE__) + '/templates')
+
+    def compact_mode?
+      options.only_show_good_candidates?
+    end
   end
 
 end end

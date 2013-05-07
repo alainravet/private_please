@@ -1,0 +1,41 @@
+% full_with_sep = '===================================================================================='
+====================================================================================
+=                               PrivatePlease report :                             =
+=                     List of methods that can be made private                     =
+====================================================================================
+
+% prev_top_scope = nil
+% data.candidates_classes_names .sort.each do |class_name|
+%
+%     good_candidates_table = table_for(
+%                             names_from(class_name, data.good_candidates  , prefix = "#"),
+%                             names_from(class_name, data.good_candidates_c, prefix = "."))
+%
+%   next if good_candidates_table.empty? && !options.show_empty_classes?
+%
+%   top_scope = class_name.split('::').first
+%   if prev_top_scope != top_scope
+%       prev_top_scope = top_scope
+************************************************************************************
+<%= top_scope.center(full_with_sep.length)
+%>
+************************************************************************************
+%   end
+<%= class_name
+%>
+%
+%   t = good_candidates_table
+%   cell_width = 3 + [38, t.longest_value_length].max
+%   t.rows.each do |inst_m, class_m|
+      <%= inst_m && inst_m.ljust(cell_width) %><%= class_m && class_m.ljust(cell_width) %>
+%   end
+
+% end
+
+====================================================================================
+    Report options :
+% options_footer_parts.each do |o|
+        <%= o.value ? 'V' : 'x' %> <%= o.is_default ? '*' : ' '%> <%= o.label %>
+% end
+    (PP_OPTIONS = <%= ENV['PP_OPTIONS'] %>)
+====================================================================================

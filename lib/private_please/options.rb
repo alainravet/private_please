@@ -20,6 +20,12 @@ module PrivatePlease
       DEFAULTS[key] == value
     end
 
+    def only_show_good_candidates?
+      [show_never_called_candidates_section? ,
+       show_bad_candidates_section?
+      ].none?
+    end
+
     def show_never_called_candidates_section?
       (ENV['PP_OPTIONS'] =~ /--show-never-called/)   || DEFAULTS[:show_never_called_candidates_section?]
     end
