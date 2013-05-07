@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+ISSUES = {
+    '22' => lambda{ puts `PP_OPTIONS="--show-never-called" ruby -Ilib spec/fixtures/bug_22.rb`   },
+    '25' => lambda{ puts `PP_OPTIONS="--show-never-called" ruby -Ilib spec/fixtures/issue_25.rb` },
+    '30' => lambda{ puts `PP_OPTIONS="--show-never-called" ruby -Ilib spec/fixtures/bug_30.rb`   },
+}
+
+
+if ARGV.length != 1
+  puts "Usage: issue <issue #>"
+  puts "  available issues numbers : [#{ISSUES.keys.sort.join(', ')}]"
+  exit
+
+elsif !ISSUES.keys.include?(ARGV[0])
+  puts "Unknown/invalid issue nbr : #{ARGV[0]}"
+  puts "Use one of [#{ISSUES.keys.sort.join(', ')}]"
+  exit
+
+else
+  issue_nbr = ARGV[0]
+  puts "<<<Started : issue #{issue_nbr}>>>"
+  ISSUES.fetch(issue_nbr).call
+  puts "<<<Done : issue #{issue_nbr}>>>"
+end
