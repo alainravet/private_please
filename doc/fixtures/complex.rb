@@ -1,10 +1,24 @@
 load File.dirname(__FILE__) + '/fixture_helper.rb'
 
-module ComplexReport
+class ComplexReport
+  def outer
+    inner
+  end
+  def inner ; end
 
   class Class1
+    class Level3
+      def initialize
+        instance_m_34
+      end
+
+      def instance_m_34; end
+    end
+
     def initialize
       super
+      Level3.new
+      ComplexReport.new.outer
     end
     def sole_entry_point
       instance_m_1
@@ -33,7 +47,7 @@ end
 
 ComplexReport::Class1.new.sole_entry_point
 
-module ComplexReport
+class ComplexReport
                                                 ###########################################
   class Simple                                  # Internal calls :                        #
                                                 # -> called methods are _GOOD CANDIDATES_ #
