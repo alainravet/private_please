@@ -20,6 +20,9 @@ describe PrivatePlease::Tracking::LoadUtils do
 
     std_lib?('rspec'              ).should be_false
     std_lib?('private_please'     ).should be_false
+    std_lib?('/an/abs/path/csv'   ).should be_false
+    std_lib?('../csv'             ).should be_false
+    std_lib?('lib/../csv'         ).should be_false
   end
 
   example '.gem? detects if a string matches a gem' do
@@ -33,8 +36,11 @@ describe PrivatePlease::Tracking::LoadUtils do
     gem?('rspec/core/rake_task').should be_true
     gem?('rspec/autorun'      ).should be_true
     gem?('coderay'            ).should be_true
-   #gem?('private_please'     ).should be_false
-  end
+    gem?('lib/../rspec'       ).should be_true  # same as gem?('rspec')
 
+    gem?('/an/abs/path/rspec' ).should be_false
+    gem?('../rspec'           ).should be_false
+    gem?('rspec/../lib/foo'   ).should be_false
+  end
 
 end

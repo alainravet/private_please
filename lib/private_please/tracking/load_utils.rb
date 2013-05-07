@@ -1,6 +1,7 @@
 module PrivatePlease::Tracking
 
   module LoadUtils
+    require File.dirname(__FILE__) + '/load_utils/file_utils'
     require File.dirname(__FILE__) + '/load_utils/gem_utils'
     require File.dirname(__FILE__) + '/load_utils/standard_lib_utils'
 
@@ -17,6 +18,8 @@ module PrivatePlease::Tracking
       end
 
       def gem?(requiree)
+        return false if requiree.start_with?('/')
+        requiree = FileUtils.simplify_path(requiree)
         (@@_gems ||= {})[requiree] ||= begin
           base_name = requiree.include?('/') ?
               requiree.split('/').first :      #  ex:   require 'rspec/autorun'
