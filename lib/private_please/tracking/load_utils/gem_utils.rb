@@ -10,18 +10,17 @@ module PrivatePlease::Tracking::LoadUtils
 
     class << self
 
-      # performs `$ gem env`
+      # output of `gem env`
       #
       def gem_env
-        GEM_ENV_PRELOADER.join
-        gem_env     # call the fast/just rewritten version
+        GEM_ENV_PRELOADER.join.value
       end
 
-      # performs `$ gem list` + extracts the names
+      # the list of installed gems.
       #
+      # @return ["bundle", "bundler", "rspec", ..]
       def gems_names
-        GEMS_NAMES_PRELOADER.join
-        gems_names
+        GEMS_NAMES_PRELOADER.join.value
       end
 
     #-------------------------------------------------------------------------------------------------------------------
@@ -32,15 +31,15 @@ module PrivatePlease::Tracking::LoadUtils
         def GemUtils.gem_env
           @@_cached_gem_env
         end
+        @@_cached_gem_env
       end
 
       GEMS_NAMES_PRELOADER = Thread.new do
-        @@_cached_gems_names = `gem list`.  # very slow on jruby
-            split("\n").
-            map { |l| l.match(/(\S+)\s+.*/)[1]}                # ["bundle", "bundler", "rspec", ..]
+        @@_cached_gems_names = `gem list --no-version`
         def GemUtils.gems_names
           @@_cached_gems_names
         end
+        @@_cached_gems_names
       end
 
     end
