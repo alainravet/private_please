@@ -21,6 +21,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = PrivatePlease::VERSION
 
+  gem.add_dependency 'cattr_reader_preloaded'
+
   gem.add_development_dependency 'rake' # to run 'All specs' in Rubymine
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'guard-rspec'

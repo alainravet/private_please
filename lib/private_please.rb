@@ -1,4 +1,7 @@
 require 'private_please/version'
+
+require 'cattr_reader_preloaded'
+
 require 'private_please/ruby_backports'
 require 'private_please/candidate'
 require 'private_please/storage'

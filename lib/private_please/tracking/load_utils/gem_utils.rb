@@ -8,41 +8,13 @@ module PrivatePlease::Tracking::LoadUtils
 
   module GemUtils
 
-    class << self
-
-      # output of `gem env`
-      #
-      def gem_env
-        GEM_ENV_PRELOADER.join.value
-      end
-
-      # the list of installed gems.
-      #
-      # @return ["bundle", "bundler", "rspec", ..]
-      def gems_names
-        GEMS_NAMES_PRELOADER.join.value
-      end
-
-    #-------------------------------------------------------------------------------------------------------------------
-    private
-
-      GEM_ENV_PRELOADER = Thread.new do
-        @@_cached_gem_env = `gem env`
-        def GemUtils.gem_env
-          @@_cached_gem_env
-        end
-        @@_cached_gem_env
-      end
-
-      GEMS_NAMES_PRELOADER = Thread.new do
-        @@_cached_gems_names = `gem list --no-version`
-        def GemUtils.gems_names
-          @@_cached_gems_names
-        end
-        @@_cached_gems_names
-      end
-
+    cattr_reader_preloaded  :gems_names do
+      `gem list --no-version`
     end
+    cattr_reader_preloaded  :gem_env do
+      `gem env`
+    end
+
   end
 
 end
