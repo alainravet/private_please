@@ -36,3 +36,6 @@ require File.dirname(__FILE__) + '/../lib/private_please'
 PrivatePlease.pp_automatic_mode_disable
 
 $private_please_tests_are_running = true
+
+require 'coveralls'
+Coveralls.wear!

@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/alainravet/private_please.png?branch=master)](https://travis-ci.org/alainravet/private_please) -
 [![Code Climate](https://codeclimate.com/github/alainravet/private_please.png)](https://codeclimate.com/github/alainravet/private_please)
+[![Coverage Status](https://coveralls.io/repos/alainravet/private_please/badge.png)](https://coveralls.io/r/alainravet/private_please)
 tested with Ruby (1.8.7, 1.9.3, and 2.0.0) and JRuby(1.8 and 1.9 mode) - see [.travis.yml](.travis.yml)
 
 ## TL;DR :
