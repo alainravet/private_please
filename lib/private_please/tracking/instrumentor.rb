@@ -20,9 +20,9 @@ module PrivatePlease ; module Tracking
       orig_method = klass.singleton_class.instance_method(method_name)
 klass.class_eval <<RUBY
       define_singleton_method(method_name) do |*args, &blk|                 # def self.observed_method_i(..)
-        set_trace_func(nil) #don't track activity while here                #
+        LineChangeTracker::MY_TRACE_FUN.disable  # don't track activity while here
         PrivatePlease::Tracking.after_singleton_method_call(method_name, self_class=self)
-        set_trace_func(LineChangeTracker::MY_TRACE_FUN)                     #
+        LineChangeTracker::MY_TRACE_FUN.enable                              #
         # make the original call :                                          #
         orig_method.bind(self).call(*args, &blk)                            #   <call original method>
       end                                                                   # end
@@ -34,9 +34,9 @@ RUBY
       orig_method = klass.instance_method(method_name)
 klass.class_eval <<RUBY
       define_method(method_name) do |*args, &blk|                           # def observed_method_i(..)
-        set_trace_func(nil) #don't track activity while here                #
+        LineChangeTracker::MY_TRACE_FUN.disable #don't track activity while here
         PrivatePlease::Tracking.after_instance_method_call(method_name, self.class)
-        set_trace_func(LineChangeTracker::MY_TRACE_FUN)                     #
+        LineChangeTracker::MY_TRACE_FUN.enable                              #
         # make the original call :                                          #
         orig_method.bind(self).call(*args, &blk)                            #   <call original method>
       end                                                                   # end

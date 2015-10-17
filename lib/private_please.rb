@@ -19,7 +19,7 @@ module PrivatePlease
   def self.install
     Module.send :include, PrivatePlease::Tracking::Extension
     PrivatePlease.pp_automatic_mode_enable
-    set_trace_func PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN
+    PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN.enable
   end
 
   def self.pp_automatic_mode_enabled? ; !!$pp_automatic_mode_enabled          end
@@ -40,7 +40,7 @@ module PrivatePlease
   def self.reset
     @@_candidates_store = @@_calls_store = nil
     Tracking::LineChangeTracker.reset
-    set_trace_func nil
+    PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN.disable
   end
 
   def self.at_exit

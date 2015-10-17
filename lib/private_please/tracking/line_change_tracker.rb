@@ -13,14 +13,11 @@ module PrivatePlease ; module Tracking
       end
     end
 
-    MY_TRACE_FUN = lambda do |event, file, line, id, binding, klass|
-      return unless 'line'==event
+    MY_TRACE_FUN = TracePoint.new(:line) do |tp|
       LineChangeTracker.prev_prev_self = LineChangeTracker.prev_self
       LineChangeTracker.prev_self      = LineChangeTracker.curr_self
-      LineChangeTracker.curr_self      = (eval 'self', binding)
-      #puts "my : #{event} in #{file}/#{line} id:#{id} klass:#{klass} - self = #{(eval'self', binding).inspect}"
+      LineChangeTracker.curr_self      = tp.self
     end
-
   end
 
 end end
