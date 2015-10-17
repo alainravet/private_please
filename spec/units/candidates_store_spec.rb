@@ -22,7 +22,7 @@ describe PrivatePlease::Storage::CandidatesStore do
   example 'storing the 1st instance method candidate stores it so that it can be retrieved' do
     candidates_store.store(object_to_s)
 
-    candidates_store.stored?(object_to_s).should be_true
+    candidates_store.stored?(object_to_s).should be_truthy
     candidates_store.instance_methods.should == {'Object' => mnames_for('to_s')}
     candidates_store.class_methods   .should be_empty
   end
@@ -30,7 +30,7 @@ describe PrivatePlease::Storage::CandidatesStore do
   example 'storing the 1st class method candidate stores it so that it can be retrieved' do
     candidates_store.store(object_new)
 
-    candidates_store.stored?(object_new).should be_true
+    candidates_store.stored?(object_new).should be_truthy
     candidates_store.instance_methods.should be_empty
     candidates_store.class_methods   .should == {'Object' => mnames_for('new')}
   end
@@ -39,7 +39,7 @@ describe PrivatePlease::Storage::CandidatesStore do
     candidates_store.store(object_to_s)
     candidates_store.store(object_hash)
 
-    candidates_store.stored?(object_hash).should be_true
+    candidates_store.stored?(object_hash).should be_truthy
     candidates_store.instance_methods.should == {'Object' => mnames_for(%w(hash to_s))}
     candidates_store.class_methods   .should be_empty
   end

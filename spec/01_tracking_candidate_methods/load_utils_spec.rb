@@ -12,35 +12,35 @@ describe PrivatePlease::Tracking::LoadUtils do
 
 
   example '.standard_lib? detects if a string matches a standard library' do
-    std_lib?('csv'                ).should be_true
-    std_lib?('csv.rb'             ).should be_true
-    std_lib?('bigdecimal'         ).should be_true
-    std_lib?('bigdecimal/util'    ).should be_true
-    std_lib?('bigdecimal/util.rb' ).should be_true
+    std_lib?('csv'                ).should be_truthy
+    std_lib?('csv.rb'             ).should be_truthy
+    std_lib?('bigdecimal'         ).should be_truthy
+    std_lib?('bigdecimal/util'    ).should be_truthy
+    std_lib?('bigdecimal/util.rb' ).should be_truthy
 
-    std_lib?('rspec'              ).should be_false
-    std_lib?('private_please'     ).should be_false
-    std_lib?('/an/abs/path/csv'   ).should be_false
-    std_lib?('../csv'             ).should be_false
-    std_lib?('lib/../csv'         ).should be_false
+    std_lib?('rspec'              ).should be_falsey
+    std_lib?('private_please'     ).should be_falsey
+    std_lib?('/an/abs/path/csv'   ).should be_falsey
+    std_lib?('../csv'             ).should be_falsey
+    std_lib?('lib/../csv'         ).should be_falsey
   end
 
   example '.gem? detects if a string matches a gem' do
-    gem?('csv'                ).should be_false
-    gem?('csv.rb'             ).should be_false
-    gem?('bigdecimal'         ).should be_false
-    gem?('bigdecimal/util'    ).should be_false
-    gem?('bigdecimal/util.rb' ).should be_false
+    gem?('csv'                ).should be_falsey
+    gem?('csv.rb'             ).should be_falsey
+    gem?('bigdecimal'         ).should be_falsey
+    gem?('bigdecimal/util'    ).should be_falsey
+    gem?('bigdecimal/util.rb' ).should be_falsey
 
-    gem?('rspec'              ).should be_true
-    gem?('rspec/core/rake_task').should be_true
-    gem?('rspec/autorun'      ).should be_true
-    gem?('coderay'            ).should be_true
-    gem?('lib/../rspec'       ).should be_true  # same as gem?('rspec')
+    gem?('rspec'              ).should be_truthy
+    gem?('rspec/core/rake_task').should be_truthy
+    gem?('rspec/autorun'      ).should be_truthy
+    gem?('coderay'            ).should be_truthy
+    gem?('lib/../rspec'       ).should be_truthy  # same as gem?('rspec')
 
-    gem?('/an/abs/path/rspec' ).should be_false
-    gem?('../rspec'           ).should be_false
-    gem?('rspec/../lib/foo'   ).should be_false
+    gem?('/an/abs/path/rspec' ).should be_falsey
+    gem?('../rspec'           ).should be_falsey
+    gem?('rspec/../lib/foo'   ).should be_falsey
   end
 
 end
