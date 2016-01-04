@@ -1,124 +1,83 @@
-[![Build Status](https://travis-ci.org/alainravet/private_please.png?branch=master)](https://travis-ci.org/alainravet/private_please) -
-[![Code Climate](https://codeclimate.com/github/alainravet/private_please.png)](https://codeclimate.com/github/alainravet/private_please)
-[![Coverage Status](https://coveralls.io/repos/alainravet/private_please/badge.png)](https://coveralls.io/r/alainravet/private_please)
-tested with Ruby (1.8.7, 1.9.3, and 2.0.0) and JRuby(1.8 and 1.9 mode) - see [.travis.yml](.travis.yml)
+-[![Build Status](https://travis-ci.org/alainravet/private_please.png?branch=master)](https://travis-ci.org/alainravet/private_please) -
+-[![Code Climate](https://codeclimate.com/github/alainravet/private_please.png)](https://codeclimate.com/github/alainravet/private_please)
+-[![Coverage Status](https://coveralls.io/repos/alainravet/private_please/badge.png)](https://coveralls.io/r/alainravet/private_please)
+tested with Ruby 2.0.0..2.3.0 - see [.travis.yml](.travis.yml)
+# PrivatePlease
 
-## TL;DR :
-Given this code
+This tool locates public or protected methods that can be made private.
+After you have instrumented the tests suite (see below), it watches the code as the tests are executed and identifies non-private methods that are only called privately.
+As the technique used is tracing, the execution is slowed down substantially (ex: 300%)
+
+## Usage
+
+Add this to the top of `spec_helper.rb`:
+
 ```ruby
-# file : big_code
-class BigCode
-  def long_method # the only method that should be public
-    _part_1
-    _part_2
-  end
+require 'private_please'
+PrivatePlease.start_tracking
+at_exit { puts PrivatePlease.report }
+...
 
-  # PROBLEM : Those 2 methods were extracted and should be private
-  def _part_1
-    # ....
-  end
-  def _part_2
-    # ....
-  end
-end
-BigCode.new.long_method
 ```
-When you run this command
-```
-$ pp_ruby big_code
-  ^^^
-```
-Then the methods usage is tracked while the program runs and this findings report is output:
-```
-====================================================================================
-=                               PrivatePlease report :                             =
-====================================================================================
-BigCode
 
-    * Good candidates : can be made private :
-    ------------------------------------------
-      #_part_2
-      #_part_1
+Optionally, you can `exclude_dir` the tests code, local gems, or any source dir that could touched when running the tests.
+```ruby
+SPECS_DIR  = File.dirname(__FILE__)
+require 'private_please'
+PrivatePlease.exclude_dir SPECS_DIR                  # don't analyze the tests
+PrivatePlease.exclude_dir '/dev/my_local_gem'        # specified via path: in Gemfile
+PrivatePlease.exclude_dir '/Applications/RubyMine.app/Contents/rb/testing'
+PrivatePlease.start_tracking
+at_exit { puts PrivatePlease.report.gsub(Rails.root.to_s, '') }
+...
+
+```
+
+### Example of result :
+
+```
+265 examples, 0 failures, 2 pending
 
 ====================================================================================
-```
+=                               Privatazable methods :                             =
+====================================================================================
+/app/controllers/application_controller.rb
+    21  ApplicationController::MissingAvatars#must_remind_user_to_setup_avatar?
+    75  ApplicationController#allow?
+/app/controllers/home_controller.rb
+    15  HomeController#redirect_to_default_page_for_signed_in_users
+/app/controllers/mentor_profiles_controller.rb
+     4  MentorProfilesController#after_create_success
 
+```
 ## Installation
-```
-$ gem install private_please
-```
 
-## Usage : the 2 modes (auto and manual)
+Add this line to your application's Gemfile:
 
-You can use *private_please* (*PP*) in either **auto-mode** or in **manual mode**.  
-Optionally you can customize the report contents with the env. variable ```PP_OPTIONS```.
-
-- in **auto-mode** (the example above in TL;DR), you simply run your program with ```pp_ruby``` (instead of ```ruby```) and all your code is inspected by *PP* while it runs.
-- in **manual mode** you must manually instrument (==add code to) each file you want *PP* to track and inspect.
-
-
-### Auto-mode
-PP will run the program and track all the classes and methods that are defined.
-
-How to :  
-- step 1 : use ```pp_ruby``` instead of ```ruby```.
-
-Example : 
-```
-$ bundle exec pp_ruby -Ilib normal.rb 
-              ^^^
-```
-A report is automatically printed when the program exits
-
-
-### Manual mode
-You tell PP which classes and which methods to track.
-
-How to :  
-- step 1 : Instrument your Ruby code
-- step 2 : launch program as usual, with ```ruby```.
-
-
-Example :
-#### step 1 : Instrument your code
 ```ruby
-# load PP
-require 'private_please'                  <<<<<<<  ADD THIS (only 1x in the whole program)
-PrivatePlease.pp_automatic_mode_disable   <<<<<<<     "   "   "   "   "   "   "   "   "
-
-class BigCode
-
-  private_please                          << ~~ JUST ADD THIS in every file you want PP to inspect
-                                          <<    
-                                          <<  Meaning : "track the code below"
-
-  def long_method # the only method that should be public
-    _part_1
-    _part_2
-  end
-
-  def _part_1
-    # ....
-  end
-  def _part_2
-    # ....
-  end
-end
-
-BigCode.new.long_method
+gem 'private_please'
 ```
 
-####step 2 : run you code normally
-```
-$ ruby big_code.rb
-```
+And then execute:
 
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install private_please
+
+## Development
+
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
-**Please respect and reuse the current code style and formatting**
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Bug reports and pull requests are welcome on GitHub at https://github.com/alainravet/private_please.
+
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+

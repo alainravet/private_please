@@ -1,0 +1,11 @@
+====================================================================================
+=                               Privatazable methods :                             =
+====================================================================================
+% compiled_data.each do |source_file_and_linenos_and_methods|
+%   source_file, linenos_and_methods = source_file_and_linenos_and_methods
+<%= source_file
+%>
+%   linenos_and_methods.sort_by(&:first).each do |lineno, meth|
+  <%= "%4d  %s" % [lineno, meth] %>
+%   end
+% end

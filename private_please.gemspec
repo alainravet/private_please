@@ -1,30 +1,35 @@
-# -*- encoding: utf-8 -*-
-if RUBY_VERSION == '1.8.7'
-  # avoid double-require of version.rb - see http://bit.ly/18lspBV 
-  $:.unshift File.expand_path("../lib", __FILE__)
-  require "private_please/version"
-else
-  require File.expand_path('../lib/private_please/version', __FILE__)
-end
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'private_please/version'
 
-Gem::Specification.new do |gem|
-  gem.authors       = ["Alain Ravet"]
-  gem.email         = ["alainravet@gmail.com"]
-  gem.description   = %q{Test if methods can be made private}
-  gem.summary       = %q{Test if methods can be made private}
-  gem.homepage      = "https://github.com/alainravet/private_please"
+Gem::Specification.new do |spec|
+  spec.name          = 'private_please'
+  spec.version       = PrivatePlease::VERSION
+  spec.authors       = ['Alain Ravet']
+  spec.email         = ['alainravet@gmail.com']
 
-  gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = "private_please"
-  gem.require_paths = ["lib"]
-  gem.version       = PrivatePlease::VERSION
+  spec.summary       = 'Identify dynamically methods that can be made private.'
+  spec.description   = 'Identify dynamically methods that can be made private.'
+  spec.homepage      = 'https://github.com/alainravet/private_please'
+  spec.license       = 'MIT'
 
-  gem.add_dependency 'cattr_reader_preloaded'
+  # # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
+  # # delete this section to allow pushing this gem to any host.
+  # if spec.respond_to?(:metadata)
+  #   spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
+  # else
+  #   fail 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
+  # end
 
-  gem.add_development_dependency 'rake' # to run 'All specs' in Rubymine
-  gem.add_development_dependency 'rspec', '>=3.3'
-  gem.add_development_dependency 'guard-rspec'
-  gem.add_development_dependency 'rb-fsevent'
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec)/}) }
+  spec.bindir        = 'exe'
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ['lib']
+
+  spec.add_development_dependency 'bundler',  '~> 1.11'
+  spec.add_development_dependency 'rake',     '~> 10.0'
+  spec.add_development_dependency 'rspec',    '~> 3.0'
+  spec.add_development_dependency 'coderay'
+  spec.add_development_dependency 'sinatra'
 end

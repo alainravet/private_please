@@ -1,56 +1,44 @@
 require 'private_please/version'
-
-require 'cattr_reader_preloaded'
-
-require 'private_please/ruby_backports'
-require 'private_please/candidate'
-require 'private_please/storage'
-require 'private_please/report'
-require 'private_please/reporter'
-require 'private_please/options'
-
-at_exit do
-  error_detected = $!
-  PrivatePlease.at_exit unless error_detected
-end
+require 'private_please/methods_calls_tracker'
+require 'private_please/reporting/simple_text'
 
 module PrivatePlease
-
-  def self.install
-    Module.send :include, PrivatePlease::Tracking::Extension
-    PrivatePlease.pp_automatic_mode_enable
-    PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN.enable
-  end
-
-  def self.pp_automatic_mode_enabled? ; !!$pp_automatic_mode_enabled          end
-  def self.pp_automatic_mode_enable(value=true)
-    $pp_automatic_mode_enabled =  value
-  end
-  def self.pp_automatic_mode_disable  ;   $pp_automatic_mode_enabled = false  end
-
-  # TODO : replace class methods by PP instance + instance methods
-  def self.calls_store
-    @@_calls_store ||= Storage::CallsStore.new
-  end
-
-  def self.candidates_store
-    @@_candidates_store ||= Storage::CandidatesStore.new
+  def self.instance
+    MethodsCallsTracker.instance
   end
 
   def self.reset
-    @@_candidates_store = @@_calls_store = nil
-    Tracking::LineChangeTracker.reset
-    PrivatePlease::Tracking::LineChangeTracker::MY_TRACE_FUN.disable
+    MethodsCallsTracker.reset
   end
 
-  def self.at_exit
-    report = PrivatePlease::Reporter::SimpleText.new(PrivatePlease.candidates_store, PrivatePlease.calls_store)
-    unless $private_please_tests_are_running
-      $stdout.puts report.text
-    end
+  def self.report
+    Reporting::SimpleText.new(instance.result).text
+  end
+
+  def self.config
+    instance.config
+  end
+
+  def self.track(reset: true, &block)
+    reset if reset
+    start_tracking
+    block.call
+    stop_tracking
+  end
+
+  def self.start_tracking
+    instance.start_tracking
+  end
+
+  def self.stop_tracking
+    instance.stop_tracking
+  end
+
+  def self.exclude_dir(val)
+    config.exclude_dir val
+  end
+
+  def self.privatazable_methods
+    instance.result.to_two_level_hash
   end
 end
-
-require 'private_please/tracking'
-
-PrivatePlease.install
