@@ -18,11 +18,13 @@ module PrivatePlease
       #  Array#new
       #  Array.size
       def method_full_name
-        if module_method?
-          instance_method = defined_class.instance_methods.include?(method_id)
-          instance_method ?
-            "#{defined_class}##{method_id}" :
-            "#{defined_class}.#{method_id}"
+        defined_class_s = defined_class.to_s
+        is_module_class_method = defined_class_s.start_with?('#<Class:')
+        if is_module_class_method
+          defined_class_s.gsub!(/^#<Class:/, '').delete!('>')
+          "#{defined_class_s}.#{method_id}"
+        elsif module_method?
+          "#{defined_class}##{method_id}"
         else
           instance_method = !(_self.class == Class)
           instance_method ?
