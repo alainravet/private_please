@@ -58,7 +58,7 @@ describe PrivatePlease::MethodsCallsTracker, '.privatazable_methods' do
 
       assert_result_equal(
         IncludedModule => {
-          '#inc_privatazable' => [__FILE__, 26]
+          '#inc_privatazable' => [__FILE__, 26],
         }
       )
     end

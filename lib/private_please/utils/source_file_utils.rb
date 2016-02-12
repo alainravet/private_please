@@ -12,7 +12,6 @@ module PrivatePlease
             klass.singleton_method(method).source_location
           end
 
-
         else
           is_instance_method ?
               klass.instance_method(method).source_location :

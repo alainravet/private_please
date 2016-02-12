@@ -1,0 +1,32 @@
+inherit_from:
+  - .rubocop_todo.yml
+
+Metrics/LineLength:
+  Exclude:
+    - 'spec/**/*'
+
+Style/ExtraSpacing:
+  Enabled: false
+
+Style/MultilineTernaryOperator:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/SingleLineMethods:
+  Enabled: false
+EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+Style/SpaceBeforeSemicolon:
+  Enabled: false
+
+Style/StructInheritance:
+  Enabled: false
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma

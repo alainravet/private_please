@@ -3,4 +3,4 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in private_please.gemspec
 gemspec
 
-gem 'rubocop', require: false
+gem 'rubocop', '~> 0.37.2', require: false

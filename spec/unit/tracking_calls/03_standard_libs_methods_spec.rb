@@ -26,7 +26,7 @@ describe PrivatePlease::MethodsCallsTracker, '.privatazable_methods' do
 
       assert_result_equal(
         StandardLibFooBar => {
-          '#privatazable_1' => [__FILE__, 11]
+          '#privatazable_1' => [__FILE__, 11],
         }
       )
     end

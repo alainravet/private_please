@@ -9,7 +9,7 @@ class FooBar
       public_c_2
     end
 
-    def public_c_2 ; end
+    def public_c_2; end
 
     def public_c_3
       private_c_1
@@ -17,25 +17,25 @@ class FooBar
 
     private
 
-    def private_c_1 ; end
+    def private_c_1; end
   end
 
   def public_i_1
     public_i_2
   end
 
-  def public_i_2 ; end
+  def public_i_2; end
 
   def public_i_3
     private_i_1
   end
 
   def public_i_4  # test one-liners
-    private_i_1 ; public_i_2
+    private_i_1; public_i_2
   end
 
   def public_i_5  # test one-liners and :c_call/c_return
-    puts nil ; public_i_2
+    puts nil; public_i_2
   end
 
   def public_i_6  # test one-liners and :b_call/:b_return
@@ -44,7 +44,7 @@ class FooBar
 
   private
 
-  def private_i_1 ; end
+  def private_i_1; end
 end
 
 # TESTS : ------------------------------------------------------------------
@@ -60,7 +60,7 @@ describe PrivatePlease::MethodsCallsTracker, '.privatazable_methods' do
 
       assert_result_equal(
         FooBar => {
-          '#public_i_2' => [__FILE__, 27]
+          '#public_i_2' => [__FILE__, 27],
         }
       )
     end
@@ -87,7 +87,7 @@ describe PrivatePlease::MethodsCallsTracker, '.privatazable_methods' do
 
       assert_result_equal(
         FooBar => {
-          '.public_c_2' => [__FILE__, 12]
+          '.public_c_2' => [__FILE__, 12],
         }
       )
     end
@@ -115,7 +115,7 @@ describe PrivatePlease::MethodsCallsTracker, '.privatazable_methods' do
     assert_result_equal(
       FooBar => {
         '#public_i_2' => [__FILE__, 27],
-        '.public_c_2' => [__FILE__, 12]
+        '.public_c_2' => [__FILE__, 12],
       }
     )
   end

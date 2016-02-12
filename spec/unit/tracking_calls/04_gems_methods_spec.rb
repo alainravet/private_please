@@ -36,7 +36,7 @@ describe PrivatePlease::MethodsCallsTracker, '.privatazable_methods' do
 
       assert_result_equal(
         GemFooBar => {
-          '#privatazable_1' => [__FILE__, 16]
+          '#privatazable_1' => [__FILE__, 16],
         }
       )
     end
@@ -46,7 +46,7 @@ describe PrivatePlease::MethodsCallsTracker, '.privatazable_methods' do
 
       assert_result_equal(
         GemFooBar => {
-          '#privatazable_2' => [__FILE__, 20]
+          '#privatazable_2' => [__FILE__, 20],
         }
       )
     end
