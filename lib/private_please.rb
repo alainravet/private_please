@@ -42,3 +42,7 @@ module PrivatePlease
     instance.result.to_two_level_hash
   end
 end
+
+if PrivatePlease::Debug.enabled?
+  TRACES_LINES = File.open(File.expand_path('../../spec/log/traces.txt', __FILE__), 'w')
+end

@@ -6,7 +6,7 @@ module PrivatePlease
     end
 
     def self.enabled?
-      defined?(TRACES_LINES)
+      ENV['PRIVATE_PLEASE_DEBUG']
     end
 
     module TracePointDataLogger

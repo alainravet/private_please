@@ -11,19 +11,19 @@ RSpec.configure do |config|
   config.before(:each) do
     PrivatePlease.reset
     PrivatePlease.exclude_dir LIB_BASEDIR
-
-    TRACES_LINES.puts
-    TRACES_LINES.puts '=' * 240
-    TRACES_LINES.puts self.class.description
-    current_test_details = (send :eval, '@__inspect_output').delete('"').tr('(', "\n").delete(')')
-    TRACES_LINES.puts current_test_details
-    TRACES_LINES.puts '=' * 240
-    TRACES_LINES.puts PrivatePlease::Debug::TracePointDataLogger.header
-    TRACES_LINES.puts '=' * 240
+    if PrivatePlease::Debug.enabled?
+      TRACES_LINES.puts
+      TRACES_LINES.puts '=' * 240
+      TRACES_LINES.puts self.class.description
+      current_test_details = (send :eval, '@__inspect_output').delete('"').tr('(', "\n").delete(')')
+      TRACES_LINES.puts current_test_details
+      TRACES_LINES.puts '=' * 240
+      TRACES_LINES.puts PrivatePlease::Debug::TracePointDataLogger.header
+      TRACES_LINES.puts '=' * 240
+      TRACES_LINES.flush
+    end
   end
 end
-
-TRACES_LINES = File.open(File.expand_path('../../spec/log/traces.txt', __FILE__), 'w')
 
 def assert_result_equal(expected)
   PrivatePlease.stop_tracking

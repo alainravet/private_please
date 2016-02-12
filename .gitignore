@@ -3,6 +3,7 @@
 .bundle
 .config
 .yardoc
+spec/log/traces.txt
 Gemfile.lock
 coverage
 pkg

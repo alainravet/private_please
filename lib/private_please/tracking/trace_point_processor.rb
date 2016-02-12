@@ -27,9 +27,16 @@ module PrivatePlease
 
       private
 
-      def remember_trace_point(tp)
-        @latest_tracepoints.push TracePointDetails.from(tp)
-        # Debug.log_to_trace_file tpd if Debug.enabled?
+      if Debug.enabled?
+        def remember_trace_point(tp)
+          tpd = TracePointDetails.from(tp)
+          @latest_tracepoints.push tpd
+          Debug.log_to_trace_file  tpd
+        end
+      else
+        def remember_trace_point(tp)
+          @latest_tracepoints.push TracePointDetails.from(tp)
+        end
       end
 
       def untracked_code?(path)
