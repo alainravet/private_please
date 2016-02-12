@@ -1,3 +1,4 @@
+require 'erb'
 module PrivatePlease
   module Reporting
     class SimpleText
