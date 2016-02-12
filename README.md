@@ -8,6 +8,8 @@ This tool locates public or protected methods that can be made private.
 After you have instrumented the tests suite (see below), it watches the code as the tests are executed and identifies non-private methods that are only called privately.
 As the technique used is tracing, the execution is slowed down substantially (ex: 300%)
 
+[![asciicast](https://asciinema.org/a/4sqa7u4defes3akyst27pq066.png)](https://asciinema.org/a/4sqa7u4defes3akyst27pq066)
+
 ## Usage
 
 Add this to the top of `spec_helper.rb`:
