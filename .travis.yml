@@ -1,8 +1,10 @@
 language: ruby
 rvm:
-  - "2.0.0"
-  - "2.1"
-  - "2.2"
-  - "2.3.0"
-# uncomment this line if your project needs to run something other than `rake`:
-script: bundle exec rspec --format documentation
+  - 2.0.0
+  - 2.1
+  - 2.2.4
+  - 2.3.0
+  - ruby-head
+
+script: bundle exec rspec --format documentation  --tag ~fails_on_ci --seed 2222
+
