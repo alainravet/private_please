@@ -57,6 +57,7 @@ module PrivatePlease
       end
 
       def private_call?
+        return unless tp_prev  # fails sometime (ex: rspec-core) # UNTESTED
         curr_event, prev_event = tp_curr.event, tp_prev.event
         (curr_event == :call) &&
           [:line, :return, :c_return].include?(prev_event) &&
